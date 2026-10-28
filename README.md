@@ -50,6 +50,10 @@ The philosophy: no challenge is dismissed merely as “too big.” Break it down
 - [For sharing with Chad](docs/HANDOFF.md).
 - [ADRs](docs/adr/0001-doctrine-and-authority.md) — recorded rationale; new decisions use [the ADR template](docs/templates/ADR.md).
 
+## Behavioral evidence
+
+[Interrupted-session and multi-agent swarm results](evals/interrupted-handoff/RESULTS.md) retain original failures, independent challenge, assisted repairs and reproducible checks. These finite synthetic exercises do not establish general reliability or superiority.
+
 ## Update cadence
 
 The operator chose **monthly reviewed update PRs**, with no automatic approval or merge. The committed `sources.lock.json` pins the visible source baseline; `sources.snapshot.json` verifies its complete trees. Each proposal freezes both baseline and target commits, so adoption does not race a moving `main` branch.

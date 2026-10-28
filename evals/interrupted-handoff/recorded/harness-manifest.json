@@ -1,0 +1,14 @@
+{
+  "README.md": "0c90b3316fd4af19d627835f530328727dc20e8e95435a765b5d33ea2e21b93c",
+  "swarm_brief.md": "de6f35403b5102d6cd2117b7f5a5a0bf91bc9e6d304178784a3fa5c597fdefda",
+  "grade.py": "b30beb55f6ca9b7cc21e19480e71597a7f69c0ddfeb50c3d9c620a7bab17c55e",
+  "prepare.py": "e6a9a6106adf224f08917cb2c40505189e20dd0a0a9c8defbbb52c1288130052",
+  "probe.py": "163a91b364802f0d4b1fdb0c53996272f5dad15441fa51fca0dcaa1ac97b0ab3",
+  "fixture/AGENTS.md": "feb9ced76734a054558f4fb25e353c9deede15ac7156ad90a9596f6979ab49d0",
+  "fixture/PROJECT_BRIEF.md": "cbcd65e6ab32d69757a0f400682995ec2cbfc20cd022924e0feed9c90115da72",
+  "fixture/tests/test_legacy.py": "aa5f21d3495f264798b7592dc1e2b0e561a580aac2702c2097c20745e0f7f79a",
+  "fixture/parcelquote/pricing.py": "4d38ca0341126ab67a8bf9f6b9b167b85e3830fd83fada07d0aaa931b019563d",
+  "fixture/parcelquote/__init__.py": "5e871a57926db4fbba3b2ed5b72f031e191eeab05ddf30f4a458829041a7d0ab",
+  "fixture/parcelquote/__main__.py": "c3fb3d2700e0010420daa957669411823c4b834476f5b16674f3c4f14c8c96d9",
+  "fixture/parcelquote/api.py": "8e1c5b21a8167a667217b990524c5c524a3a0b9b46788905c38accb76d2b3ba1"
+}

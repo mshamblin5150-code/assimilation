@@ -73,3 +73,5 @@ This procedure was written using original Matt Pocock `writing-for-agents` (incl
 ## Evidence for this entry path
 
 A controlled local [cold-start exercise](evals/cold-start/README.md) tested real task behavior. [Observed results](evals/cold-start/RESULTS.md) distinguish direct artifact checks, agent-recorded traces and untested runtime capabilities; baseline and candidate both succeeded.
+
+For multi-session continuation or delegated builds, use the separate [interrupted-handoff and swarm evaluation](evals/interrupted-handoff/README.md). Its [results](evals/interrupted-handoff/RESULTS.md) retain original failures, assisted corrections and evidence limitations.

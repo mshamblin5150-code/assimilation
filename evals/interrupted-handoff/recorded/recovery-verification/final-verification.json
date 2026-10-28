@@ -1,0 +1,318 @@
+{
+  "verified_at_utc": "2026-10-28T23:49:34.512464+00:00",
+  "amended_not_predeclared": true,
+  "harness_sha256": {
+    "grade.py": "010c4588266396cd0f977edd6d849a7924f1cb1ef11aed22d5e23c6f75d030ea",
+    "probe.py": "fc61f63eb3f411e1523c5da24b091f0adb6b320033f4e2d32a1c1bc5e2466977"
+  },
+  "results": {
+    "checkpoint": {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "assimilation-handoff-work/evals/interrupted-handoff/grade.py",
+        "assimilation-handoff-evidence/checkpoint-a",
+        "--stage",
+        "checkpoint",
+        "--retry-policy",
+        "distinct",
+        "--output",
+        "assimilation-handoff-evidence/recovery-verification/checkpoint-amended-grade.json"
+      ],
+      "exit_code": 0,
+      "passed": true,
+      "project_tests_count": 8,
+      "project_tests_exit": 0,
+      "checks_count": 58,
+      "checks_passed": 29,
+      "failed_checks": [
+        {
+          "detail": "NotImplementedError: batch integration pending",
+          "group": "api",
+          "name": "batch_values_and_order",
+          "passed": false
+        },
+        {
+          "detail": "NotImplementedError: batch integration pending",
+          "group": "api",
+          "name": "replay_conflict_mutation_and_instance_isolation",
+          "passed": false
+        },
+        {
+          "detail": "NotImplementedError: batch integration pending",
+          "group": "api",
+          "name": "retry_still_validates_domain_types",
+          "passed": false
+        },
+        {
+          "detail": "NotImplementedError: batch integration pending",
+          "group": "api",
+          "name": "preserved_session1_retry_policy_distinct",
+          "passed": false
+        },
+        {
+          "detail": "NotImplementedError: batch integration pending",
+          "group": "api",
+          "name": "late_invalid_order_is_atomic",
+          "passed": false
+        },
+        {
+          "detail": "NotImplementedError: batch integration pending",
+          "group": "api",
+          "name": "invalid_batch_atomic_0",
+          "passed": false
+        },
+        {
+          "detail": "NotImplementedError: batch integration pending",
+          "group": "api",
+          "name": "invalid_batch_atomic_1",
+          "passed": false
+        },
+        {
+          "detail": "NotImplementedError: batch integration pending",
+          "group": "api",
+          "name": "invalid_batch_atomic_2",
+          "passed": false
+        },
+        {
+          "detail": "NotImplementedError: batch integration pending",
+          "group": "api",
+          "name": "invalid_batch_atomic_3",
+          "passed": false
+        },
+        {
+          "detail": "NotImplementedError: batch integration pending",
+          "group": "api",
+          "name": "invalid_batch_atomic_4",
+          "passed": false
+        },
+        {
+          "detail": "NotImplementedError: batch integration pending",
+          "group": "api",
+          "name": "invalid_batch_atomic_5",
+          "passed": false
+        },
+        {
+          "detail": "NotImplementedError: batch integration pending",
+          "group": "api",
+          "name": "invalid_batch_atomic_6",
+          "passed": false
+        },
+        {
+          "detail": "NotImplementedError: batch integration pending",
+          "group": "api",
+          "name": "invalid_batch_atomic_7",
+          "passed": false
+        },
+        {
+          "detail": "NotImplementedError: batch integration pending",
+          "group": "api",
+          "name": "invalid_batch_atomic_8",
+          "passed": false
+        },
+        {
+          "detail": "NotImplementedError: batch integration pending",
+          "group": "api",
+          "name": "invalid_batch_atomic_9",
+          "passed": false
+        },
+        {
+          "detail": "NotImplementedError: batch integration pending",
+          "group": "api",
+          "name": "invalid_id_None",
+          "passed": false
+        },
+        {
+          "detail": "NotImplementedError: batch integration pending",
+          "group": "api",
+          "name": "invalid_id_''",
+          "passed": false
+        },
+        {
+          "detail": "NotImplementedError: batch integration pending",
+          "group": "api",
+          "name": "invalid_id_1",
+          "passed": false
+        },
+        {
+          "detail": "NotImplementedError: batch integration pending",
+          "group": "api",
+          "name": "invalid_id_True",
+          "passed": false
+        },
+        {
+          "detail": "NotImplementedError: batch integration pending",
+          "group": "api",
+          "name": "invalid_id_[]",
+          "passed": false
+        },
+        {
+          "detail": "AssertionError: 1 != 0",
+          "group": "cli",
+          "name": "valid_batch",
+          "passed": false
+        },
+        {
+          "detail": "AssertionError: 1 != 0",
+          "group": "cli",
+          "name": "large_integer_product",
+          "passed": false
+        },
+        {
+          "detail": "AssertionError: 1 != 2",
+          "group": "cli",
+          "name": "deep_invalid_request",
+          "passed": false
+        },
+        {
+          "detail": "AssertionError: 1 != 2",
+          "group": "cli",
+          "name": "invalid_request_{",
+          "passed": false
+        },
+        {
+          "detail": "AssertionError: 1 != 2",
+          "group": "cli",
+          "name": "invalid_request_null",
+          "passed": false
+        },
+        {
+          "detail": "AssertionError: 1 != 2",
+          "group": "cli",
+          "name": "invalid_request_[]",
+          "passed": false
+        },
+        {
+          "detail": "AssertionError: 1 != 2",
+          "group": "cli",
+          "name": "invalid_request_{}",
+          "passed": false
+        },
+        {
+          "detail": "AssertionError: 1 != 2",
+          "group": "cli",
+          "name": "invalid_request_{\"batch_id\":\"x\",\"orders\":[],\"extra\":true}",
+          "passed": false
+        },
+        {
+          "detail": "AssertionError: 1 != 2",
+          "group": "cli",
+          "name": "invalid_request_{\"batch_id\":\"x\",\"orders\":[{\"order_id\":\"x\",\"items\":null}]}",
+          "passed": false
+        }
+      ],
+      "protected_intact": true,
+      "detail": "checkpoint-amended-grade.json"
+    },
+    "resumed-original": {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "assimilation-handoff-work/evals/interrupted-handoff/grade.py",
+        "assimilation-handoff-evidence/resumed-a",
+        "--retry-policy",
+        "distinct",
+        "--output",
+        "assimilation-handoff-evidence/recovery-verification/resumed-original-amended-grade.json"
+      ],
+      "exit_code": 1,
+      "passed": false,
+      "project_tests_count": 16,
+      "project_tests_exit": 0,
+      "checks_count": 58,
+      "checks_passed": 56,
+      "failed_checks": [
+        {
+          "detail": "AssertionError: 1 != 0",
+          "group": "cli",
+          "name": "large_integer_product",
+          "passed": false
+        },
+        {
+          "detail": "AssertionError: 1 != 2",
+          "group": "cli",
+          "name": "deep_invalid_request",
+          "passed": false
+        }
+      ],
+      "protected_intact": true,
+      "detail": "resumed-original-amended-grade.json"
+    },
+    "swarm-original": {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "assimilation-handoff-work/evals/interrupted-handoff/grade.py",
+        "assimilation-handoff-work/evals/interrupted-handoff/recorded/swarm-original",
+        "--mode",
+        "swarm",
+        "--output",
+        "assimilation-handoff-evidence/recovery-verification/swarm-original-amended-grade.json"
+      ],
+      "exit_code": 1,
+      "passed": false,
+      "project_tests_count": 26,
+      "project_tests_exit": 1,
+      "checks_count": 57,
+      "checks_passed": 55,
+      "failed_checks": [
+        {
+          "detail": "AssertionError: 1 != 0",
+          "group": "cli",
+          "name": "large_integer_product",
+          "passed": false
+        },
+        {
+          "detail": "AssertionError: 1 != 2",
+          "group": "cli",
+          "name": "deep_invalid_request",
+          "passed": false
+        }
+      ],
+      "protected_intact": true,
+      "detail": "swarm-original-amended-grade.json"
+    },
+    "resumed-repaired": {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "assimilation-handoff-work/evals/interrupted-handoff/grade.py",
+        "assimilation-handoff-evidence/resumed-a-repaired",
+        "--retry-policy",
+        "distinct",
+        "--output",
+        "assimilation-handoff-evidence/recovery-verification/resumed-repaired-amended-grade.json"
+      ],
+      "exit_code": 0,
+      "passed": true,
+      "project_tests_count": 16,
+      "project_tests_exit": 0,
+      "checks_count": 58,
+      "checks_passed": 58,
+      "failed_checks": [],
+      "protected_intact": true,
+      "detail": "resumed-repaired-amended-grade.json"
+    },
+    "swarm-repaired": {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "assimilation-handoff-work/evals/interrupted-handoff/grade.py",
+        "assimilation-handoff-evidence/trial-b",
+        "--mode",
+        "swarm",
+        "--output",
+        "assimilation-handoff-evidence/recovery-verification/swarm-repaired-amended-grade.json"
+      ],
+      "exit_code": 0,
+      "passed": true,
+      "project_tests_count": 26,
+      "project_tests_exit": 0,
+      "checks_count": 57,
+      "checks_passed": 57,
+      "failed_checks": [],
+      "protected_intact": true,
+      "detail": "swarm-repaired-amended-grade.json"
+    }
+  }
+}

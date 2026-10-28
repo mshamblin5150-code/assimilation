@@ -1,0 +1,321 @@
+{
+  "checkpoint": false,
+  "checks": [
+    {
+      "group": "core",
+      "name": "empty",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "nonempty_free_item",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "threshold_below",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "threshold_equal",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "post_discount_threshold",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "discount_threshold_equal",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "aggregate_floor",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "quantity",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "large_integer",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "legacy_regression",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_items_0",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_items_1",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_items_2",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_items_3",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_items_4",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_items_5",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_items_6",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_items_7",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_items_8",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_items_9",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_items_10",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_items_11",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_items_12",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_coupon_''",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_coupon_'save10'",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_coupon_False",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_coupon_0",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_coupon_[]",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_coupon_{}",
+      "passed": true
+    },
+    {
+      "group": "api",
+      "name": "batch_values_and_order",
+      "passed": true
+    },
+    {
+      "group": "api",
+      "name": "replay_conflict_mutation_and_instance_isolation",
+      "passed": true
+    },
+    {
+      "group": "api",
+      "name": "retry_still_validates_domain_types",
+      "passed": true
+    },
+    {
+      "group": "api",
+      "name": "late_invalid_order_is_atomic",
+      "passed": true
+    },
+    {
+      "group": "api",
+      "name": "invalid_batch_atomic_0",
+      "passed": true
+    },
+    {
+      "group": "api",
+      "name": "invalid_batch_atomic_1",
+      "passed": true
+    },
+    {
+      "group": "api",
+      "name": "invalid_batch_atomic_2",
+      "passed": true
+    },
+    {
+      "group": "api",
+      "name": "invalid_batch_atomic_3",
+      "passed": true
+    },
+    {
+      "group": "api",
+      "name": "invalid_batch_atomic_4",
+      "passed": true
+    },
+    {
+      "group": "api",
+      "name": "invalid_batch_atomic_5",
+      "passed": true
+    },
+    {
+      "group": "api",
+      "name": "invalid_batch_atomic_6",
+      "passed": true
+    },
+    {
+      "group": "api",
+      "name": "invalid_batch_atomic_7",
+      "passed": true
+    },
+    {
+      "group": "api",
+      "name": "invalid_batch_atomic_8",
+      "passed": true
+    },
+    {
+      "group": "api",
+      "name": "invalid_batch_atomic_9",
+      "passed": true
+    },
+    {
+      "group": "api",
+      "name": "invalid_id_None",
+      "passed": true
+    },
+    {
+      "group": "api",
+      "name": "invalid_id_''",
+      "passed": true
+    },
+    {
+      "group": "api",
+      "name": "invalid_id_1",
+      "passed": true
+    },
+    {
+      "group": "api",
+      "name": "invalid_id_True",
+      "passed": true
+    },
+    {
+      "group": "api",
+      "name": "invalid_id_[]",
+      "passed": true
+    },
+    {
+      "group": "cli",
+      "name": "valid_batch",
+      "passed": true
+    },
+    {
+      "detail": "AssertionError: 1 != 0",
+      "group": "cli",
+      "name": "large_integer_product",
+      "passed": false
+    },
+    {
+      "detail": "AssertionError: 1 != 2",
+      "group": "cli",
+      "name": "deep_invalid_request",
+      "passed": false
+    },
+    {
+      "group": "cli",
+      "name": "invalid_request_{",
+      "passed": true
+    },
+    {
+      "group": "cli",
+      "name": "invalid_request_null",
+      "passed": true
+    },
+    {
+      "group": "cli",
+      "name": "invalid_request_[]",
+      "passed": true
+    },
+    {
+      "group": "cli",
+      "name": "invalid_request_{}",
+      "passed": true
+    },
+    {
+      "group": "cli",
+      "name": "invalid_request_{\"batch_id\":\"x\",\"orders\":[],\"extra\":true}",
+      "passed": true
+    },
+    {
+      "group": "cli",
+      "name": "invalid_request_{\"batch_id\":\"x\",\"orders\":[{\"order_id\":\"x\",\"items\":null}]}",
+      "passed": true
+    }
+  ],
+  "complete": false,
+  "groups": {
+    "api": true,
+    "cli": false,
+    "core": true
+  },
+  "mode": "swarm",
+  "passed": false,
+  "pending_integration_unchanged": false,
+  "probe_error": null,
+  "project_tests": {
+    "count": 26,
+    "exit_code": 1,
+    "output": "test_cache_is_instance_local_and_invalid_equal_numbers_are_rejected (test_api.BatchTests.test_cache_is_instance_local_and_invalid_equal_numbers_are_rejected) ... ok\ntest_empty_batch (test_api.BatchTests.test_empty_batch) ... ok\ntest_failed_batch_does_not_reserve_id (test_api.BatchTests.test_failed_batch_does_not_reserve_id) ... ok\ntest_invalid_batch_shapes_raise_value_error (test_api.BatchTests.test_invalid_batch_shapes_raise_value_error) ... ok\ntest_order_shapes_and_unique_ids (test_api.BatchTests.test_order_shapes_and_unique_ids) ... ok\ntest_quotes_preserve_order_and_prices (test_api.BatchTests.test_quotes_preserve_order_and_prices) ... ok\ntest_request_and_response_mutation_do_not_corrupt_retry (test_api.BatchTests.test_request_and_response_mutation_do_not_corrupt_retry) ... ok\ntest_retry_equal_input_and_reject_changed_input (test_api.BatchTests.test_retry_equal_input_and_reject_changed_input) ... ok\ntest_cli_deep_invalid_request_returns_contract_error (test_challenge.ChallengeTests.test_cli_deep_invalid_request_returns_contract_error) ... ok\ntest_cli_valid_large_integer_product_emits_success (test_challenge.ChallengeTests.test_cli_valid_large_integer_product_emits_success) ... FAIL\ntest_late_failure_retry_and_conflict_preserve_committed_result (test_challenge.ChallengeTests.test_late_failure_retry_and_conflict_preserve_committed_result) ... ok\ntest_legacy_generator_negative_fractional (test_challenge.ChallengeTests.test_legacy_generator_negative_fractional) ... ok\ntest_nested_mutations_and_item_list_order (test_challenge.ChallengeTests.test_nested_mutations_and_item_list_order) ... ok\ntest_partitioned_rounding_and_quantity_threshold (test_challenge.ChallengeTests.test_partitioned_rounding_and_quantity_threshold) ... ok\ntest_invalid_requests_have_exact_error_and_no_traceback (test_cli.CliTests.test_invalid_requests_have_exact_error_and_no_traceback) ... ok\ntest_success_result_and_exit_code (test_cli.CliTests.test_success_result_and_exit_code) ... ok\ntest_legacy_sum (test_legacy.LegacyTests.test_legacy_sum) ... ok\ntest_delivery_threshold_uses_discounted_total (test_pricing.PricingTests.test_delivery_threshold_uses_discounted_total) ... ok\ntest_discount_floors_whole_subtotal (test_pricing.PricingTests.test_discount_floors_whole_subtotal) ... ok\ntest_empty_order_is_free_but_nonempty_zero_order_pays_delivery (test_pricing.PricingTests.test_empty_order_is_free_but_nonempty_zero_order_pays_delivery) ... ok\ntest_invalid_item_shapes_raise_value_error (test_pricing.PricingTests.test_invalid_item_shapes_raise_value_error) ... ok\ntest_item_numbers_are_domain_integers (test_pricing.PricingTests.test_item_numbers_are_domain_integers) ... ok\ntest_large_integer_quote_has_exact_integer_results (test_pricing.PricingTests.test_large_integer_quote_has_exact_integer_results) ... ok\ntest_legacy_still_sums_empty_negative_fractional_and_generator_inputs (test_pricing.PricingTests.test_legacy_still_sums_empty_negative_fractional_and_generator_inputs) ... ok\ntest_line_quantities_and_standard_delivery (test_pricing.PricingTests.test_line_quantities_and_standard_delivery) ... ok\ntest_only_exact_coupon_is_accepted_even_for_empty_items (test_pricing.PricingTests.test_only_exact_coupon_is_accepted_even_for_empty_items) ... ok\n\n======================================================================\nFAIL: test_cli_valid_large_integer_product_emits_success (test_challenge.ChallengeTests.test_cli_valid_large_integer_product_emits_success)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/scratch/b6810fbd29e0/assimilation-handoff-work/evals/interrupted-handoff/recorded/swarm-original/tests/test_challenge.py\", line 63, in test_cli_valid_large_integer_product_emits_success\n    self.assertEqual(result.returncode, 0, result.stderr)\nAssertionError: 1 != 0 : Traceback (most recent call last):\n  File \"<frozen runpy>\", line 198, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/workspace/scratch/b6810fbd29e0/assimilation-handoff-work/evals/interrupted-handoff/recorded/swarm-original/parcelquote/__main__.py\", line 22, in <module>\n    raise SystemExit(main())\n                     ^^^^^^\n  File \"/workspace/scratch/b6810fbd29e0/assimilation-handoff-work/evals/interrupted-handoff/recorded/swarm-original/parcelquote/__main__.py\", line 17, in main\n    print(json.dumps(result))\n          ^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/__init__.py\", line 231, in dumps\n    return _default_encoder.encode(obj)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/encoder.py\", line 200, in encode\n    chunks = self.iterencode(o, _one_shot=True)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/encoder.py\", line 258, in iterencode\n    return _iterencode(o, 0)\n           ^^^^^^^^^^^^^^^^^\nValueError: Exceeds the limit (4300 digits) for integer string conversion; use sys.set_int_max_str_digits() to increase the limit\n\n\n----------------------------------------------------------------------\nRan 26 tests in 0.271s\n\nFAILED (failures=1)\n",
+    "timed_out": false
+  },
+  "protected": {
+    "AGENTS.md": {
+      "actual": "feb9ced76734a054558f4fb25e353c9deede15ac7156ad90a9596f6979ab49d0",
+      "expected": "feb9ced76734a054558f4fb25e353c9deede15ac7156ad90a9596f6979ab49d0"
+    },
+    "PROJECT_BRIEF.md": {
+      "actual": "de6f35403b5102d6cd2117b7f5a5a0bf91bc9e6d304178784a3fa5c597fdefda",
+      "expected": "de6f35403b5102d6cd2117b7f5a5a0bf91bc9e6d304178784a3fa5c597fdefda"
+    }
+  },
+  "retry_policy": null,
+  "stage": "complete",
+  "synthetic_only": true
+}
