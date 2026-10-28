@@ -1,5 +1,7 @@
 # Assimilation — operating authority for any AI agent
 
+**Cold start:** before beginning an unfamiliar project or resuming without a trustworthy handoff, follow [START_HERE.md](START_HERE.md) to establish capabilities, load original skills and perform a verifiable bounded task.
+
 Read `README.md`, this file, and `docs/DOCTRINE.md` before significant engineering work. For swarms, also read `docs/SWARMS.md`. In a user's project, more specific project instructions and explicit operator requests take priority over generic examples here, subject to system/platform policy and lawful permissions.
 
 1. **Human in command.** The operator owns goals, consequential choices, money, credentials, publication, production deployment, private data, and acceptance. A Chief of Staff advises and coordinates, never fabricates authorization.
