@@ -44,14 +44,17 @@ class PublishUpdateTests(unittest.TestCase):
         return subprocess.run(["git", *args], cwd=cwd or self.target, env=self.env,
                               text=True, capture_output=True, check=True).stdout.strip()
 
-    def prepare_repository(self):
+    def prepare_repository(self, pin_only=False):
         self.repositories = make_sources(self.work, self.env)
         sources = snapshot_at(self.target, self.repositories, self.env)
         self.lock = self.target / "sources.lock.json"
         (self.target / "upstream/README.md").write_text("Keep Assimilation's source index\n")
         (self.target / ".github/workflows").mkdir(parents=True)
         (self.target / ".github/workflows/owned.yml").write_text("name: Keep root workflow unchanged\n")
-        advance_matt(self.repositories["matt"], self.env)
+        if pin_only:
+            self.git("commit", "--allow-empty", "-m", "repository-only update", cwd=self.repositories["pstack"])
+        else:
+            advance_matt(self.repositories["matt"], self.env)
         proposed = snapshot_at(self.proposal, self.repositories, self.env)
         self.plan = {"schema": 1, "sources": {name: {"from_sha": sources[name]["sha"], "to_sha": proposed[name]["sha"]}
                                               for name in sources}}
@@ -99,6 +102,37 @@ class PublishUpdateTests(unittest.TestCase):
             command("update-index", "--add", "--cacheinfo", "100644," + blob + "," + name)
             tree = command("write-tree")
             return command("commit-tree", tree, "-p", parent, "-m", message)
+
+    def test_api_error_reports_status_and_tree_size_without_service_payload(self):
+        self.prepare_repository()
+        secret = "synthetic-private-response-do-not-log"
+        self.change_state(fail_tree_message=secret + " https://private.invalid/account (HTTP 422)")
+        result = self.run_publisher()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("HTTP 422", result.stderr)
+        self.assertIn("tree entries=", result.stderr)
+        self.assertNotIn(secret, result.stderr + result.stdout)
+        self.assertNotIn("private.invalid", result.stderr + result.stdout)
+        self.assertEqual(self.state()["pulls"], [])
+
+    def test_pin_only_update_reuses_scoped_trees_and_publishes_matching_metadata(self):
+        self.prepare_repository(pin_only=True)
+        self.change_state(reject_empty_tree=True)
+        result = self.run_publisher()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        pull = self.state()["pulls"][0]
+        sha = pull["head"]["sha"]
+        changed = self.git("diff", "--name-only", self.base, sha, cwd=self.remote).splitlines()
+        self.assertEqual(changed, ["sources.lock.json", "sources.snapshot.json", "sources.update.json"])
+        self.assertEqual(self.git("rev-parse", self.base + ":upstream", cwd=self.remote),
+                         self.git("rev-parse", sha + ":upstream", cwd=self.remote))
+        tree_calls = [call for call in self.state()["calls"] if call["method"] == "POST" and call["path"].endswith("/git/trees")]
+        self.assertEqual(len(tree_calls), 1)
+        self.assertTrue(pull["draft"])
+        repeat = self.run_publisher()
+        self.assertEqual(repeat.returncode, 0, repeat.stderr)
+        self.assertEqual(json.loads(repeat.stdout)["status"], "draft-reused")
+        self.assertEqual(len(self.state()["pulls"]), 1)
 
     def test_publishes_complete_snapshot_atomically_and_keeps_local_baseline_unchanged(self):
         self.prepare_repository()

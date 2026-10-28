@@ -35,8 +35,12 @@ class GitHub:
         result = subprocess.run(command, input=json.dumps(payload) if payload is not None else None,
                                 text=True, capture_output=True, check=False)
         if result.returncode:
-            # Do not echo gh output: service errors can contain sensitive account data.
-            raise RuntimeError(f"GitHub API {method} {route.split('?')[0]} failed; inspect the workflow's permissions and repository state")
+            # Only allowlisted numeric diagnostics: never echo service/account data or tokens.
+            status = re.search(r"\(HTTP ([1-5][0-9]{2})\)", result.stderr)
+            diagnostic = "HTTP " + status.group(1) if status else "HTTP status unavailable"
+            if route == "/git/trees" and payload is not None:
+                diagnostic += f"; tree entries={len(payload.get('tree', []))}"
+            raise RuntimeError(f"GitHub API {method} {route.split('?')[0]} failed ({diagnostic}); inspect the workflow's permissions and repository state")
         return json.loads(result.stdout)
 
     def branch(self, name: str):
@@ -224,13 +228,15 @@ def publish(proposal_dir: Path, expected_digest: str | None) -> int:
     if sha is None:
         create_source_trees()
         original_upstream = upstream_entries(base_root)
-        tree = api.request("POST", "/git/trees", {"base_tree": base_root["upstream"][2], "tree": [
-            {"path": name, "mode": entry[0], "type": entry[1], "sha": entry[2]}
-            for name, entry in expected_upstream(original_upstream).items() if original_upstream.get(name) != entry]})
-        if root_entries(tree["sha"]) != expected_upstream(original_upstream):
+        changes = [{"path": name, "mode": entry[0], "type": entry[1], "sha": entry[2]}
+                   for name, entry in expected_upstream(original_upstream).items()
+                   if original_upstream.get(name) != entry]
+        upstream_sha = base_root["upstream"][2]
+        if changes:
+            upstream_sha = api.request("POST", "/git/trees", {"base_tree": upstream_sha, "tree": changes})["sha"]
+        if root_entries(upstream_sha) != expected_upstream(original_upstream):
             raise RuntimeError("Uploaded upstream tree changed unrelated source index content")
         base_commit = api.request("GET", "/git/commits/" + expected_sha)
-        upstream_sha = tree["sha"]
         tree = api.request("POST", "/git/trees", {"base_tree": base_commit["tree"]["sha"], "tree": [
             {"path": name, "mode": "100644", "type": "blob", "content": files[name]["content"].decode("utf-8")}
             for name in proposed_roots] + [{"path": "upstream", "mode": "040000", "type": "tree", "sha": upstream_sha}]})
