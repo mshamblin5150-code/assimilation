@@ -1,0 +1,73 @@
+name: Monthly reviewed skill update proposal
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 9 1 * *'
+# PR publication is held. Do not widen these permissions without a separate review.
+permissions:
+  contents: read
+  issues: write
+concurrency:
+  group: monthly-skill-update-proposal
+  cancel-in-progress: false
+jobs:
+  prepare-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test installer and proposal helper offline
+        env:
+          GIT_ALLOW_PROTOCOL: file
+          GIT_CONFIG_NOSYSTEM: '1'
+          GIT_CONFIG_GLOBAL: /dev/null
+        run: python -m unittest discover -s tests -v
+      - name: Freeze upstream revisions for review (no installation)
+        id: proposal
+        shell: bash
+        run: |
+          set +e
+          python scripts/propose_update.py --output-dir "$RUNNER_TEMP/skill-update-proposal" > "$RUNNER_TEMP/upstream-comparison.json"
+          result=$?
+          set -e
+          cat "$RUNNER_TEMP/upstream-comparison.json"
+          case "$result" in
+            2) echo "changed=true" >> "$GITHUB_OUTPUT" ;;
+            0) echo "changed=false" >> "$GITHUB_OUTPUT" ;;
+            3)
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+              echo 'Initial setup needed: no committed sources.lock.json. No baseline was invented and no upstream request was made.' >> "$GITHUB_STEP_SUMMARY"
+              ;;
+            *) exit "$result" ;;
+          esac
+      - name: Save frozen proposal and draft PR body
+        if: steps.proposal.outputs.changed == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: skill-update-proposal-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/skill-update-proposal/
+          if-no-files-found: error
+          retention-days: 60
+      - name: Record draft-PR handoff (no branch push or PR publication)
+        if: steps.proposal.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          run_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          body="$RUNNER_TEMP/monthly-review-issue.md"
+          cat "$RUNNER_TEMP/skill-update-proposal/PULL_REQUEST.md" > "$body"
+          printf '\nDownload the frozen proposal from [this workflow run](%s), then follow `docs/UPDATES.md` to prepare the reviewed draft PR.\n' "$run_url" >> "$body"
+          printf '\nAutomatic PR publication is HELD: existing token permissions cannot push branches or create PRs. No source lock, installed tree, branch, or PR was changed.\n' >> "$body"
+          existing=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --author 'github-actions[bot]' --search 'Upstream skill review in:title' --json number,title --jq '.[] | select(.title == "Upstream skill review: monthly check") | .number' | head -n 1)
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --repo "$GITHUB_REPOSITORY" --body-file "$body"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title 'Upstream skill review: monthly check' --body-file "$body"
+          fi
+          printf 'Frozen update proposal: %s\n\nAutomatic PR publication remains held. See docs/UPDATES.md.\n' "$run_url" >> "$GITHUB_STEP_SUMMARY"

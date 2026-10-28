@@ -1,0 +1,10 @@
+# Downloaded upstream sources and generated agent-compatible skill entry points
+/vendor/
+/.agents/
+# Local installer guard, retained backups, and fetched Git metadata are never public inputs.
+/.assimilation-install.lock/
+/.assimilation-stage-*/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
