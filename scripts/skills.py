@@ -11,7 +11,7 @@ from dataclasses import dataclass
 import hashlib
 import json
 import os
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 import re
 import shutil
 import stat
@@ -124,8 +124,44 @@ def clone_sparse(name: str, dest: Path, revision: str | None = None) -> str:
     return sha
 
 
-def fingerprint(path: Path) -> str:
-    """Hash all names, entry types, modes and bytes; never follow links."""
+def contained_link_file(link: Path, source_root: Path) -> Path:
+    """Resolve relative file links without traversing outside a fetched collection."""
+    seen = set()
+    while link not in seen:
+        seen.add(link)
+        spelling = os.readlink(link)
+        if (Path(spelling).is_absolute() or PureWindowsPath(spelling).drive
+                or "\\" in spelling or spelling.endswith("/")):
+            raise RuntimeError(f"Unsupported absolute or directory-form symlink: {link}")
+        cursor = link.parent
+        parts = spelling.split("/")
+        for index, part in enumerate(parts):
+            if part in ("", "."):
+                continue
+            if part == "..":
+                if cursor == source_root:
+                    raise RuntimeError(f"Escaping source symlink: {link}")
+                cursor = cursor.parent
+                continue
+            cursor = cursor / part
+            info = cursor.lstat()
+            if index != len(parts) - 1:
+                if not stat.S_ISDIR(info.st_mode):
+                    raise RuntimeError(f"Symlink target traverses a non-directory or directory link: {link}")
+            elif stat.S_ISREG(info.st_mode):
+                return cursor
+            elif stat.S_ISLNK(info.st_mode):
+                link = cursor
+                break
+            else:
+                raise RuntimeError(f"Symlink target is not a regular file: {link}")
+        else:
+            raise RuntimeError(f"Symlink target is a directory: {link}")
+    raise RuntimeError(f"Cyclic source symlink: {link}")
+
+
+def fingerprint(path: Path, *, file_link_roots: tuple[Path, ...] = ()) -> str:
+    """Hash complete trees; only explicitly scoped fetched collections permit file links."""
     digest = hashlib.sha256()
 
     def visit(item: Path, relative: str) -> None:
@@ -138,6 +174,14 @@ def fingerprint(path: Path) -> str:
         elif stat.S_ISREG(info.st_mode):
             digest.update(json.dumps([relative, "file", mode]).encode() + b"\0")
             digest.update(hashlib.sha256(item.read_bytes()).digest())
+        elif stat.S_ISLNK(info.st_mode):
+            root = next((root for root in file_link_roots if item != root and item.is_relative_to(root)), None)
+            if root is None:
+                raise RuntimeError(f"Unsupported symlink or special file: {item}")
+            target = contained_link_file(item, root)
+            digest.update(json.dumps([relative, "symlink", mode, os.readlink(item),
+                                      stat.S_IMODE(target.lstat().st_mode)]).encode() + b"\0")
+            digest.update(hashlib.sha256(target.read_bytes()).digest())
         else:
             raise RuntimeError(f"Unsupported symlink or special file: {item}")
 
@@ -160,7 +204,8 @@ def ownership(target: Path, *, allow_unowned: bool) -> dict[str, str]:
         return {}
     if not target.is_dir():
         raise RuntimeError(f"Expected a directory: {target}")
-    fingerprint(target)
+    source_roots = tuple(target / name for name in SOURCES) if not allow_unowned else ()
+    fingerprint(target, file_link_roots=source_roots)
     marker = target / MARKER
     if not marker.exists():
         if any(target.iterdir()):
@@ -176,7 +221,7 @@ def ownership(target: Path, *, allow_unowned: bool) -> dict[str, str]:
                 or not re.fullmatch(r"[a-f0-9]{64}", expected)):
             raise RuntimeError(f"Invalid ownership fingerprint in {marker}")
         item = target / name
-        if not item.exists() or fingerprint(item) != expected:
+        if not item.exists() or fingerprint(item, file_link_roots=source_roots) != expected:
             raise RuntimeError(f"Owned content changed: {item}; preserve and reconcile it explicitly")
     if not allow_unowned and (set(owned) != set(SOURCES) or
                              any(item.name not in {*owned, MARKER} for item in target.iterdir())):
@@ -184,18 +229,19 @@ def ownership(target: Path, *, allow_unowned: bool) -> dict[str, str]:
     return owned
 
 
-def write_ownership(target: Path, names: list[str]) -> None:
-    data = {"schema": 2, "owned": {name: fingerprint(target / name) for name in names}}
+def write_ownership(target: Path, names: list[str], *, fetched: bool = False) -> None:
+    data = {"schema": 2, "owned": {
+        name: fingerprint(target / name, file_link_roots=(target / name,) if fetched else ()) for name in names}}
     (target / MARKER).write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
 
 
 def copy_source(source: Path, target: Path, *, fetched: bool = False) -> None:
     if source.is_symlink() or not source.is_dir():
         raise RuntimeError(f"Source root is not a regular directory: {source}")
-    # Copy links as links so validation rejects them without reading their targets.
+    # Preserve link spelling; validate scoped targets before reading their bytes.
     shutil.copytree(source, target, symlinks=True,
                     ignore=shutil.ignore_patterns(".git") if fetched else None)
-    fingerprint(target)
+    fingerprint(target, file_link_roots=(target,) if fetched else ())
 
 
 @dataclass
@@ -285,7 +331,9 @@ def _install(approve_update: bool, update_plan: Path | None, locked: bool) -> No
     validate_path(LOCK)
     if LOCK.exists() and not LOCK.is_file():
         raise RuntimeError("Expected a regular sources.lock.json")
-    originals = {path: fingerprint(path) if path.exists() else None for path in (VENDOR, BRIDGES, LOCK)}
+    source_roots = tuple(VENDOR / name for name in SOURCES)
+    originals = {path: fingerprint(path, file_link_roots=source_roots if path == VENDOR else ())
+                 if path.exists() else None for path in (VENDOR, BRIDGES, LOCK)}
 
     created_agents = not BRIDGES.parent.exists()
     BRIDGES.parent.mkdir(parents=True, exist_ok=True)
@@ -356,10 +404,11 @@ def _install(approve_update: bool, update_plan: Path | None, locked: bool) -> No
                 else:
                     shutil.copy2(item, bridges / item.name, follow_symlinks=False)
         write_ownership(bridges, owned)
-        write_ownership(vendors, sorted(SOURCES))
+        write_ownership(vendors, sorted(SOURCES), fetched=True)
         for path, original in originals.items():
             validate_path(path)
-            current = fingerprint(path) if path.exists() else None
+            current = (fingerprint(path, file_link_roots=source_roots if path == VENDOR else ())
+                       if path.exists() else None)
             if current != original:
                 raise RuntimeError(f"Destination changed during preparation: {path}; retry after reconciling edits")
 

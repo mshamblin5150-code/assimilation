@@ -13,3 +13,5 @@ Assimilation is intended for public sharing. It includes only **generalized** id
 **Authority and verification:** a ZERO_BLOCKING_FOG declaration confirms no unresolved **known blocking design decisions** for a defined scope. It is not permission for commits, merges, external communications, releases, credential access, or deployment. Those follow operator and platform permissions separately.
 
 **Stopped installations:** retained stages can contain the only original backups, private local skills, or fetched Git configuration. Never publish them or delete them merely to clear a guard. Follow [recovery without data loss](RECOVERY.md).
+
+**Fetched source links:** the installer preserves relative links to regular files contained within each fetched collection, including Matt's `AGENTS.md` link to `CLAUDE.md`. It rejects escaping, absolute, dangling, cyclic, directory, and special-file links. Destination paths, generated skills, local skill copies, and unmanaged content remain link-free. Source preservation does not execute or endorse the linked instructions.

@@ -155,16 +155,21 @@ class MonthlyWorkflowContractTests(unittest.TestCase):
     def setUp(self):
         self.workflow = (SOURCE / ".github/workflows/monthly-skill-review.yml").read_text()
 
-    def test_permission_hold_and_no_automatic_publication_remain_explicit(self):
+    def test_only_default_branch_proposals_receive_minimal_write_permissions(self):
         permissions = self.workflow.split("permissions:\n", 1)[1].split("concurrency:", 1)[0]
-        self.assertEqual(permissions, "  contents: read\n  issues: write\n")
+        self.assertEqual(permissions, "  contents: read\n")
+        self.assertIn("      contents: write\n      pull-requests: write\n", self.workflow)
+        self.assertNotIn("issues: write", self.workflow)
+        self.assertIn("github.event.repository.default_branch", self.workflow)
         self.assertIn("'0 9 1 * *'", self.workflow)
         self.assertIn("persist-credentials: false", self.workflow)
         self.assertIn("GIT_ALLOW_PROTOCOL: file", self.workflow)
         self.assertIn("scripts/propose_update.py", self.workflow)
         self.assertNotIn("skills.py install", self.workflow)
         self.assertNotIn("git push", self.workflow)
-        self.assertNotIn("gh pr ", self.workflow)
+        self.assertIn("scripts/publish_update.py", self.workflow)
+        self.assertNotIn("gh pr merge", self.workflow)
+        self.assertNotIn("gh pr review", self.workflow)
         self.assertNotIn("pull_request_target", self.workflow)
 
     @unittest.skipUnless(shutil.which("bash"), "Bash is required to check the Linux workflow shell")

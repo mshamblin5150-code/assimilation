@@ -1,6 +1,6 @@
 # Skill routing: make the complete upstream collections available
 
-First inspect the **actual** applicable source `SKILL.md` and its reference files. The manifest in `docs/SOURCES.md` is an index, not an alternate implementation. After `scripts/skills.py install`, upstream files are in `vendor/matt/` and `vendor/pstack/`; bridge entries are in `.agents/skills/`.
+First inspect the **actual** applicable source `SKILL.md` and its reference files. The manifest in `docs/SOURCES.md` is an index, not an alternate implementation. After `scripts/skills.py install --locked` for a committed baseline, upstream files are in `vendor/matt/` and `vendor/pstack/`; bridge entries are in `.agents/skills/`.
 
 | Situation | Default route | End product |
 | --- | --- | --- |

@@ -70,6 +70,7 @@ class SkillInstallTests(unittest.TestCase):
                 paths = [root, *root.rglob("*")] if root.is_dir() else [root]
                 for path in paths:
                     result[str(path.relative_to(self.target))] = (
+                        ("symlink", os.readlink(path)) if path.is_symlink() else
                         "directory" if path.is_dir() else path.read_bytes())
         return result
 
@@ -479,6 +480,133 @@ runpy.run_path(sys.argv[0], run_name='__main__')
         self.assertIn("symlink", result.stderr)
         self.assertFalse((self.target / "vendor").exists())
         self.assertEqual(canary.read_text(), "External bytes\n")
+
+    def test_contained_upstream_file_link_is_preserved_and_updateable(self):
+        (self.matt / "CLAUDE.md").write_text("Original upstream instructions\n")
+        (self.matt / "AGENTS.md").symlink_to("CLAUDE.md")
+        git(self.matt, "add", ".")
+        git(self.matt, "commit", "-m", "portable upstream instruction link")
+        result = self.run_tool("install")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        link = self.target / "vendor/matt/AGENTS.md"
+        self.assertTrue(link.is_symlink())
+        self.assertEqual(os.readlink(link), "CLAUDE.md")
+        self.assertEqual(link.read_text(), "Original upstream instructions\n")
+        lock = json.loads((self.target / "sources.lock.json").read_text())
+        self.assertEqual(lock["sources"]["matt"]["sha"], git(self.matt, "rev-parse", "HEAD"))
+        updated = self.run_tool("install", "--approve-update")
+        self.assertEqual(updated.returncode, 0, updated.stderr)
+        self.assertTrue(link.is_symlink())
+        self.assertEqual(os.readlink(link), "CLAUDE.md")
+
+    def test_contained_multihop_file_links_keep_literal_paths(self):
+        (self.matt / "CLAUDE.md").write_text("Contained instruction file\n")
+        (self.matt / "docs/guide.md").symlink_to("../CLAUDE.md")
+        (self.matt / "AGENTS.md").symlink_to("docs/guide.md")
+        git(self.matt, "add", ".")
+        git(self.matt, "commit", "-m", "contained file link chain")
+        result = self.run_tool("install")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        root = self.target / "vendor/matt"
+        self.assertEqual(os.readlink(root / "AGENTS.md"), "docs/guide.md")
+        self.assertEqual(os.readlink(root / "docs/guide.md"), "../CLAUDE.md")
+        self.assertEqual((root / "AGENTS.md").read_text(), "Contained instruction file\n")
+        self.assertEqual(self.run_tool("install", "--approve-update").returncode, 0)
+
+    def test_owned_link_spelling_and_target_edits_cannot_be_overwritten(self):
+        (self.matt / "CLAUDE.md").write_text("Original instruction file\n")
+        (self.matt / "AGENTS.md").symlink_to("CLAUDE.md")
+        git(self.matt, "add", ".")
+        git(self.matt, "commit", "-m", "owned file link")
+        self.assertEqual(self.run_tool("install").returncode, 0)
+        root = self.target / "vendor/matt"
+        link, target = root / "AGENTS.md", root / "CLAUDE.md"
+        for edit in ("spelling", "target"):
+            with self.subTest(edit=edit):
+                if edit == "spelling":
+                    link.unlink()
+                    link.symlink_to("./CLAUDE.md")
+                else:
+                    target.write_text("User-edited instruction file\n")
+                before = self.snapshot()
+                result = self.run_tool("install", "--approve-update")
+                self.assertEqual(result.returncode, 1, result.stderr)
+                self.assertIn("Owned content changed", result.stderr)
+                self.assertEqual(self.snapshot(), before)
+                link.unlink()
+                link.symlink_to("CLAUDE.md")
+                target.write_text("Original instruction file\n")
+
+    def test_unsafe_source_file_links_fail_without_mutation(self):
+        outside = self.work / "external-data.txt"
+        outside.write_text("Must remain external\n")
+        (self.matt / "CLAUDE.md").write_text("Contained file\n")
+        link = self.matt / "AGENTS.md"
+        for spelling in (str(outside), "../external-data.txt", "../pstack/LICENSE", "missing.md", ".", "docs",
+                         "AGENTS.md", "C:/outside.txt", "C:outside.txt", "\\\\host\\share\\file",
+                         "docs\\guide.md", "CLAUDE.md/", "CLAUDE.md/../CLAUDE.md", "docs/../../escape"):
+            with self.subTest(spelling=spelling):
+                link.symlink_to(spelling)
+                git(self.matt, "add", ".")
+                git(self.matt, "commit", "-m", "untrusted source link")
+                result = self.run_tool("install")
+                self.assertEqual(result.returncode, 1, result.stderr)
+                self.assertEqual(self.snapshot(), {})
+                self.assertFalse((self.target / ".agents").exists())
+                self.assertEqual(outside.read_text(), "Must remain external\n")
+                link.unlink()
+
+    def test_cyclic_and_directory_component_links_fail_closed(self):
+        agents = self.matt / "AGENTS.md"
+        middle = self.matt / "CLAUDE.md"
+        agents.symlink_to("CLAUDE.md")
+        middle.symlink_to("AGENTS.md")
+        git(self.matt, "add", ".")
+        git(self.matt, "commit", "-m", "cycle")
+        cycle = self.run_tool("install")
+        self.assertEqual(cycle.returncode, 1, cycle.stderr)
+        self.assertIn("Cyclic", cycle.stderr)
+        self.assertEqual(self.snapshot(), {})
+        agents.unlink()
+        middle.unlink()
+        (self.matt / "linked-docs").symlink_to("docs", target_is_directory=True)
+        agents.symlink_to("linked-docs/engineering/wayfinder.md")
+        git(self.matt, "add", ".")
+        git(self.matt, "commit", "-m", "directory component link")
+        directory = self.run_tool("install")
+        self.assertEqual(directory.returncode, 1, directory.stderr)
+        self.assertEqual(self.snapshot(), {})
+
+    def test_file_links_remain_disallowed_in_local_and_unmanaged_skills(self):
+        local = self.target / "skills/assimilation-chief-of-staff"
+        (local / "alias.md").symlink_to("SKILL.md")
+        refused = self.run_tool("install")
+        self.assertEqual(refused.returncode, 1, refused.stderr)
+        self.assertEqual(self.snapshot(), {})
+        (local / "alias.md").unlink()
+        self.assertEqual(self.run_tool("install").returncode, 0)
+        unknown = self.target / ".agents/skills/unrelated"
+        unknown.mkdir()
+        (unknown / "SKILL.md").write_text("User skill\n")
+        (unknown / "alias.md").symlink_to("SKILL.md")
+        before = self.snapshot()
+        refused = self.run_tool("install", "--approve-update")
+        self.assertEqual(refused.returncode, 1, refused.stderr)
+        self.assertEqual(self.snapshot(), before)
+
+    def test_file_link_installation_preserves_transaction_rollback(self):
+        (self.matt / "CLAUDE.md").write_text("Original instruction file\n")
+        (self.matt / "AGENTS.md").symlink_to("CLAUDE.md")
+        git(self.matt, "add", ".")
+        git(self.matt, "commit", "-m", "contained file link")
+        self.assertEqual(self.run_tool("install").returncode, 0)
+        before = self.snapshot()
+        for fault in ("install-lock", "after-backup-vendor", "after-install-vendor"):
+            with self.subTest(fault=fault):
+                failed = self.run_fault(fault)
+                self.assertNotEqual(failed.returncode, 0)
+                self.assertEqual(self.snapshot(), before)
+                self.assertEqual(os.readlink(self.target / "vendor/matt/AGENTS.md"), "CLAUDE.md")
 
 
 if __name__ == "__main__":

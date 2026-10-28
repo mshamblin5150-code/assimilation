@@ -6,7 +6,7 @@ Assimilation helps a person turn ordinary-language ideas into specified, reviewa
 
 **Operator remains in command.** A user with one ChatGPT conversation can benefit from the documentation; a compatible coding agent with filesystem and Git access can install and use the complete source skills. Multi-agent execution is optional and dependent on available tools and account limits. Assimilation does not grant special AI abilities or magically install tools when a model reads a GitHub URL.
 
-> **Publication status:** Publication is held for the before-publish review. This package includes four local Assimilation skills and an installer, not the upstream collections or an initial source lock. See [the publication guide](docs/PUBLISH.md).
+> **Package contents:** This standalone public repository includes four local Assimilation skills, the installer, and a committed source baseline. The upstream collections are fetched separately; they are not bundled in Git.
 
 ## For Chad: five-minute orientation
 
@@ -15,10 +15,10 @@ Assimilation helps a person turn ordinary-language ideas into specified, reviewa
 3. **Using a coding agent with a local terminal?** Copy this repository into your own project and run from its root:
 
    ```sh
-   python3 scripts/skills.py install
+   python3 scripts/skills.py install --locked
    ```
 
-   On Windows, `py -3 scripts/skills.py install` is an alternative. **Git and Python 3.10+ are required**; no TypeScript is required. The installer fetches the **latest available `main` revisions at installation time**, saves the full source skill trees locally under `vendor/`, and creates discoverable bridge skills under `.agents/skills/` without hiding upstream references. For a fresh clone that already contains `sources.lock.json`, use `python3 scripts/skills.py install --locked` instead. The installer refuses unknown vendor content, edited managed content, and unmanaged skill-name collisions. Review source code before installing; don't execute unknown tools blindly.
+   On Windows, `py -3 scripts/skills.py install --locked` is an alternative. **Git and Python 3.10+ are required**; no TypeScript is required. The command fetches the **exact commits in `sources.lock.json`**, saves the full source skill trees locally under `vendor/`, and creates discoverable bridge skills under `.agents/skills/` without hiding upstream references. For a fresh copy without a lock, use `python3 scripts/skills.py install` once to record the initial upstream revisions. The installer refuses unknown vendor content, edited managed content, and unmanaged skill-name collisions. Review source code before installing; don't execute unknown tools blindly.
 4. **Ask the agent to read `AGENTS.md`.** Give it a concrete goal in your own words. For nontrivial design ambiguity it should use **`grill-with-docs`** (interview plus documentation). For a large, multi-session effort whose path remains uncertain it should use **`wayfinder`** (map decisions/fog, resolve, then hand off to specification). It can use **all** the installed engineering and P-Stack skills as appropriate, but should not run unrelated skills on every task.
 5. **Remain in charge.** The AI may declare *zero blocking fog* with evidence when all in-scope decisions are settled; that is **not** approval to deploy, merge, spend money, publish, or perform other sensitive actions.
 
@@ -48,11 +48,13 @@ The philosophy: no challenge is dismissed merely as “too big.” Break it down
 
 ## Update cadence
 
-The operator chose **monthly reviewed update PRs**, with no automatic merge. Initial installation records exact commits in `sources.lock.json`. Later proposals freeze both the installed and proposed commits, so review does not race a moving `main` branch.
+The operator chose **monthly reviewed update PRs**, with no automatic approval or merge. The committed `sources.lock.json` records the installed baseline. Each proposal freezes both installed and target commits, so adoption does not race a moving `main` branch.
 
-The included workflow prepares a frozen update plan and draft PR body, saves them as a workflow artifact, and opens or updates a handoff issue. **Automatic PR publication is held** because the existing token has only `contents: read` and `issues: write`. No new token permissions or credentials are configured. Follow [the update guide](docs/UPDATES.md) for the manual draft-PR route and the separate activation decision.
+The scheduled workflow runs only on the default branch. It prepares a plan, publishes only `sources.update.json` on a deterministic update branch, and opens a draft PR. It never installs sources or changes the lock. Repeated runs reuse an unchanged draft; human edits, promoted PRs, closed PRs, and stale baselines stop publication rather than being overwritten.
 
-Without a committed lock, the workflow reports setup needed and skips upstream comparison. It never invents an installed baseline.
+The implementation uses the approved `contents: write` and `pull-requests: write` job permissions, not an issues grant or a personal access token. Repository policy must also permit Actions PR creation. See [the update guide](docs/UPDATES.md) for activation requirements, review steps, and retry behavior. Configuration in this repository is not evidence that a live workflow run has succeeded.
+
+Without a committed lock, the workflow reports setup needed and skips upstream comparison and publication. It never invents an installed baseline.
 
 ## Public by design
 

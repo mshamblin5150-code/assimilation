@@ -9,12 +9,13 @@ Assimilation links to and can install the **complete published source trees**, n
 
 These historical reference pins are retained from the original starter. They are provenance notes, not an installed baseline or a claim about current upstream versions. The installer obtains `main` at setup, saves actual SHA and time in `sources.lock.json`, and creates local wrappers pointing to each upstream skill's complete `SKILL.md`. It preserves unrelated skills already in a previously managed local skills directory, and refuses an unrecognized occupied directory rather than overwriting it. Edited owned content and legacy ownership markers without fingerprints stop updates. Follow [the recovery procedure](RECOVERY.md) instead of forcing replacement. The presence of a wrapper alone does not prove its instructions were read or executed.
 
-No upstream collections or `sources.lock.json` are included in this starter. Read `vendor/pstack/.cursor-plugin/plugin.json` after installation for the version of the installed P-Stack tree.
+The upstream collections are not bundled in Git. The committed `sources.lock.json` is the actual installed baseline; the historical table above is not. The initial reviewed baseline contains Matt commit `59db609eb1e18aaf59b63284d0e52255aff0c63c` and P-Stack commit `c742dd61706fbacc1b95f1a20b7b988cf096ce6c`. Their declared scopes contain 148 and 573 Git blobs, with 20 engineering and 58 P-Stack bridges. Read `vendor/pstack/.cursor-plugin/plugin.json` after installation for the installed version.
 
 ### Installer design
 
 ```sh
-python3 scripts/skills.py install  # first install: latest main for both
+python3 scripts/skills.py install --locked  # reproduce the committed baseline
+# Only when no lock exists: python3 scripts/skills.py install
 python3 scripts/skills.py check    # compare current sources with lock
 python3 scripts/propose_update.py --output-dir review-update  # freeze proposed commits
 # Review review-update/PULL_REQUEST.md and the upstream diffs before adoption.

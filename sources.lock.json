@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "sources": {
+    "matt": {
+      "repository": "https://github.com/mattpocock/skills.git",
+      "branch": "main",
+      "sha": "59db609eb1e18aaf59b63284d0e52255aff0c63c",
+      "skills_exposed": 20,
+      "installed_at_utc": "2026-10-28T14:55:47.291438+00:00"
+    },
+    "pstack": {
+      "repository": "https://github.com/cursor/plugins.git",
+      "branch": "main",
+      "sha": "c742dd61706fbacc1b95f1a20b7b988cf096ce6c",
+      "skills_exposed": 58,
+      "installed_at_utc": "2026-10-28T14:55:56.979918+00:00"
+    }
+  }
+}
