@@ -1,5 +1,7 @@
 # Assimilation
 
+> **New agent with only this URL? [Start here and perform one real task](START_HERE.md).** Establish actual capabilities, read relevant original skills, act within authority, and deliver evidence—not a doctrine recital.
+
 **A portable, public-ready, language-independent AI engineering doctrine.**
 
 Assimilation helps a person turn ordinary-language ideas into specified, reviewable work using the complete **Matt Pocock source collection** and **Lauren Tan's P-Stack skills**, combined with a lightweight Chief of Staff / swarm coordination pattern. Its name describes learning and distributing useful methods—not surrendering control to a machine.
@@ -12,7 +14,7 @@ Assimilation helps a person turn ordinary-language ideas into specified, reviewa
 
 ## For Chad: five-minute orientation
 
-1. **Read this page** and [the operating instructions](AGENTS.md). They say what the system is and how the AI should work.
+1. **Give the agent a concrete goal and [Start here](START_HERE.md).** It should inspect its actual capabilities and project, select and read original skills, then perform a bounded task. [Operating instructions](AGENTS.md) preserve the authority boundaries.
 2. **Using ChatGPT without coding tools?** Follow [the ChatGPT-only start](docs/CHATGPT.md). You can use the thinking and documentation practices without paying for a particular plan; access to tools and projects may vary.
 3. **Using a coding agent with a local terminal?** Clone this repository. You can already read the complete sources under `upstream/`; verify them offline with `python3 scripts/snapshot_sources.py verify`. If you also want generated host-discoverable bridges, run from a fresh checkout:
 
@@ -24,7 +26,7 @@ Assimilation helps a person turn ordinary-language ideas into specified, reviewa
 4. **Ask the agent to read `AGENTS.md`.** Give it a concrete goal in your own words. For nontrivial design ambiguity it should use **`grill-with-docs`** (interview plus documentation). For a large, multi-session effort whose path remains uncertain it should use **`wayfinder`** (map decisions/fog, resolve, then hand off to specification). It can use **all** the installed engineering and P-Stack skills as appropriate, but should not run unrelated skills on every task.
 5. **Remain in charge.** The AI may declare *zero blocking fog* with evidence when all in-scope decisions are settled; that is **not** approval to deploy, merge, spend money, publish, or perform other sensitive actions.
 
-**If you only want to tell ChatGPT what to read:** “Read this repository’s `README.md`, `AGENTS.md`, and the linked doctrine, then explain what capabilities you can actually use. Do not claim you installed skills unless you did.” Where ChatGPT cannot access a GitHub repository or its files directly, upload the Markdown files; a link alone is insufficient.
+**Copyable start:** “Use this repository’s `START_HERE.md` for this task: [my outcome]. Work in [my project or supplied files], within [my authorized scope]. Read the applicable original skills and produce the result with verification evidence. Report unavailable capabilities rather than simulating them.” If repository files are inaccessible, supply the specific Markdown files requested; a link alone is insufficient.
 
 ## How it works
 

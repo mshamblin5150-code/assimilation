@@ -1,0 +1,14 @@
+{
+  "functional_pass": false,
+  "functional_output": "[{\"input\": 0, \"expected\": 5, \"actual\": 5}, {\"input\": 49.99, \"expected\": 5, \"actual\": 5}, {\"input\": 50, \"expected\": 0, \"actual\": 5}, {\"input\": 50.01, \"expected\": 0, \"actual\": 0}, {\"input\": 100, \"expected\": 0, \"actual\": 0}]",
+  "functional_error": "",
+  "project_tests_pass": true,
+  "project_tests_output": "test_above_threshold (test_shipping.ShippingTests.test_above_threshold) ... ok\ntest_below_threshold (test_shipping.ShippingTests.test_below_threshold) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK",
+  "protected_files_unchanged": {
+    "AGENTS.md": true,
+    "README.md": true
+  },
+  "test_file_changed": false,
+  "extra_files": [],
+  "limits": "Local functional outcomes and protected-file hashes are directly observed. Skill reads, decision quality and capability claims need review of agent trace/work records; file presence alone earns no semantic credit. One trial per condition is not statistical evidence."
+}
