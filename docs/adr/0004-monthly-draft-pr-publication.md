@@ -3,6 +3,7 @@
 - Status: Accepted implementation; live activation requires separate verification
 - Date: 2026-10-28
 - Owner: Assimilation operator
+- Proposal scope superseded by: ADR 0005 (complete snapshots, lock, provenance, and plan in one PR)
 - Supersedes: The automated-publication permission hold in ADR 0002
 
 ## Context

@@ -1,62 +1,60 @@
-# Review monthly source-update PRs
+# Review monthly complete-source PRs
 
-Monthly automation proposes exact upstream commits in a draft PR. It does not install sources, execute upstream code, change `sources.lock.json`, approve a PR, or merge one.
+Monthly automation proposes complete source snapshots, their matching pin lock, provenance, and a frozen update plan in one draft PR. **One reviewed merge adopts them together.** No separate post-merge update step is needed. The bot never approves or merges, executes upstream code, or installs host skills.
 
 ## What the workflow publishes
 
-The workflow runs on the first day of each month at 09:00 UTC, or by manual dispatch. Both the job and publisher accept only scheduled or manual runs on the repository's default branch. Before publication, the publisher checks that the checkout commit and baseline lock still match the remote default branch. The lock must also be an unchanged regular Git blob committed in that checkout; a dirty regular-file copy cannot hide a committed symlink.
+The workflow runs on the first day of each month at 09:00 UTC, or by manual dispatch. Both the job and publisher accept only scheduled or manual runs on the default branch. Offline verification first checks the complete committed source snapshot. Missing lock means setup needed, without an upstream request, branch, or PR. Invalid locks or missing/edited snapshots fail closed. Current source pins produce no PR.
 
-The read-only generator compares the committed lock against upstream `main`. It writes `sources.update.json` and a draft PR body to a temporary artifact directory. Each source entry has an exact `from_sha` and `to_sha`. The generator passes a SHA-256 digest of the original plan bytes to the publisher through a workflow step output. Modified artifact bytes fail validation. This binds steps within the same trusted job; it is not a signature or verification scheme for arbitrary downloaded artifacts.
+The generator compares the lock with official upstream `main`, freezes exact `from_sha` and `to_sha` pairs, then fetches source data at those target commits. It prepares only these publishable paths:
 
-The publisher creates a deterministic `automation/skill-update-<plan-hash>` branch. Its commit changes only `sources.update.json`. It constructs that commit from the remote base tree, not the local working directory, and never updates or force-pushes an existing branch. Unrelated local files and artifact files cannot enter the commit. The baseline lock stays unchanged for human review.
+- `upstream/matt-pocock/`: the entire tracked Matt repository;
+- `upstream/pstack/`: the entire tracked P-Stack subtree;
+- `sources.lock.json`: minimal proposed source pins, without invented installation times or bridge counts;
+- `sources.snapshot.json`: complete per-file hashes/modes and immutable Git-object provenance;
+- `sources.update.json`: the frozen baseline-to-target plan.
 
-A missing lock reports setup needed without an upstream request, branch, or PR. An invalid lock, stale plan, changed default branch, or modified artifact fails closed. An unchanged source pair produces no PR.
+The generated `PULL_REQUEST.md` is review text, not a staged repository file. The workflow archives the complete package as a tar file so hidden metadata, executable modes, and links survive artifact storage. Do not execute or unpack an arbitrary downloaded artifact into an active project.
 
-## Review and adopt a proposal
+The generator emits a SHA-256 digest binding every allowed path, mode, size, and byte (including literal link targets), plus the lock, manifest, and plan. The publisher validates that digest and the offline provenance before any API mutation. This is a binding between steps of **one trusted job**, not a signature or an authenticity scheme for arbitrary downloaded artifacts.
 
-1. Open the draft PR and inspect the exact source-diff links, licenses, changed executable files, and tool requirements. Confirm that the bot commit changes only `sources.update.json`.
-2. Use a fresh isolated checkout of the proposal branch. Do not use an active project or a checkout with local skill changes.
-3. Materialize the unchanged baseline lock:
+## Scoped publication and retry safety
+
+The publisher requires an unchanged committed baseline lock, manifest, and both source trees. Dirty target paths, untracked source files, mode drift, stale plans, or changed remote default commits stop publication. Unrelated local files and arbitrary artifact files cannot enter the commit.
+
+A deterministic `automation/skill-update-<package-hash>` branch holds one complete proposed commit. The publisher reuses known Git blobs and batches changed UTF-8 content in source-tree requests; changed binary data uses base64 blob requests. Each complete replacement source tree must reproduce its provenance tree SHA. Replacement removes obsolete source files, including deleted directories. Only the two source entries change under `upstream/`; its README and unrelated siblings remain intact. At the repository root, only `upstream/` and the three named JSON files may change. Root workflows cannot be injected by an upstream `.github/` path.
+
+Existing branches are never updated or force-pushed. Reuse requires exact root and upstream tree entries, source tree SHAs, message, sole parent, and baseline provenance. The parent must remain an ancestor of current default with the same baseline. This proves content, not who independently created identical bytes.
+
+The bounded exact head/base PR search reuses only one open, unmodified draft owned by `github-actions[bot]`, with the expected head, base, title, and complete body. Closed, promoted, human-owned, duplicate, or edited PRs need human review. The bot never reopens a rejection or edits human notes.
+
+A failed or lost branch/PR response can leave a retained branch or draft. After inspecting the failure, rerun: the publisher reconciles existing state rather than duplicating or resetting it. Default-ref and proposal-ref checks run again before reporting success. GitHub cannot atomically lease the default branch across PR creation; a detected race leaves any draft intact and reports failure. No check prevents a later human change.
+
+## Review and adopt
+
+1. Inspect the PR's exact source-diff links, complete source changes, licenses/credits, executable files, dormant configuration, and compatibility with the tools you actually use. Confirm only the five allowed path scopes above changed.
+2. In a fresh isolated checkout of the proposal branch, run:
 
    ```sh
-   python3 scripts/skills.py install --locked
-   ```
-
-   If this reports an existing or edited installation, stop and use a fresh checkout. Do not add approval flags to bypass that mismatch.
-
-4. After reviewing the proposal, apply its exact target commits:
-
-   ```sh
-   python3 scripts/skills.py install --approve-update --update-plan sources.update.json
+   python3 scripts/snapshot_sources.py verify
    python3 -m unittest discover -s tests -v
    ```
 
-   Each `from_sha` must still match the lock. Each resulting lock SHA must equal its proposed `to_sha`, even if upstream `main` has moved.
+   Each lock and provenance commit must equal the plan's `to_sha`. The original baseline remains on the default branch until review and merge.
+3. Review source instructions as reference material, not commands to run. Nested `.github`, `.agents`, plugin, hook, and host configuration stays dormant. Copying sources is not approval to activate them.
+4. Record checks and independent review for the exact PR commit, and obtain operator acceptance. Approve any requested CI workflow execution only after reviewing it. An open draft is not proof that checks ran.
+5. Merge through the authorized human process. The snapshot and matching lock/provenance are adopted in that merge; **do not run a separate post-merge snapshot refresh**.
 
-5. Inspect the installed trees and licenses. Record focused compatibility checks for the tools you use. Synthetic installer tests do not establish the safety or compatibility of new upstream instructions.
-6. With authority to update the PR, commit the reviewed `sources.lock.json` to that branch. Preserve the plan as review evidence and inspect the staged diff before pushing. Generated `vendor/` and `.agents/` trees stay local.
-7. Obtain independent review, required checks for the exact PR commit, and operator acceptance. Approve requested workflow runs only after reviewing them. Merge remains a separate authorized action; the bot cannot approve or merge its proposal.
+Host installation is separate. In a fresh local checkout, `python3 scripts/skills.py install --locked` can materialize the merged pins and engineering/P-Stack bridges. For an already managed installation, follow its explicit approval and ownership checks; do not use `--locked` as an overwrite bypass. Never commit generated `vendor/` or `.agents/` content.
 
-The workflow stops reusing a branch after a human changes it. That is expected once reviewed adoption adds the lock commit. Finish that PR through the normal human review process.
+## Permissions and live verification
 
-## Retry without overwriting work
+The approved guarded job requests only `contents: write` and `pull-requests: write`; global contents access stays read-only. It uses the runner's `GITHUB_TOKEN`, not an issues grant, new secret, or personal access token.
 
-The plan hash identifies the same source pair across retries. An existing branch is reused only when its commit message, sole parent, plan blob, and complete root-tree entries prove the original one-file proposal. Every unchanged subtree SHA must match the parent, and that parent must remain on the current default branch with the same baseline lock. This is content verification, not proof of who originally created the branch.
+The repository setting **Allow GitHub Actions to create and approve pull requests** must permit creation, subject to organization policy. GitHub bundles approval in that setting's name; this workflow never calls approval or merge. Enabling that setting is a separately authorized administrative action. Code and offline tests do not establish its current value.
 
-The publisher searches a bounded PR list for the exact head and base. It reuses only an open draft owned by `github-actions[bot]` with the expected head commit. Human-owned, closed, promoted, duplicate, or modified PRs require manual review. It never reopens a rejected proposal or edits an existing PR's body.
+Bot-created PR workflow runs may need a writer to approve execution. Verify the actual hosted run and checks. See [token permissions](https://docs.github.com/en/actions/tutorials/authenticate-with-github_token), [repository Actions settings](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository), and [workflow trigger behavior](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow).
 
-If branch creation succeeds but its response is lost, or PR creation fails after the branch commit, a rerun inspects and reuses the retained branch. If a PR response is lost, a rerun finds the existing draft rather than opening a duplicate. No retry deletes or resets a branch. An uncertain API result may fail the current run; rerun the workflow only after inspecting its reported state.
+## Prepare without publishing
 
-GitHub cannot atomically lease the default branch across PR creation. The publisher checks the default branch and proposal branch again before reporting success. A detected race leaves any created draft intact and reports failure for a fresh run or human review. This does not prevent a human from changing a branch after the last check.
-
-## Activate and verify repository settings
-
-The operator approved workflow authority to write update branches and open draft PRs. The publication job requests only `contents: write` and `pull-requests: write`; other jobs default to read-only contents. It uses the runner's `GITHUB_TOKEN`, never a new personal access token. The former issue handoff and its issues permission are removed.
-
-The repository setting **Allow GitHub Actions to create and approve pull requests** must also permit PR creation, subject to organization policy. GitHub bundles creation and approval in that setting's name. This workflow never calls an approval or merge operation. Enabling the setting is a separate administrative action; the code and offline tests do not establish that it is enabled.
-
-Bot-created PR workflow runs may require a writer to approve their execution. Do not treat an open draft as proof that CI ran. Verify the exact run and PR checks in GitHub. See [GitHub token permissions](https://docs.github.com/en/actions/tutorials/authenticate-with-github_token), [repository Actions settings](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository), and [workflow trigger behavior](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow).
-
-## Prepare a proposal without publishing
-
-Run `python3 scripts/propose_update.py --output-dir review-update` in a locked checkout. The output directory must not already exist. Exit codes are `0` for current, `2` for a prepared proposal, `3` for a missing baseline, and `1` for an error. The publisher is an Actions-only entry point, not a general artifact uploader.
+`python3 scripts/propose_update.py --output-dir review-update` prepares a complete package in a new directory without changing the checkout. Exit codes: `0` current, `2` prepared proposal, `3` absent lock, `1` error. The publisher is an Actions-only entry point, not a general artifact uploader. Its `--expected-package-sha256` must come from the same trusted generation step; rehashing a downloaded artifact does not establish trust.

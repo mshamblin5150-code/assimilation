@@ -15,7 +15,7 @@ jobs:
       contents: write
       pull-requests: write
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -29,7 +29,10 @@ jobs:
           GIT_CONFIG_NOSYSTEM: '1'
           GIT_CONFIG_GLOBAL: /dev/null
         run: python -m unittest discover -s tests -v
-      - name: Freeze upstream revisions for review (no installation)
+      - name: Verify the committed visible snapshots offline
+        if: ${{ hashFiles('sources.lock.json') != '' }}
+        run: python scripts/snapshot_sources.py verify
+      - name: Prepare complete upstream snapshot proposal (no execution)
         id: proposal
         shell: bash
         run: |
@@ -40,9 +43,10 @@ jobs:
           cat "$RUNNER_TEMP/upstream-comparison.json"
           case "$result" in
             2)
+              tar -C "$RUNNER_TEMP/skill-update-proposal" -cf "$RUNNER_TEMP/skill-update-proposal.tar" .
               echo "changed=true" >> "$GITHUB_OUTPUT"
-              digest=$(python -c 'import json,sys; print(json.load(open(sys.argv[1]))["plan_sha256"])' "$RUNNER_TEMP/upstream-comparison.json")
-              echo "plan_sha256=$digest" >> "$GITHUB_OUTPUT"
+              digest=$(python -c 'import json,sys; print(json.load(open(sys.argv[1]))["package_sha256"])' "$RUNNER_TEMP/upstream-comparison.json")
+              echo "package_sha256=$digest" >> "$GITHUB_OUTPUT"
               ;;
             0)
               echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -54,20 +58,20 @@ jobs:
               ;;
             *) exit "$result" ;;
           esac
-      - name: Save frozen proposal and draft PR body
+      - name: Save complete proposal with modes, symlinks, and dormant metadata
         if: steps.proposal.outputs.changed == 'true'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: skill-update-proposal-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/skill-update-proposal/
+          path: ${{ runner.temp }}/skill-update-proposal.tar
           if-no-files-found: error
           retention-days: 60
       - name: Publish or reuse the frozen proposal as a draft PR
         if: steps.proposal.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-          EXPECTED_PLAN_SHA256: ${{ steps.proposal.outputs.plan_sha256 }}
+          EXPECTED_PACKAGE_SHA256: ${{ steps.proposal.outputs.package_sha256 }}
         shell: bash
         run: |
-          python scripts/publish_update.py --proposal-dir "$RUNNER_TEMP/skill-update-proposal" --expected-plan-sha256 "$EXPECTED_PLAN_SHA256" | tee "$RUNNER_TEMP/publication.json"
+          python scripts/publish_update.py --proposal-dir "$RUNNER_TEMP/skill-update-proposal" --expected-package-sha256 "$EXPECTED_PACKAGE_SHA256" | tee "$RUNNER_TEMP/publication.json"
           cat "$RUNNER_TEMP/publication.json" >> "$GITHUB_STEP_SUMMARY"

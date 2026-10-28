@@ -9,6 +9,8 @@ import sys
 import tempfile
 import unittest
 
+from source_fixture import make_sources, snapshot_at, advance_matt
+
 SOURCE = Path(__file__).resolve().parents[1]
 
 
@@ -33,8 +35,8 @@ class PublishUpdateTests(unittest.TestCase):
 
     def run_publisher(self):
         command = [sys.executable, str(self.target / "scripts/publish_update.py"), "--proposal-dir", str(self.proposal)]
-        if hasattr(self, "plan_digest"):
-            command.extend(["--expected-plan-sha256", self.plan_digest])
+        if hasattr(self, "package_digest"):
+            command.extend(["--expected-package-sha256", self.package_digest])
         return subprocess.run(command, cwd=self.target,
                               env=self.env, text=True, capture_output=True)
 
@@ -43,15 +45,25 @@ class PublishUpdateTests(unittest.TestCase):
                               text=True, capture_output=True, check=True).stdout.strip()
 
     def prepare_repository(self):
-        sources = {name: {"repository": url, "branch": "main", "sha": sha}
-                   for name, url, sha in (("matt", "https://github.com/mattpocock/skills.git", "a" * 40),
-                                          ("pstack", "https://github.com/cursor/plugins.git", "b" * 40))}
+        self.repositories = make_sources(self.work, self.env)
+        sources = snapshot_at(self.target, self.repositories, self.env)
         self.lock = self.target / "sources.lock.json"
-        self.lock.write_text(json.dumps({"schema": 1, "sources": sources}, indent=2) + "\n")
-        self.plan = {"schema": 1, "sources": {"matt": {"from_sha": "a" * 40, "to_sha": "c" * 40},
-                                               "pstack": {"from_sha": "b" * 40, "to_sha": "b" * 40}}}
-        (self.proposal / "sources.update.json").write_text(json.dumps(self.plan, indent=2) + "\n")
-        self.plan_digest = hashlib.sha256((self.proposal / "sources.update.json").read_bytes()).hexdigest()
+        (self.target / "upstream/README.md").write_text("Keep Assimilation's source index\n")
+        (self.target / ".github/workflows").mkdir(parents=True)
+        (self.target / ".github/workflows/owned.yml").write_text("name: Keep root workflow unchanged\n")
+        advance_matt(self.repositories["matt"], self.env)
+        proposed = snapshot_at(self.proposal, self.repositories, self.env)
+        self.plan = {"schema": 1, "sources": {name: {"from_sha": sources[name]["sha"], "to_sha": proposed[name]["sha"]}
+                                              for name in sources}}
+        (self.proposal / "sources.update.json").write_text(json.dumps(self.plan, sort_keys=True, indent=2) + "\n")
+        inventory = {}
+        for path in self.proposal.rglob("*"):
+            if path.is_dir():
+                continue
+            raw = os.fsencode(os.readlink(path)) if path.is_symlink() else path.read_bytes()
+            mode = "120000" if path.is_symlink() else "100755" if path.stat().st_mode & 0o111 else "100644"
+            inventory[path.relative_to(self.proposal).as_posix()] = {"mode": mode, "sha256": hashlib.sha256(raw).hexdigest(), "size": len(raw)}
+        self.package_digest = hashlib.sha256(json.dumps(inventory, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
         self.git("init", "--initial-branch=main")
         self.git("config", "user.name", "Fixture")
         self.git("config", "user.email", "fixture@example.invalid")
@@ -88,7 +100,7 @@ class PublishUpdateTests(unittest.TestCase):
             tree = command("write-tree")
             return command("commit-tree", tree, "-p", parent, "-m", message)
 
-    def test_publishes_only_frozen_plan_as_a_draft_and_keeps_lock_unchanged(self):
+    def test_publishes_complete_snapshot_atomically_and_keeps_local_baseline_unchanged(self):
         self.prepare_repository()
         original = self.lock.read_bytes()
         (self.target / "private-extra.txt").write_text("Synthetic local-only material\n")
@@ -100,21 +112,36 @@ class PublishUpdateTests(unittest.TestCase):
         self.assertTrue(pull["draft"])
         self.assertEqual(pull["base"]["ref"], "main")
         sha = pull["head"]["sha"]
-        self.assertEqual(self.git("diff", "--name-only", self.base, sha, cwd=self.remote), "sources.update.json")
+        changed = self.git("diff", "--name-only", self.base, sha, cwd=self.remote).splitlines()
+        self.assertIn("sources.snapshot.json", changed)
+        self.assertIn("sources.lock.json", changed)
+        self.assertIn("upstream/matt-pocock/binary.dat", changed)
+        self.assertIn("upstream/matt-pocock/obsolete.txt", changed)
+        self.assertTrue(all(path in {"sources.lock.json", "sources.snapshot.json", "sources.update.json"}
+                            or path.startswith(("upstream/matt-pocock/", "upstream/pstack/")) for path in changed))
+        snapshot = json.loads((self.proposal / "sources.snapshot.json").read_text())
+        for name, entry in snapshot["sources"].items():
+            self.assertEqual(self.git("rev-parse", sha + ":" + entry["directory"], cwd=self.remote), entry["scope_tree_sha"])
+        binary = subprocess.run(["git", "show", sha + ":upstream/matt-pocock/binary.dat"],
+                                cwd=self.remote, env=self.env, capture_output=True, check=True).stdout
+        self.assertEqual(binary, b"\x00\xff\xfe\x01source-binary\n")
+        self.assertTrue(self.git("ls-tree", sha, "--", "upstream/matt-pocock/README-link", cwd=self.remote).startswith("120000 blob "))
+        self.assertTrue(self.git("ls-tree", sha, "--", "upstream/matt-pocock/run.sh", cwd=self.remote).startswith("100755 blob "))
+        self.assertEqual(self.git("show", sha + ":upstream/README.md", cwd=self.remote), "Keep Assimilation's source index")
+        self.assertEqual(self.git("show", sha + ":.github/workflows/owned.yml", cwd=self.remote), "name: Keep root workflow unchanged")
         self.assertEqual(json.loads(self.git("show", sha + ":sources.update.json", cwd=self.remote)), self.plan)
         self.assertEqual(self.git("rev-parse", "main", cwd=self.remote), self.base)
         self.assertEqual(self.lock.read_bytes(), original)
 
     def test_generation_digest_flows_into_publication_without_refetching(self):
         self.prepare_repository()
-        self.env.update({"ASSIMILATION_MATT_SOURCE": str(self.remote), "ASSIMILATION_PSTACK_SOURCE": str(self.remote)})
         generated = self.work / "generated"
         result = subprocess.run([sys.executable, str(self.target / "scripts/propose_update.py"),
                                  "--output-dir", str(generated)], cwd=self.target,
                                 env=self.env, capture_output=True, text=True)
         self.assertEqual(result.returncode, 2, result.stderr)
         self.proposal = generated
-        self.plan_digest = json.loads(result.stdout)["plan_sha256"]
+        self.package_digest = json.loads(result.stdout)["package_sha256"]
         expected = json.loads((generated / "sources.update.json").read_text())
         self.env.update({"ASSIMILATION_MATT_SOURCE": str(self.work / "unavailable"),
                          "ASSIMILATION_PSTACK_SOURCE": str(self.work / "unavailable")})
@@ -265,6 +292,60 @@ class PublishUpdateTests(unittest.TestCase):
         result = self.run_publisher()
         self.assertEqual(result.returncode, 1, result.stderr)
         self.assertEqual(self.state()["calls"], [])
+
+    def test_complete_package_drift_in_source_modes_or_metadata_stops_before_api(self):
+        self.prepare_repository()
+        mutations = [
+            ("upstream/matt-pocock/binary.dat", b"changed binary bytes", None),
+            ("upstream/matt-pocock/run.sh", None, 0o644),
+            ("sources.snapshot.json", b" ", None),
+            ("sources.lock.json", b" ", None),
+            ("sources.update.json", None, 0o755),
+        ]
+        for relative, append, mode in mutations:
+            with self.subTest(path=relative):
+                path = self.proposal / relative
+                original, original_mode = path.read_bytes(), path.stat().st_mode & 0o777
+                if append is not None:
+                    path.write_bytes(original + append)
+                if mode is not None:
+                    path.chmod(mode)
+                result = self.run_publisher()
+                self.assertEqual(result.returncode, 1, result.stderr)
+                self.assertEqual(self.state()["calls"], [])
+                path.write_bytes(original)
+                path.chmod(original_mode)
+
+    def test_dirty_baseline_snapshot_and_untracked_plan_are_never_adopted(self):
+        self.prepare_repository()
+        for name, content in (("upstream/matt-pocock/README.md", "Human source edits\n"),
+                              ("sources.snapshot.json", "{}\n"),
+                              ("sources.update.json", "Human review plan\n")):
+            with self.subTest(path=name):
+                path = self.target / name
+                original = path.read_bytes() if path.exists() else None
+                path.write_text(content)
+                result = self.run_publisher()
+                self.assertEqual(result.returncode, 1, result.stderr)
+                self.assertEqual(self.state()["calls"], [])
+                self.assertEqual(path.read_text(), content)
+                path.write_bytes(original) if original is not None else path.unlink()
+
+    def test_same_shape_forged_proposal_cannot_modify_unrelated_upstream_siblings(self):
+        self.prepare_repository()
+        first = self.run_publisher()
+        self.assertEqual(first.returncode, 0, first.stderr)
+        pull = self.state()["pulls"][0]
+        message = self.git("show", "-s", "--format=%B", pull["head"]["sha"], cwd=self.remote)
+        changed = self.new_commit(pull["head"]["sha"], "upstream/README.md", "Human sibling content\n", message)
+        tree = self.git("show", "-s", "--format=%T", changed, cwd=self.remote)
+        forged = self.git("commit-tree", tree, "-p", self.base, "-m", message, cwd=self.remote)
+        self.git("update-ref", "refs/heads/" + pull["head"]["ref"], forged, cwd=self.remote)
+        result = self.run_publisher()
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertEqual(self.git("rev-parse", pull["head"]["ref"], cwd=self.remote), forged)
+        self.assertEqual(self.git("show", forged + ":upstream/README.md", cwd=self.remote), "Human sibling content")
+        self.assertEqual(self.state()["pulls"], [pull])
 
     def test_default_branch_race_after_pr_creation_is_reported_not_success(self):
         self.prepare_repository()
