@@ -2,23 +2,25 @@
 
 **A portable, public-ready, language-independent AI engineering doctrine.**
 
-Assimilation helps a person turn ordinary-language ideas into specified, reviewable work using the complete **Matt Pocock engineering skill collection** and **Lauren Tan's P-Stack skills**, combined with a lightweight Chief of Staff / swarm coordination pattern. Its name describes learning and distributing useful methods—not surrendering control to a machine.
+Assimilation helps a person turn ordinary-language ideas into specified, reviewable work using the complete **Matt Pocock source collection** and **Lauren Tan's P-Stack skills**, combined with a lightweight Chief of Staff / swarm coordination pattern. Its name describes learning and distributing useful methods—not surrendering control to a machine.
 
 **Operator remains in command.** A user with one ChatGPT conversation can benefit from the documentation; a compatible coding agent with filesystem and Git access can install and use the complete source skills. Multi-agent execution is optional and dependent on available tools and account limits. Assimilation does not grant special AI abilities or magically install tools when a model reads a GitHub URL.
 
-> **Package contents:** This standalone public repository includes four local Assimilation skills, the installer, and a committed source baseline. The upstream collections are fetched separately; they are not bundled in Git.
+> **Browse the actual skills:** [Matt Pocock — complete repository](upstream/matt-pocock/) · [P-Stack — complete subtree](upstream/pstack/) · [source index and authority boundary](upstream/README.md).
+>
+> This repository includes four local Assimilation skills, full upstream reference sources, their pinned lock/provenance, and an optional host installer. The initial visible baseline contains **38 Matt skill files** (20 engineering, 7 productivity, 4 miscellaneous, 7 in-progress) and **61 P-Stack skill files** (including 3 dormant Benny skills). Browsable source is not automatic host activation.
 
 ## For Chad: five-minute orientation
 
 1. **Read this page** and [the operating instructions](AGENTS.md). They say what the system is and how the AI should work.
 2. **Using ChatGPT without coding tools?** Follow [the ChatGPT-only start](docs/CHATGPT.md). You can use the thinking and documentation practices without paying for a particular plan; access to tools and projects may vary.
-3. **Using a coding agent with a local terminal?** Copy this repository into your own project and run from its root:
+3. **Using a coding agent with a local terminal?** Clone this repository. You can already read the complete sources under `upstream/`; verify them offline with `python3 scripts/snapshot_sources.py verify`. If you also want generated host-discoverable bridges, run from a fresh checkout:
 
    ```sh
    python3 scripts/skills.py install --locked
    ```
 
-   On Windows, `py -3 scripts/skills.py install --locked` is an alternative. **Git and Python 3.10+ are required**; no TypeScript is required. The command fetches the **exact commits in `sources.lock.json`**, saves the full source skill trees locally under `vendor/`, and creates discoverable bridge skills under `.agents/skills/` without hiding upstream references. For a fresh copy without a lock, use `python3 scripts/skills.py install` once to record the initial upstream revisions. The installer refuses unknown vendor content, edited managed content, and unmanaged skill-name collisions. Review source code before installing; don't execute unknown tools blindly.
+   On Windows, `py -3 scripts/skills.py install --locked` is an alternative. **Git and Python 3.10+ are required**; no TypeScript is required. The command fetches the **exact commits in `sources.lock.json`**, saves its declared source scope locally under `vendor/`, and creates engineering/P-Stack bridge skills under `.agents/skills/` without hiding upstream references. For a fresh copy without a lock, use `python3 scripts/skills.py install` once to record the initial upstream revisions. The installer refuses unknown vendor content, edited managed content, and unmanaged skill-name collisions. Review source code before installing; don't execute unknown tools blindly.
 4. **Ask the agent to read `AGENTS.md`.** Give it a concrete goal in your own words. For nontrivial design ambiguity it should use **`grill-with-docs`** (interview plus documentation). For a large, multi-session effort whose path remains uncertain it should use **`wayfinder`** (map decisions/fog, resolve, then hand off to specification). It can use **all** the installed engineering and P-Stack skills as appropriate, but should not run unrelated skills on every task.
 5. **Remain in charge.** The AI may declare *zero blocking fog* with evidence when all in-scope decisions are settled; that is **not** approval to deploy, merge, spend money, publish, or perform other sensitive actions.
 
@@ -48,9 +50,9 @@ The philosophy: no challenge is dismissed merely as “too big.” Break it down
 
 ## Update cadence
 
-The operator chose **monthly reviewed update PRs**, with no automatic approval or merge. The committed `sources.lock.json` records the installed baseline. Each proposal freezes both installed and target commits, so adoption does not race a moving `main` branch.
+The operator chose **monthly reviewed update PRs**, with no automatic approval or merge. The committed `sources.lock.json` pins the visible source baseline; `sources.snapshot.json` verifies its complete trees. Each proposal freezes both baseline and target commits, so adoption does not race a moving `main` branch.
 
-The scheduled workflow runs only on the default branch. It prepares a plan, publishes only `sources.update.json` on a deterministic update branch, and opens a draft PR. It never installs sources or changes the lock. Repeated runs reuse an unchanged draft; human edits, promoted PRs, closed PRs, and stale baselines stop publication rather than being overwritten.
+The scheduled workflow runs only on the default branch. It prepares complete proposed source trees, an updated pin lock, provenance, and a frozen plan on a deterministic update branch, then opens a draft PR. One reviewed merge adopts them together. It never installs host skills or executes upstream code. Repeated runs reuse an unchanged draft; human edits, promoted PRs, closed PRs, and stale baselines stop publication rather than being overwritten.
 
 The implementation uses the approved `contents: write` and `pull-requests: write` job permissions, not an issues grant or a personal access token. Repository policy must also permit Actions PR creation. See [the update guide](docs/UPDATES.md) for activation requirements, review steps, and retry behavior. Configuration in this repository is not evidence that a live workflow run has succeeded.
 
@@ -58,7 +60,7 @@ Without a committed lock, the workflow reports setup needed and skips upstream c
 
 ## Public by design
 
-This repository contains **no live Open Brain access**, no personal memory archive, no DAVID 2 private source, no credentials, no patient data, and no access delegation to the originating projects. It transfers ideas, not private records. External source collections are fetched directly from their publishers, keeping their own licenses and metadata. [Security and attribution](docs/SAFETY.md).
+This repository contains **no live Open Brain access**, no personal memory archive, no DAVID 2 private source, no credentials, no patient data, and no access delegation to the originating projects. It transfers ideas, not private records. Visible source collections preserve their publishers' licenses, attribution, and metadata. Nested workflows, agent instructions, plugins, and scripts remain reference data, not execution or activation authority. [Security and attribution](docs/SAFETY.md); [third-party notices](THIRD_PARTY_NOTICES.md).
 
 ## Credits
 

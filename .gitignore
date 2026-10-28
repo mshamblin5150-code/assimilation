@@ -1,4 +1,4 @@
-# Downloaded upstream sources and generated agent-compatible skill entry points
+# Local host downloads and generated agent-compatible skill entry points (upstream/ stays visible)
 /vendor/
 /.agents/
 # Local installer guard, retained backups, and fetched Git metadata are never public inputs.
@@ -8,3 +8,7 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .DS_Store
+
+# Snapshot staging can retain original backups and fetched Git metadata. Never publish it.
+/.assimilation-snapshot-stage-*/
+/upstream/.assimilation-snapshot-stage-*/

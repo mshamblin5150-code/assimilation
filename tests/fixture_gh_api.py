@@ -33,6 +33,7 @@ def git(*args, data=None, env=None, check=True):
 
 
 def fail(message):
+    state["last_error"] = message
     save()
     print(message, file=sys.stderr)
     sys.exit(1)
@@ -74,13 +75,27 @@ try:
         rows = git("ls-tree", path.rsplit("/", 1)[1]).splitlines()
         result = {"truncated": False, "tree": [{"mode": row.split()[0], "type": row.split()[1],
                             "sha": row.split()[2], "path": row.split("\t", 1)[1]} for row in rows]}
+    elif path == prefix + "/git/blobs" and method == "POST":
+        raw = base64.b64decode(payload["content"], validate=True) if payload["encoding"] == "base64" else payload["content"].encode()
+        proc = subprocess.run(["git", "hash-object", "-w", "--stdin"], cwd=state["repo"], input=raw,
+                              capture_output=True, check=True)
+        result = {"sha": proc.stdout.decode().strip()}
     elif path == prefix + "/git/trees" and method == "POST":
         with tempfile.TemporaryDirectory() as temp:
-            env = {**os.environ, "GIT_INDEX_FILE": str(Path(temp) / "index")}
-            git("read-tree", payload["base_tree"], env=env)
+            env = {**os.environ, "GIT_INDEX_FILE": str(Path(temp) / "index"), "GIT_WORK_TREE": temp}
+            git("read-tree", payload["base_tree"], env=env) if "base_tree" in payload else git("read-tree", "--empty", env=env)
             for entry in payload["tree"]:
-                blob = git("hash-object", "-w", "--stdin", data=entry["content"])
-                git("update-index", "--add", "--cacheinfo", entry["mode"] + "," + blob + "," + entry["path"], env=env)
+                if entry["type"] == "tree":
+                    # Replacing a directory means replacing its complete contents, including deletions.
+                    old = git("ls-files", "--", entry["path"], env=env).splitlines()
+                    for filename in old:
+                        git("update-index", "--force-remove", "--", filename, env=env)
+                    git("read-tree", "--prefix=" + entry["path"] + "/", entry["sha"], env=env)
+                elif "sha" in entry and entry["sha"] is None:
+                    git("update-index", "--force-remove", "--", entry["path"], env=env)
+                else:
+                    blob = entry["sha"] if "sha" in entry else git("hash-object", "-w", "--stdin", data=entry["content"])
+                    git("update-index", "--add", "--cacheinfo", entry["mode"] + "," + blob + "," + entry["path"], env=env)
             result = {"sha": git("write-tree", env=env)}
     elif path == prefix + "/git/commits" and method == "POST":
         result = {"sha": git("commit-tree", payload["tree"], "-p", payload["parents"][0], "-m", payload["message"])}

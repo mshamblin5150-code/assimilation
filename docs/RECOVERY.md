@@ -25,3 +25,7 @@ After recovery is verified and no installer is active, the operator can remove t
 ## Limits
 
 The installer attempts rollback for caught errors and retains failed-restore backups. It cannot guarantee an atomic update across three paths after power loss, a forced process kill, or a simultaneous unrelated writer. A clean test run does not establish crash durability. Report incomplete recovery rather than treating an empty error log or a removed guard as success.
+
+## Snapshot operations
+
+`snapshot_sources.py refresh` shares `.assimilation-install.lock` with the host installer. Snapshot candidates/backups use `.assimilation-snapshot-stage-*` under the repository root and `upstream/`, on their destination filesystems. Retained stages block another refresh. The same preserve-first rules above apply: copy and inspect originals, manifest, and backups before resolving state. Never blindly delete a backup or guard to make a retry proceed. Keep fetch Git metadata and recovery material out of publication. `prepare` writes a new package directory only; discard a failed package only after confirming it is not an original or retained recovery backup.

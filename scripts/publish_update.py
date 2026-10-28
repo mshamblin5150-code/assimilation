@@ -14,7 +14,8 @@ import sys
 from urllib.parse import quote, urlencode
 
 import skills
-from propose_update import review_body
+import snapshot_sources
+from propose_update import review_body, proposal_files, package_digest
 
 
 def git_blob_sha(content: bytes) -> str:
@@ -38,12 +39,6 @@ class GitHub:
             raise RuntimeError(f"GitHub API {method} {route.split('?')[0]} failed; inspect the workflow's permissions and repository state")
         return json.loads(result.stdout)
 
-    def file(self, name: str, revision: str) -> bytes:
-        entry = self.request("GET", "/contents/" + name + "?" + urlencode({"ref": revision}))
-        if entry.get("type") != "file" or entry.get("encoding") != "base64" or entry.get("path") != name:
-            raise RuntimeError("Expected a regular GitHub file: " + name)
-        return base64.b64decode("".join(entry["content"].split()), validate=True)
-
     def branch(self, name: str):
         entries = self.request("GET", "/git/matching-refs/heads/" + quote(name, safe="/"))
         matches = [entry for entry in entries if entry.get("ref") == "refs/heads/" + name]
@@ -52,13 +47,8 @@ class GitHub:
         return matches[0]["object"]["sha"] if matches else None
 
 
-def checked_plan(proposal_dir: Path, installed: dict, expected_digest: str | None) -> tuple[dict, str]:
-    path = proposal_dir / "sources.update.json"
-    if path.is_symlink() or not path.is_file():
-        raise RuntimeError("Proposal must contain a regular sources.update.json")
-    raw = path.read_bytes()
-    if not expected_digest or hashlib.sha256(raw).hexdigest() != expected_digest:
-        raise RuntimeError("Proposal bytes do not match the trusted generation step; prepare a fresh proposal")
+def checked_plan(files: dict, installed: dict) -> dict:
+    raw = files["sources.update.json"]["content"]
     plan = json.loads(raw)
     if (not isinstance(plan, dict) or set(plan) != {"schema", "sources"} or plan["schema"] != 1
             or not isinstance(plan["sources"], dict) or set(plan["sources"]) != set(skills.SOURCES)):
@@ -68,7 +58,7 @@ def checked_plan(proposal_dir: Path, installed: dict, expected_digest: str | Non
                 or entry["from_sha"] != installed[name]["sha"]
                 or not isinstance(entry["to_sha"], str) or not skills.SHA_RE.fullmatch(entry["to_sha"])):
             raise RuntimeError("Stale or invalid source-update plan: " + name)
-    return plan, json.dumps(plan, sort_keys=True, indent=2) + "\n"
+    return plan
 
 
 def publish(proposal_dir: Path, expected_digest: str | None) -> int:
@@ -76,7 +66,16 @@ def publish(proposal_dir: Path, expected_digest: str | None) -> int:
     if not installed:
         print(json.dumps({"status": "not-installed"}))
         return 3
-    plan, content = checked_plan(proposal_dir, installed, expected_digest)
+    baseline = snapshot_sources.verify()
+    files = proposal_files(proposal_dir)
+    digest = package_digest(files)
+    if not expected_digest or digest != expected_digest:
+        raise RuntimeError("Complete proposal bytes do not match the trusted generation step; prepare a fresh proposal")
+    plan = checked_plan(files, installed)
+    proposed = json.loads(files["sources.snapshot.json"]["content"])
+    for name, entry in plan["sources"].items():
+        if proposed["sources"][name]["commit_sha"] != entry["to_sha"]:
+            raise RuntimeError("Proposed source snapshot differs from the frozen plan: " + name)
     if all(entry["from_sha"] == entry["to_sha"] for entry in plan["sources"].values()):
         print(json.dumps({"status": "current"}))
         return 0
@@ -88,10 +87,19 @@ def publish(proposal_dir: Path, expected_digest: str | None) -> int:
         raise RuntimeError("Publishing requires a trusted scheduled or manual Actions run with its repository token")
     if skills.git("rev-parse", "HEAD", cwd=skills.ROOT) != expected_sha:
         raise RuntimeError("Checkout HEAD differs from the workflow commit")
-    committed_lock = skills.git("ls-tree", "HEAD", "--", "sources.lock.json", cwd=skills.ROOT)
-    expected_lock = "100644 blob " + git_blob_sha(skills.LOCK.read_bytes()) + "\tsources.lock.json"
-    if committed_lock != expected_lock:
-        raise RuntimeError("The baseline must be an unchanged regular sources.lock.json committed in HEAD")
+    targets = ["sources.lock.json", "sources.snapshot.json", "sources.update.json"]
+    targets.extend(source["directory"] for source in baseline["sources"].values())
+    if skills.git("status", "--porcelain", "--untracked-files=all", "--", *targets, cwd=skills.ROOT):
+        raise RuntimeError("Snapshot publication targets have local changes; use an unchanged committed checkout")
+    baseline_roots = {name: ("100644", "blob", git_blob_sha((skills.ROOT / name).read_bytes()))
+                      for name in ("sources.lock.json", "sources.snapshot.json")}
+    for name, expected in baseline_roots.items():
+        if skills.git("ls-tree", "HEAD", "--", name, cwd=skills.ROOT) != " ".join(expected) + "\t" + name:
+            raise RuntimeError("The baseline must contain unchanged regular committed lock and snapshot files")
+    for source in baseline["sources"].values():
+        expected = "040000 tree " + source["scope_tree_sha"] + "\t" + source["directory"]
+        if skills.git("ls-tree", "HEAD", "--", source["directory"], cwd=skills.ROOT) != expected:
+            raise RuntimeError("The visible source trees must match their committed provenance")
     api = GitHub(repository)
     metadata = api.request("GET")
     default = metadata["default_branch"]
@@ -99,17 +107,52 @@ def publish(proposal_dir: Path, expected_digest: str | None) -> int:
         raise RuntimeError("Publishing is allowed only on this repository's default branch")
     default_route = "/git/ref/heads/" + quote(default, safe="/")
 
+    def root_entries(tree_sha):
+        tree = api.request("GET", "/git/trees/" + tree_sha)
+        if tree.get("truncated") is not False:
+            raise RuntimeError("Cannot verify a truncated or unspecified Git tree")
+        entries = {entry["path"]: (entry["mode"], entry["type"], entry["sha"]) for entry in tree["tree"]}
+        if len(entries) != len(tree["tree"]):
+            raise RuntimeError("Duplicate Git tree entries")
+        return entries
+
+    def upstream_entries(root):
+        entry = root.get("upstream")
+        if not entry or entry[:2] != ("040000", "tree"):
+            raise RuntimeError("Expected a committed upstream directory")
+        return root_entries(entry[2])
+
+    def check_baseline(root):
+        if any(root.get(name) != expected for name, expected in baseline_roots.items()):
+            raise RuntimeError("Committed snapshot baseline changed; run a fresh workflow")
+        upstream = upstream_entries(root)
+        for source in baseline["sources"].values():
+            if upstream.get(source["directory"].split("/")[1]) != ("040000", "tree", source["scope_tree_sha"]):
+                raise RuntimeError("Committed source trees differ from the baseline")
+        return upstream
+
     def verify_base():
         current = api.request("GET", default_route)["object"]["sha"]
-        if current != expected_sha or api.file("sources.lock.json", current) != skills.LOCK.read_bytes():
-            raise RuntimeError("Default branch or installed baseline changed; run a fresh workflow")
+        if current != expected_sha:
+            raise RuntimeError("Default branch changed; run a fresh workflow")
+        root = root_entries(api.request("GET", "/git/commits/" + current)["tree"]["sha"])
+        check_baseline(root)
+        return root
 
-    verify_base()
-    identity = hashlib.sha256(content.encode()).hexdigest()
+    base_root = verify_base()
+    identity = digest
     branch = "automation/skill-update-" + identity
-    message = "Assimilation source update " + identity
+    message = "Assimilation complete source update " + identity
     title = "Review upstream skill source updates"
     body = review_body(plan["sources"])
+    proposed_roots = {name: ("100644", "blob", git_blob_sha(files[name]["content"]))
+                      for name in ("sources.lock.json", "sources.snapshot.json", "sources.update.json")}
+
+    def expected_upstream(original):
+        expected = dict(original)
+        for source in proposed["sources"].values():
+            expected[source["directory"].split("/")[1]] = ("040000", "tree", source["scope_tree_sha"])
+        return expected
 
     def inspect_branch(sha):
         commit = api.request("GET", "/git/commits/" + sha)
@@ -117,27 +160,44 @@ def publish(proposal_dir: Path, expected_digest: str | None) -> int:
             raise RuntimeError("Proposal branch was changed; leaving it untouched")
         parent = commit["parents"][0]["sha"]
         parent_commit = api.request("GET", "/git/commits/" + parent)
-
-        def root_entries(tree_sha):
-            tree = api.request("GET", "/git/trees/" + tree_sha)
-            if tree.get("truncated") is not False:
-                raise RuntimeError("Cannot verify a truncated or unspecified Git tree")
-            entries = {entry["path"]: (entry["mode"], entry["type"], entry["sha"]) for entry in tree["tree"]}
-            if len(entries) != len(tree["tree"]):
-                raise RuntimeError("Duplicate Git tree entries")
-            return entries
-
         original = root_entries(parent_commit["tree"]["sha"])
+        original_upstream = check_baseline(original)
         actual = root_entries(commit["tree"]["sha"])
-        expected_blob = git_blob_sha(content.encode())
-        expected = {**original, "sources.update.json": ("100644", "blob", expected_blob)}
+        actual_upstream = upstream_entries(actual)
+        expected = {**original, **proposed_roots, "upstream": actual["upstream"]}
         if (actual != expected or actual == original
-                or api.file("sources.lock.json", parent) != skills.LOCK.read_bytes()):
-            raise RuntimeError("Existing branch is not the unchanged one-file proposal; leaving it untouched")
+                or actual_upstream != expected_upstream(original_upstream)):
+            raise RuntimeError("Existing branch is not the unchanged complete source proposal; leaving it untouched")
         if parent != expected_sha:
             ancestry = api.request("GET", "/compare/" + parent + "..." + expected_sha)
             if ancestry["status"] not in {"ahead", "identical"}:
                 raise RuntimeError("Proposal base is no longer on the default branch")
+
+    def create_source_trees():
+        known_blobs = {entry["git_blob_sha"] for source in baseline["sources"].values() for entry in source["files"].values()}
+        for name, source in proposed["sources"].items():
+            if source["scope_tree_sha"] == baseline["sources"][name]["scope_tree_sha"]:
+                continue
+            entries = []
+            for path, entry in source["files"].items():
+                item = {"path": path, "mode": entry["mode"], "type": "blob"}
+                if entry["git_blob_sha"] in known_blobs:
+                    item["sha"] = entry["git_blob_sha"]
+                else:
+                    raw = files[source["directory"] + "/" + path]["content"]
+                    try:
+                        item["content"] = raw.decode("utf-8")
+                    except UnicodeDecodeError:
+                        blob = api.request("POST", "/git/blobs", {"content": base64.b64encode(raw).decode(), "encoding": "base64"})
+                        if blob["sha"] != entry["git_blob_sha"]:
+                            raise RuntimeError("Uploaded binary blob identity mismatch")
+                        item["sha"] = blob["sha"]
+                        known_blobs.add(blob["sha"])
+                entries.append(item)
+            # No base_tree: exact replacement drops all removed upstream paths.
+            tree = api.request("POST", "/git/trees", {"tree": entries})
+            if tree["sha"] != source["scope_tree_sha"]:
+                raise RuntimeError("Uploaded source tree differs from its verified provenance")
 
     def find_pull():
         query = urlencode({"state": "all", "head": repository.split("/")[0] + ":" + branch,
@@ -162,9 +222,20 @@ def publish(proposal_dir: Path, expected_digest: str | None) -> int:
     if pull is not None and sha is None:
         raise RuntimeError("Existing PR has no matching proposal branch; inspect manually")
     if sha is None:
+        create_source_trees()
+        original_upstream = upstream_entries(base_root)
+        tree = api.request("POST", "/git/trees", {"base_tree": base_root["upstream"][2], "tree": [
+            {"path": name, "mode": entry[0], "type": entry[1], "sha": entry[2]}
+            for name, entry in expected_upstream(original_upstream).items() if original_upstream.get(name) != entry]})
+        if root_entries(tree["sha"]) != expected_upstream(original_upstream):
+            raise RuntimeError("Uploaded upstream tree changed unrelated source index content")
         base_commit = api.request("GET", "/git/commits/" + expected_sha)
+        upstream_sha = tree["sha"]
         tree = api.request("POST", "/git/trees", {"base_tree": base_commit["tree"]["sha"], "tree": [
-            {"path": "sources.update.json", "mode": "100644", "type": "blob", "content": content}]})
+            {"path": name, "mode": "100644", "type": "blob", "content": files[name]["content"].decode("utf-8")}
+            for name in proposed_roots] + [{"path": "upstream", "mode": "040000", "type": "tree", "sha": upstream_sha}]})
+        if root_entries(tree["sha"]) != {**base_root, **proposed_roots, "upstream": ("040000", "tree", upstream_sha)}:
+            raise RuntimeError("Uploaded proposal tree changed unrelated repository content")
         commit = api.request("POST", "/git/commits", {"message": message, "tree": tree["sha"], "parents": [expected_sha]})
         verify_base()
         api.request("POST", "/git/refs", {"ref": "refs/heads/" + branch, "sha": commit["sha"]})
@@ -191,10 +262,10 @@ def publish(proposal_dir: Path, expected_digest: str | None) -> int:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--proposal-dir", type=Path, required=True)
-    parser.add_argument("--expected-plan-sha256", help="Raw plan digest from the same trusted generation job")
+    parser.add_argument("--expected-package-sha256", help="Complete package digest from the same trusted generation job")
     args = parser.parse_args()
     try:
-        return publish(args.proposal_dir, args.expected_plan_sha256)
+        return publish(args.proposal_dir, args.expected_package_sha256)
     except (RuntimeError, OSError, ValueError, KeyError, TypeError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1

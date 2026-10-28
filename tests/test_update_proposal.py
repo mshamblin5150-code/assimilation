@@ -6,7 +6,10 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import tarfile
 import unittest
+
+from source_fixture import make_sources, snapshot_at, advance_matt
 
 
 SOURCE = Path(__file__).resolve().parents[1]
@@ -33,24 +36,9 @@ class UpdateProposalTests(unittest.TestCase):
                               env=self.env, capture_output=True, text=True)
 
     def create_sources_and_lock(self):
-        records = {}
-        self.repositories = {}
-        for name, url in (("matt", "https://github.com/mattpocock/skills.git"),
-                          ("pstack", "https://github.com/cursor/plugins.git")):
-            path = self.work / name
-            path.mkdir()
-            self.git(path, "init", "--initial-branch=main")
-            self.git(path, "config", "user.email", "test@example.invalid")
-            self.git(path, "config", "user.name", "Fixture")
-            (path / "README.md").write_text("Synthetic source version one\n")
-            self.git(path, "add", ".")
-            self.git(path, "commit", "-m", "initial")
-            records[name] = {"repository": url, "branch": "main", "sha": self.git(path, "rev-parse", "HEAD"),
-                             "skills_exposed": 1, "installed_at_utc": "2026-01-01T00:00:00+00:00"}
-            self.repositories[name] = path
-            self.env[f"ASSIMILATION_{name.upper()}_SOURCE"] = str(path)
+        self.repositories = make_sources(self.work, self.env)
+        records = snapshot_at(self.target, self.repositories, self.env)
         self.lock = self.target / "sources.lock.json"
-        self.lock.write_text(json.dumps({"schema": 1, "sources": records}, indent=2) + "\n")
         return records
 
     def git(self, path, *args):
@@ -79,10 +67,7 @@ class UpdateProposalTests(unittest.TestCase):
     def test_proposal_freezes_both_sources_and_preserves_the_installed_lock(self):
         records = self.create_sources_and_lock()
         original = self.lock.read_bytes()
-        matt = self.repositories["matt"]
-        (matt / "README.md").write_text("Synthetic source version two\n")
-        self.git(matt, "commit", "-am", "new version")
-        next_sha = self.git(matt, "rev-parse", "HEAD")
+        next_sha = advance_matt(self.repositories["matt"], self.env)
         result = self.propose()
         self.assertEqual(result.returncode, 2, result.stderr)
         self.assertEqual(json.loads(result.stdout)["status"], "updates-available")
@@ -92,7 +77,12 @@ class UpdateProposalTests(unittest.TestCase):
             "pstack": {"from_sha": records["pstack"]["sha"], "to_sha": records["pstack"]["sha"]}}})
         body = (self.output / "PULL_REQUEST.md").read_text()
         self.assertIn(f"https://github.com/mattpocock/skills/compare/{records['matt']['sha']}..{next_sha}", body)
-        self.assertIn("--approve-update --update-plan", body)
+        self.assertEqual((self.output / "upstream/matt-pocock/binary.dat").read_bytes(), b"\x00\xff\xfe\x01source-binary\n")
+        self.assertFalse((self.output / "upstream/matt-pocock/obsolete.txt").exists())
+        self.assertEqual((self.output / "upstream/matt-pocock/README-link").readlink(), Path("README.md"))
+        self.assertEqual(json.loads((self.output / "sources.lock.json").read_text())["sources"]["matt"]["sha"], next_sha)
+        self.assertIn("snapshot_sources.py verify", body)
+        self.assertNotIn("--approve-update --update-plan", body)
         self.assertEqual(self.lock.read_bytes(), original)
         self.assertFalse((self.target / "vendor").exists())
 
@@ -150,6 +140,28 @@ class UpdateProposalTests(unittest.TestCase):
         self.assertIn("no committed sources.lock.json", summary.read_text())
         self.assertFalse((self.work / "skill-update-proposal").exists())
 
+    @unittest.skipUnless(shutil.which("bash") and shutil.which("tar"), "Linux workflow fixture requires bash and tar")
+    def test_workflow_archives_hidden_metadata_modes_links_and_the_generation_digest(self):
+        self.create_sources_and_lock()
+        advance_matt(self.repositories["matt"], self.env)
+        workflow = (SOURCE / ".github/workflows/monthly-skill-review.yml").read_text()
+        script = workflow.split("        run: |\n", 1)[1].split("      - name:", 1)[0]
+        script = "\n".join(line[10:] for line in script.splitlines())
+        outputs = self.work / "github-output"
+        self.env.update({"GITHUB_OUTPUT": str(outputs), "GITHUB_STEP_SUMMARY": str(self.work / "github-summary"),
+                         "RUNNER_TEMP": str(self.work)})
+        result = subprocess.run(["bash", "-e", "-o", "pipefail", "-c", script], cwd=self.target,
+                                env=self.env, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        comparison = json.loads((self.work / "upstream-comparison.json").read_text())
+        self.assertEqual(outputs.read_text(), "changed=true\npackage_sha256=" + comparison["package_sha256"] + "\n")
+        with tarfile.open(self.work / "skill-update-proposal.tar") as archive:
+            self.assertEqual(archive.getmember("./upstream/matt-pocock/README-link").linkname, "README.md")
+            self.assertEqual(archive.getmember("./upstream/matt-pocock/run.sh").mode, 0o755)
+            self.assertTrue(archive.getmember("./upstream/matt-pocock/.github/workflows/dormant.yml").isfile())
+            self.assertTrue(archive.getmember("./sources.snapshot.json").isfile())
+            self.assertEqual(archive.extractfile("./upstream/matt-pocock/binary.dat").read(), b"\x00\xff\xfe\x01source-binary\n")
+
 
 class MonthlyWorkflowContractTests(unittest.TestCase):
     def setUp(self):
@@ -165,6 +177,9 @@ class MonthlyWorkflowContractTests(unittest.TestCase):
         self.assertIn("persist-credentials: false", self.workflow)
         self.assertIn("GIT_ALLOW_PROTOCOL: file", self.workflow)
         self.assertIn("scripts/propose_update.py", self.workflow)
+        self.assertIn("scripts/snapshot_sources.py verify", self.workflow)
+        self.assertIn("skill-update-proposal.tar", self.workflow)
+        self.assertIn("--expected-package-sha256", self.workflow)
         self.assertNotIn("skills.py install", self.workflow)
         self.assertNotIn("git push", self.workflow)
         self.assertIn("scripts/publish_update.py", self.workflow)
@@ -201,7 +216,9 @@ class GeneratedStateSafetyTests(unittest.TestCase):
                    "GIT_CONFIG_GLOBAL": os.devnull}
             subprocess.run(["git", "init", "--quiet"], cwd=root, env=env, check=True)
             paths = [".assimilation-stage-fixture/fetch-matt/.git/config",
-                     ".assimilation-install.lock/owner", ".agents/.assimilation-stage-fixture/backup-skills/SKILL.md"]
+                     ".assimilation-install.lock/owner", ".agents/.assimilation-stage-fixture/backup-skills/SKILL.md",
+                     ".assimilation-snapshot-stage-fixture/fetch/.git/config",
+                     "upstream/.assimilation-snapshot-stage-fixture/backup-matt/README.md"]
             result = subprocess.run(["git", "check-ignore", "--stdin"], cwd=root, env=env,
                                     input="\n".join(paths) + "\n", text=True, capture_output=True)
             self.assertEqual(result.stdout.splitlines(), paths)
