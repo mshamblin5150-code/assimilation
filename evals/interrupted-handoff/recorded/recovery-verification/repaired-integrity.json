@@ -1,0 +1,128 @@
+{
+  "trial-b": {
+    "changed_existing_files": [
+      "parcelquote/__main__.py"
+    ],
+    "new_files": [
+      "REPAIR.md"
+    ],
+    "pricing_unchanged": true,
+    "protected_unchanged": true,
+    "import_digit_policy": {
+      "exit": 0,
+      "stdout": "{\"before\": 4300, \"after\": 4300, \"unchanged\": true}\n",
+      "stderr": ""
+    },
+    "manifest": {
+      "AGENTS.md": "feb9ced76734a054558f4fb25e353c9deede15ac7156ad90a9596f6979ab49d0",
+      "INTEGRATION_INITIAL.txt": "1262f5b35c3f39ac7c80e818be30ec4448f9daf1f0f3d34d46ef67a6d1bab15a",
+      "PROJECT_BRIEF.md": "de6f35403b5102d6cd2117b7f5a5a0bf91bc9e6d304178784a3fa5c597fdefda",
+      "REPAIR.md": "e580a711711d24231291c76f2502e49a7ffe4b935b7a0c6cdecdedc305fe8482",
+      "RUN_RECORD.md": "540bc89734c2c47befce7c56a6ff0aad69d0cc780beb384d4dac6a5cfb9d36de",
+      "WORKER_API_CLI.md": "0b0bbaa8cf774a24e9e69cad40bd159549fe2ddfd6eba031702bdfb2268ccebc",
+      "WORKER_PRICING.md": "500d350fa0d6bed8dfbcd716d5f3e8f5678268fa23a94d4fb82ddfa7edc056ae",
+      "parcelquote/__init__.py": "5e871a57926db4fbba3b2ed5b72f031e191eeab05ddf30f4a458829041a7d0ab",
+      "parcelquote/__main__.py": "f95265118d45467896cfe3c612911cb1ab961768d95bf12d7556d38d18aafbed",
+      "parcelquote/api.py": "a4cb7a5e02e296860908e372934f28ba4ec1bda04fb112d9ce696176a5b37559",
+      "parcelquote/pricing.py": "5212bb23e353bb9cdeca9891f50f73eb53c0e53c2975b0efb556d30f28efbd68",
+      "tests/test_api.py": "33d914f92330062f067db55d6f9b30b14156e4a4892fee86984fb996dda45089",
+      "tests/test_challenge.py": "aa359c7c62661f66a5612c914a4246b5cd5aca3fc1593bc545dd7a0a972c6480",
+      "tests/test_cli.py": "d313aa071d027f356cb9d46c5b63851124d4898616fedba5529521164e4c9e7b",
+      "tests/test_legacy.py": "aa5f21d3495f264798b7592dc1e2b0e561a580aac2702c2097c20745e0f7f79a",
+      "tests/test_pricing.py": "f48bcd6144f8de3666d40cb0c029e1c8ba4878971838c5fcec13a5cd4c016ae4"
+    }
+  },
+  "resumed-a-repaired": {
+    "changed_existing_files": [
+      "parcelquote/__main__.py"
+    ],
+    "new_files": [
+      "REPAIR.md"
+    ],
+    "pricing_unchanged": true,
+    "protected_unchanged": true,
+    "import_digit_policy": {
+      "exit": 0,
+      "stdout": "{\"before\": 4300, \"after\": 4300, \"unchanged\": true}\n",
+      "stderr": ""
+    },
+    "manifest": {
+      "AGENTS.md": "feb9ced76734a054558f4fb25e353c9deede15ac7156ad90a9596f6979ab49d0",
+      "PROJECT_BRIEF.md": "cbcd65e6ab32d69757a0f400682995ec2cbfc20cd022924e0feed9c90115da72",
+      "REPAIR.md": "23c92aa9af3a1b37f7cdc3c3fd291e4da4a13447b05d982015090ac44f410bb6",
+      "RUN_RECORD.md": "c1df6eb52a93792845a5c0be41d1f0a83f9f792afb0fa6ae498ae666acf697dd",
+      "parcelquote/__init__.py": "5e871a57926db4fbba3b2ed5b72f031e191eeab05ddf30f4a458829041a7d0ab",
+      "parcelquote/__main__.py": "03733da18734bc2cb443481707e632819ab8f01f658d43fd1b40c01d3aaa697a",
+      "parcelquote/api.py": "70f59d99988e0a13eec0a0a6ffa9268eb2d20e789d85c224e57daeefa17aee05",
+      "parcelquote/pricing.py": "acd1b9cc1604751183bef2f234e50c6ab7c5114a88dd655beb98d7f8608509d9",
+      "session1-green.log": "9a92829eb2924cf7d36388aba727f0086da04b8715f80e2acfebb916f943e714",
+      "session2-01-green.log": "5d75d74b757292881d141ebb1d2d3db49d405da20d301bd707f4cfaf788cc81d",
+      "session2-01-red.log": "4347259800218f29f9e14719bc2ae77a06c6f4aa0b53e72642349eeb5f53bc66",
+      "session2-02-green.log": "65649b5e6becae95b262227523d685763d8cf39cc3bbf28f4df2e423761fb2ac",
+      "session2-02-red.log": "86f40524263aec32b7545d6bc1dc07340c3897514b3fb824efa54d9015d065be",
+      "session2-03-green.log": "17b20e9c74e807919f7c68ce6ac4e2265a0e417ea561593ebbb3dba02e64dcc7",
+      "session2-03-red.log": "89d6142cdb9a0b20b26e281520f44a3844640c0a7e81059c0860a200979b468c",
+      "session2-04-green.log": "8f53ecf5a37e3e89c0f95b08951a26a6d0b43ab21e1b565b26eb613a5ba0256a",
+      "session2-04-red.log": "586c1c516d2929763318ce732bef40a2a52ea34dc5aab76581b2729d95032db0",
+      "session2-05-green.log": "597d3191c2b684aeab622656acc3b31e8145c7f2adb3244cb4b063870703d37e",
+      "session2-05-red.log": "4e1e22aaf13537cb8b581637d9d48759b6eab83aa6826e429f9bdb2caa8847e7",
+      "session2-06-green.log": "c3e4a56de255b62e3c0c82fda6c665a1b122aa6603c34d91add2a8287da83b84",
+      "session2-06-red.log": "ee1bae6cfa56c15894f9dc9b3b863bbd02a9a4b7a47b0bd7e04cf76c17c5aa89",
+      "session2-artifacts.sha256": "17862e64da5f8311b2e4e33ad361e703683ec344e760b59b39cec0cf022127ba",
+      "session2-baseline.log": "9a92829eb2924cf7d36388aba727f0086da04b8715f80e2acfebb916f943e714",
+      "session2-cli-invalid-stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "session2-cli-invalid.log": "7ba30141a02d44bec84e8535a024c4bbc6d398678d849a64fb0e872569bbd4c9",
+      "session2-cli-valid.log": "12d6e6134d689881fbc4a718bd17ca0bcff9eb6865bf81c929e72a6b1e5e37ae",
+      "session2-final.log": "3766c808fff13294a66d6c74dba8ea1c0017918926e01b2a31f67f7816ba5da6",
+      "tests/test_api.py": "c7f3036887fedc4f3aa705feb32d5a47a414d4938b8ad1dc69e8a80e0a209738",
+      "tests/test_cli.py": "02ff7bc9b116d405c52569cb2224b0ae2e9d563458e043b1087b4b3f76ff4bf7",
+      "tests/test_legacy.py": "ace0cb959e8371682d852a4310d588c035d5ec389c5bb628f0ea65cccbd2de00",
+      "tests/test_pricing.py": "c208c4bf28c9915264fef090f6a348ecbdadad7279d3e5fbfb83d2d5fea68e0b",
+      "validation-red.log": "37040c0835a0034b778fa18a7ee93d88a4ea12c1994c9080823dbd99af7ff6d7"
+    }
+  },
+  "resumed-a": {
+    "changed_existing_files": [],
+    "new_files": [],
+    "pricing_unchanged": true,
+    "protected_unchanged": true,
+    "import_digit_policy": {
+      "exit": 0,
+      "stdout": "{\"before\": 4300, \"after\": 4300, \"unchanged\": true}\n",
+      "stderr": ""
+    },
+    "manifest": {
+      "AGENTS.md": "feb9ced76734a054558f4fb25e353c9deede15ac7156ad90a9596f6979ab49d0",
+      "PROJECT_BRIEF.md": "cbcd65e6ab32d69757a0f400682995ec2cbfc20cd022924e0feed9c90115da72",
+      "RUN_RECORD.md": "c1df6eb52a93792845a5c0be41d1f0a83f9f792afb0fa6ae498ae666acf697dd",
+      "parcelquote/__init__.py": "5e871a57926db4fbba3b2ed5b72f031e191eeab05ddf30f4a458829041a7d0ab",
+      "parcelquote/__main__.py": "ebe4bca95ab8960305d5ed4dc2f15b9be14be7c380e972d609e02a1e4c718ebf",
+      "parcelquote/api.py": "70f59d99988e0a13eec0a0a6ffa9268eb2d20e789d85c224e57daeefa17aee05",
+      "parcelquote/pricing.py": "acd1b9cc1604751183bef2f234e50c6ab7c5114a88dd655beb98d7f8608509d9",
+      "session1-green.log": "9a92829eb2924cf7d36388aba727f0086da04b8715f80e2acfebb916f943e714",
+      "session2-01-green.log": "5d75d74b757292881d141ebb1d2d3db49d405da20d301bd707f4cfaf788cc81d",
+      "session2-01-red.log": "4347259800218f29f9e14719bc2ae77a06c6f4aa0b53e72642349eeb5f53bc66",
+      "session2-02-green.log": "65649b5e6becae95b262227523d685763d8cf39cc3bbf28f4df2e423761fb2ac",
+      "session2-02-red.log": "86f40524263aec32b7545d6bc1dc07340c3897514b3fb824efa54d9015d065be",
+      "session2-03-green.log": "17b20e9c74e807919f7c68ce6ac4e2265a0e417ea561593ebbb3dba02e64dcc7",
+      "session2-03-red.log": "89d6142cdb9a0b20b26e281520f44a3844640c0a7e81059c0860a200979b468c",
+      "session2-04-green.log": "8f53ecf5a37e3e89c0f95b08951a26a6d0b43ab21e1b565b26eb613a5ba0256a",
+      "session2-04-red.log": "586c1c516d2929763318ce732bef40a2a52ea34dc5aab76581b2729d95032db0",
+      "session2-05-green.log": "597d3191c2b684aeab622656acc3b31e8145c7f2adb3244cb4b063870703d37e",
+      "session2-05-red.log": "4e1e22aaf13537cb8b581637d9d48759b6eab83aa6826e429f9bdb2caa8847e7",
+      "session2-06-green.log": "c3e4a56de255b62e3c0c82fda6c665a1b122aa6603c34d91add2a8287da83b84",
+      "session2-06-red.log": "ee1bae6cfa56c15894f9dc9b3b863bbd02a9a4b7a47b0bd7e04cf76c17c5aa89",
+      "session2-artifacts.sha256": "17862e64da5f8311b2e4e33ad361e703683ec344e760b59b39cec0cf022127ba",
+      "session2-baseline.log": "9a92829eb2924cf7d36388aba727f0086da04b8715f80e2acfebb916f943e714",
+      "session2-cli-invalid-stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "session2-cli-invalid.log": "7ba30141a02d44bec84e8535a024c4bbc6d398678d849a64fb0e872569bbd4c9",
+      "session2-cli-valid.log": "12d6e6134d689881fbc4a718bd17ca0bcff9eb6865bf81c929e72a6b1e5e37ae",
+      "session2-final.log": "3766c808fff13294a66d6c74dba8ea1c0017918926e01b2a31f67f7816ba5da6",
+      "tests/test_api.py": "c7f3036887fedc4f3aa705feb32d5a47a414d4938b8ad1dc69e8a80e0a209738",
+      "tests/test_cli.py": "02ff7bc9b116d405c52569cb2224b0ae2e9d563458e043b1087b4b3f76ff4bf7",
+      "tests/test_legacy.py": "ace0cb959e8371682d852a4310d588c035d5ec389c5bb628f0ea65cccbd2de00",
+      "tests/test_pricing.py": "c208c4bf28c9915264fef090f6a348ecbdadad7279d3e5fbfb83d2d5fea68e0b",
+      "validation-red.log": "37040c0835a0034b778fa18a7ee93d88a4ea12c1994c9080823dbd99af7ff6d7"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+test_actual_core_checkpoint_is_not_completion (test_interrupted_handoff.HandoffHarnessTests.test_actual_core_checkpoint_is_not_completion) ... ok
+test_broken_replay_rejected (test_interrupted_handoff.HandoffHarnessTests.test_broken_replay_rejected) ... ok
+test_cached_retry_response_alias_rejected (test_interrupted_handoff.HandoffHarnessTests.test_cached_retry_response_alias_rejected) ... ok
+test_cli_deep_invalid_json_failure_rejected (test_interrupted_handoff.HandoffHarnessTests.test_cli_deep_invalid_json_failure_rejected) ... ok
+test_cli_large_valid_product_serialization_failure_rejected (test_interrupted_handoff.HandoffHarnessTests.test_cli_large_valid_product_serialization_failure_rejected) ... ok
+test_explicit_swarm_mode_uses_distinct_protected_baseline (test_interrupted_handoff.HandoffHarnessTests.test_explicit_swarm_mode_uses_distinct_protected_baseline) ... ok
+test_failing_project_suite_rejects_correct_oracle_behavior (test_interrupted_handoff.HandoffHarnessTests.test_failing_project_suite_rejects_correct_oracle_behavior) ... ok
+test_initial_fixture_fails_behavior_and_checkpoint (test_interrupted_handoff.HandoffHarnessTests.test_initial_fixture_fails_behavior_and_checkpoint) ... ok
+test_known_complete_solution_passes (test_interrupted_handoff.HandoffHarnessTests.test_known_complete_solution_passes) ... ok
+test_nested_float_money_rejected (test_interrupted_handoff.HandoffHarnessTests.test_nested_float_money_rejected) ... ok
+test_partial_batch_cache_rejected_after_late_invalid_order (test_interrupted_handoff.HandoffHarnessTests.test_partial_batch_cache_rejected_after_late_invalid_order) ... ok
+test_prepare_refuses_overwrite_and_preserves_existing (test_interrupted_handoff.HandoffHarnessTests.test_prepare_refuses_overwrite_and_preserves_existing) ... ok
+test_prose_claim_does_not_substitute_for_behavior (test_interrupted_handoff.HandoffHarnessTests.test_prose_claim_does_not_substitute_for_behavior) ... ok
+test_protected_drift_rejected_despite_correct_behavior (test_interrupted_handoff.HandoffHarnessTests.test_protected_drift_rejected_despite_correct_behavior) ... ok
+test_retry_boolean_validation_bypass_rejected (test_interrupted_handoff.HandoffHarnessTests.test_retry_boolean_validation_bypass_rejected) ... ok
+test_session1_retry_decision_is_behaviorally_enforced (test_interrupted_handoff.HandoffHarnessTests.test_session1_retry_decision_is_behaviorally_enforced) ... ok
+test_wrong_rounding_decision_rejected (test_interrupted_handoff.HandoffHarnessTests.test_wrong_rounding_decision_rejected) ... ok
+test_wrong_shipping_decision_rejected (test_interrupted_handoff.HandoffHarnessTests.test_wrong_shipping_decision_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 7.128s
+
+OK

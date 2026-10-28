@@ -1,0 +1,21 @@
+test_invalid_batches_raise_value_error_without_reserving_id (test_api.BatchTests.test_invalid_batches_raise_value_error_without_reserving_id) ... ok
+test_invalid_retry_does_not_replace_valid_batch (test_api.BatchTests.test_invalid_retry_does_not_replace_valid_batch) ... ok
+test_mutations_cannot_change_stored_request_or_response (test_api.BatchTests.test_mutations_cannot_change_stored_request_or_response) ... ok
+test_nested_item_list_order_is_part_of_retry_identity (test_api.BatchTests.test_nested_item_list_order_is_part_of_retry_identity) ... ok
+test_retry_identity_preserves_raw_shape_and_list_order (test_api.BatchTests.test_retry_identity_preserves_raw_shape_and_list_order) ... ok
+test_returns_quotes_in_order_and_accepts_empty_batches (test_api.BatchTests.test_returns_quotes_in_order_and_accepts_empty_batches) ... ok
+test_invalid_json_shape_and_api_errors_are_clean (test_cli.CliTests.test_invalid_json_shape_and_api_errors_are_clean) ... ok
+test_valid_request_prints_single_result (test_cli.CliTests.test_valid_request_prints_single_result) ... ok
+test_empty_negative_fractional_and_generator_inputs (test_legacy.LegacyCompatibilityTests.test_empty_negative_fractional_and_generator_inputs) ... ok
+test_legacy_sum (test_legacy.LegacyTests.test_legacy_sum) ... ok
+test_delivery_threshold_is_discounted_and_inclusive (test_pricing.PricingTests.test_delivery_threshold_is_discounted_and_inclusive) ... ok
+test_discount_rounds_whole_subtotal_down (test_pricing.PricingTests.test_discount_rounds_whole_subtotal_down) ... ok
+test_empty_order_is_free_but_zero_price_order_has_delivery (test_pricing.PricingTests.test_empty_order_is_free_but_zero_price_order_has_delivery) ... ok
+test_invalid_coupons_raise_value_error_even_for_empty_orders (test_pricing.PricingTests.test_invalid_coupons_raise_value_error_even_for_empty_orders) ... ok
+test_invalid_items_raise_value_error (test_pricing.PricingTests.test_invalid_items_raise_value_error) ... ok
+test_nonempty_order_has_subtotal_and_delivery (test_pricing.PricingTests.test_nonempty_order_has_subtotal_and_delivery) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.427s
+
+OK

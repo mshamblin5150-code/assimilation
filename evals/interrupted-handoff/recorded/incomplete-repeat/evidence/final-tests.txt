@@ -1,0 +1,13 @@
+test_existing_empty_negative_fractional_and_generator_inputs (test_legacy.LegacyTests.test_existing_empty_negative_fractional_and_generator_inputs) ... ok
+test_legacy_sum (test_legacy.LegacyTests.test_legacy_sum) ... ok
+test_discount_floors_whole_subtotal (test_pricing.PricingTests.test_discount_floors_whole_subtotal) ... ok
+test_large_integer_amount_remains_exact (test_pricing.PricingTests.test_large_integer_amount_remains_exact) ... ok
+test_prices_quantities_and_shipping (test_pricing.PricingTests.test_prices_quantities_and_shipping) ... ok
+test_rejects_invalid_item_shapes_and_numbers (test_pricing.PricingTests.test_rejects_invalid_item_shapes_and_numbers) ... ok
+test_rejects_unknown_coupons_even_for_empty_orders (test_pricing.PricingTests.test_rejects_unknown_coupons_even_for_empty_orders) ... ok
+test_shipping_uses_discounted_threshold_and_empty_order (test_pricing.PricingTests.test_shipping_uses_discounted_threshold_and_empty_order) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.001s
+
+OK

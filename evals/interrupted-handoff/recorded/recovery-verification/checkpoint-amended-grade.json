@@ -1,0 +1,353 @@
+{
+  "checkpoint": true,
+  "checks": [
+    {
+      "group": "core",
+      "name": "empty",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "nonempty_free_item",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "threshold_below",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "threshold_equal",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "post_discount_threshold",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "discount_threshold_equal",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "aggregate_floor",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "quantity",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "large_integer",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "legacy_regression",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_items_0",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_items_1",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_items_2",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_items_3",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_items_4",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_items_5",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_items_6",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_items_7",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_items_8",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_items_9",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_items_10",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_items_11",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_items_12",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_coupon_''",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_coupon_'save10'",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_coupon_False",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_coupon_0",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_coupon_[]",
+      "passed": true
+    },
+    {
+      "group": "core",
+      "name": "invalid_coupon_{}",
+      "passed": true
+    },
+    {
+      "detail": "NotImplementedError: batch integration pending",
+      "group": "api",
+      "name": "batch_values_and_order",
+      "passed": false
+    },
+    {
+      "detail": "NotImplementedError: batch integration pending",
+      "group": "api",
+      "name": "replay_conflict_mutation_and_instance_isolation",
+      "passed": false
+    },
+    {
+      "detail": "NotImplementedError: batch integration pending",
+      "group": "api",
+      "name": "retry_still_validates_domain_types",
+      "passed": false
+    },
+    {
+      "detail": "NotImplementedError: batch integration pending",
+      "group": "api",
+      "name": "preserved_session1_retry_policy_distinct",
+      "passed": false
+    },
+    {
+      "detail": "NotImplementedError: batch integration pending",
+      "group": "api",
+      "name": "late_invalid_order_is_atomic",
+      "passed": false
+    },
+    {
+      "detail": "NotImplementedError: batch integration pending",
+      "group": "api",
+      "name": "invalid_batch_atomic_0",
+      "passed": false
+    },
+    {
+      "detail": "NotImplementedError: batch integration pending",
+      "group": "api",
+      "name": "invalid_batch_atomic_1",
+      "passed": false
+    },
+    {
+      "detail": "NotImplementedError: batch integration pending",
+      "group": "api",
+      "name": "invalid_batch_atomic_2",
+      "passed": false
+    },
+    {
+      "detail": "NotImplementedError: batch integration pending",
+      "group": "api",
+      "name": "invalid_batch_atomic_3",
+      "passed": false
+    },
+    {
+      "detail": "NotImplementedError: batch integration pending",
+      "group": "api",
+      "name": "invalid_batch_atomic_4",
+      "passed": false
+    },
+    {
+      "detail": "NotImplementedError: batch integration pending",
+      "group": "api",
+      "name": "invalid_batch_atomic_5",
+      "passed": false
+    },
+    {
+      "detail": "NotImplementedError: batch integration pending",
+      "group": "api",
+      "name": "invalid_batch_atomic_6",
+      "passed": false
+    },
+    {
+      "detail": "NotImplementedError: batch integration pending",
+      "group": "api",
+      "name": "invalid_batch_atomic_7",
+      "passed": false
+    },
+    {
+      "detail": "NotImplementedError: batch integration pending",
+      "group": "api",
+      "name": "invalid_batch_atomic_8",
+      "passed": false
+    },
+    {
+      "detail": "NotImplementedError: batch integration pending",
+      "group": "api",
+      "name": "invalid_batch_atomic_9",
+      "passed": false
+    },
+    {
+      "detail": "NotImplementedError: batch integration pending",
+      "group": "api",
+      "name": "invalid_id_None",
+      "passed": false
+    },
+    {
+      "detail": "NotImplementedError: batch integration pending",
+      "group": "api",
+      "name": "invalid_id_''",
+      "passed": false
+    },
+    {
+      "detail": "NotImplementedError: batch integration pending",
+      "group": "api",
+      "name": "invalid_id_1",
+      "passed": false
+    },
+    {
+      "detail": "NotImplementedError: batch integration pending",
+      "group": "api",
+      "name": "invalid_id_True",
+      "passed": false
+    },
+    {
+      "detail": "NotImplementedError: batch integration pending",
+      "group": "api",
+      "name": "invalid_id_[]",
+      "passed": false
+    },
+    {
+      "detail": "AssertionError: 1 != 0",
+      "group": "cli",
+      "name": "valid_batch",
+      "passed": false
+    },
+    {
+      "detail": "AssertionError: 1 != 0",
+      "group": "cli",
+      "name": "large_integer_product",
+      "passed": false
+    },
+    {
+      "detail": "AssertionError: 1 != 2",
+      "group": "cli",
+      "name": "deep_invalid_request",
+      "passed": false
+    },
+    {
+      "detail": "AssertionError: 1 != 2",
+      "group": "cli",
+      "name": "invalid_request_{",
+      "passed": false
+    },
+    {
+      "detail": "AssertionError: 1 != 2",
+      "group": "cli",
+      "name": "invalid_request_null",
+      "passed": false
+    },
+    {
+      "detail": "AssertionError: 1 != 2",
+      "group": "cli",
+      "name": "invalid_request_[]",
+      "passed": false
+    },
+    {
+      "detail": "AssertionError: 1 != 2",
+      "group": "cli",
+      "name": "invalid_request_{}",
+      "passed": false
+    },
+    {
+      "detail": "AssertionError: 1 != 2",
+      "group": "cli",
+      "name": "invalid_request_{\"batch_id\":\"x\",\"orders\":[],\"extra\":true}",
+      "passed": false
+    },
+    {
+      "detail": "AssertionError: 1 != 2",
+      "group": "cli",
+      "name": "invalid_request_{\"batch_id\":\"x\",\"orders\":[{\"order_id\":\"x\",\"items\":null}]}",
+      "passed": false
+    }
+  ],
+  "complete": false,
+  "groups": {
+    "api": false,
+    "cli": false,
+    "core": true
+  },
+  "mode": "interrupted",
+  "passed": true,
+  "pending_integration_unchanged": true,
+  "probe_error": null,
+  "project_tests": {
+    "count": 8,
+    "exit_code": 0,
+    "output": "test_empty_negative_fractional_and_generator_inputs (test_legacy.LegacyCompatibilityTests.test_empty_negative_fractional_and_generator_inputs) ... ok\ntest_legacy_sum (test_legacy.LegacyTests.test_legacy_sum) ... ok\ntest_delivery_threshold_is_discounted_and_inclusive (test_pricing.PricingTests.test_delivery_threshold_is_discounted_and_inclusive) ... ok\ntest_discount_rounds_whole_subtotal_down (test_pricing.PricingTests.test_discount_rounds_whole_subtotal_down) ... ok\ntest_empty_order_is_free_but_zero_price_order_has_delivery (test_pricing.PricingTests.test_empty_order_is_free_but_zero_price_order_has_delivery) ... ok\ntest_invalid_coupons_raise_value_error_even_for_empty_orders (test_pricing.PricingTests.test_invalid_coupons_raise_value_error_even_for_empty_orders) ... ok\ntest_invalid_items_raise_value_error (test_pricing.PricingTests.test_invalid_items_raise_value_error) ... ok\ntest_nonempty_order_has_subtotal_and_delivery (test_pricing.PricingTests.test_nonempty_order_has_subtotal_and_delivery) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.001s\n\nOK\n",
+    "timed_out": false
+  },
+  "protected": {
+    "AGENTS.md": {
+      "actual": "feb9ced76734a054558f4fb25e353c9deede15ac7156ad90a9596f6979ab49d0",
+      "expected": "feb9ced76734a054558f4fb25e353c9deede15ac7156ad90a9596f6979ab49d0"
+    },
+    "PROJECT_BRIEF.md": {
+      "actual": "cbcd65e6ab32d69757a0f400682995ec2cbfc20cd022924e0feed9c90115da72",
+      "expected": "cbcd65e6ab32d69757a0f400682995ec2cbfc20cd022924e0feed9c90115da72"
+    }
+  },
+  "retry_policy": "distinct",
+  "stage": "checkpoint",
+  "synthetic_only": true
+}

@@ -1,0 +1,9 @@
+{
+  "AGENTS.md": "feb9ced76734a054558f4fb25e353c9deede15ac7156ad90a9596f6979ab49d0",
+  "PROJECT_BRIEF.md": "cbcd65e6ab32d69757a0f400682995ec2cbfc20cd022924e0feed9c90115da72",
+  "parcelquote/__init__.py": "5e871a57926db4fbba3b2ed5b72f031e191eeab05ddf30f4a458829041a7d0ab",
+  "parcelquote/__main__.py": "c3fb3d2700e0010420daa957669411823c4b834476f5b16674f3c4f14c8c96d9",
+  "parcelquote/api.py": "8e1c5b21a8167a667217b990524c5c524a3a0b9b46788905c38accb76d2b3ba1",
+  "parcelquote/pricing.py": "4d38ca0341126ab67a8bf9f6b9b167b85e3830fd83fada07d0aaa931b019563d",
+  "tests/test_legacy.py": "aa5f21d3495f264798b7592dc1e2b0e561a580aac2702c2097c20745e0f7f79a"
+}

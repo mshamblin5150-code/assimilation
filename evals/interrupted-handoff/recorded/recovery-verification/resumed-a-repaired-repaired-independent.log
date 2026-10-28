@@ -1,0 +1,13 @@
+test_atomicity_and_mutation (__main__.IndependentChallenge.test_atomicity_and_mutation) ... ok
+test_cli_invalid_deep_json (__main__.IndependentChallenge.test_cli_invalid_deep_json) ... ok
+test_cli_normal_and_boolean_invalid (__main__.IndependentChallenge.test_cli_normal_and_boolean_invalid) ... ok
+test_cli_valid_large_integer_result (__main__.IndependentChallenge.test_cli_valid_large_integer_result) ... ok
+test_equal_boolean_float_retry_rejected_without_corrupting_cache (__main__.IndependentChallenge.test_equal_boolean_float_retry_rejected_without_corrupting_cache) ... ok
+test_legacy_generator (__main__.IndependentChallenge.test_legacy_generator) ... ok
+test_pricing_literal_rounding_and_shipping (__main__.IndependentChallenge.test_pricing_literal_rounding_and_shipping) ... ok
+test_retry_raw_shape_distinct (__main__.IndependentChallenge.test_retry_raw_shape_distinct) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.104s
+
+OK
