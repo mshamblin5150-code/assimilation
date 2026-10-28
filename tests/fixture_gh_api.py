@@ -81,6 +81,10 @@ try:
                               capture_output=True, check=True)
         result = {"sha": proc.stdout.decode().strip()}
     elif path == prefix + "/git/trees" and method == "POST":
+        if state.get("fail_tree_message"):
+            fail(state["fail_tree_message"])
+        if state.get("reject_empty_tree") and not payload["tree"]:
+            fail("Synthetic empty-tree rejection (HTTP 422)")
         with tempfile.TemporaryDirectory() as temp:
             env = {**os.environ, "GIT_INDEX_FILE": str(Path(temp) / "index"), "GIT_WORK_TREE": temp}
             git("read-tree", payload["base_tree"], env=env) if "base_tree" in payload else git("read-tree", "--empty", env=env)
