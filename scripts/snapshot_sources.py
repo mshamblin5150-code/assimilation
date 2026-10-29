@@ -11,12 +11,12 @@ from pathlib import Path, PureWindowsPath
 import re
 import shutil
 import stat
-import subprocess
 import sys
 import tempfile
 import unicodedata
 
 import skills
+import git_runtime
 
 ROOT = skills.ROOT
 MANIFEST = "sources.snapshot.json"
@@ -45,8 +45,12 @@ def regular_path(path: Path) -> None:
     if ".." in path.parts:
         raise RuntimeError(f"Traversal path is not supported: {path}")
     for part in (path, *path.parents):
-        if part.is_symlink():
-            raise RuntimeError(f"Symlink destination or ancestor is not supported: {part}")
+        try:
+            info = part.lstat()
+        except FileNotFoundError:
+            continue
+        if stat.S_ISLNK(info.st_mode) or skills.is_reparse_point(info):
+            raise RuntimeError("Symlink or reparse destination/ancestor is not supported")
 
 
 def read_pins(root: Path) -> dict:
@@ -189,6 +193,8 @@ def review_content(path: str, raw: bytes) -> None:
 
 def file_bytes(path: Path, mode: str) -> bytes:
     info = path.lstat()
+    if skills.is_reparse_point(info) and not stat.S_ISLNK(info.st_mode):
+        raise RuntimeError("Unsupported source reparse point")
     if info.st_size > MAX_BLOB_BYTES:
         raise RuntimeError(f"Source blob exceeds the supported size limit: {path}")
     if mode == "120000":
@@ -215,6 +221,8 @@ def verify_tree(root: Path, files: dict) -> None:
             raise RuntimeError(f"Changed source directory mode: {directory}")
         for item in directory.iterdir():
             info = item.lstat()
+            if skills.is_reparse_point(info) and not stat.S_ISLNK(info.st_mode):
+                raise RuntimeError("Unsupported source reparse point")
             if stat.S_ISDIR(info.st_mode):
                 walk(item)
             else:
@@ -274,20 +282,7 @@ def package_files(root: Path) -> dict:
 
 
 def git_bytes(repo: Path, *args: str, input_bytes: bytes | None = None) -> bytes:
-    # Public exact objects need no credential helper, host config, repository-path
-    # overrides, SSH command, template hook, or executable external transport.
-    env = {key: value for key, value in os.environ.items() if not key.startswith("GIT_")}
-    protocols = {"https", "file"}
-    if "GIT_ALLOW_PROTOCOL" in os.environ:
-        protocols &= set(os.environ["GIT_ALLOW_PROTOCOL"].split(":"))
-    env.update(GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_SYSTEM=os.devnull, GIT_CONFIG_GLOBAL=os.devnull,
-               GIT_ATTR_NOSYSTEM="1", GIT_TERMINAL_PROMPT="0", GIT_ALLOW_PROTOCOL=":".join(sorted(protocols)))
-    process = subprocess.run(["git", "-c", f"core.hooksPath={os.devnull}", "-c", "init.templateDir=",
-                              "-c", "credential.helper=", *args], cwd=repo, env=env, input=input_bytes,
-                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
-    if process.returncode:
-        raise RuntimeError(f"Snapshot Git {args[0]} failed; no source changes adopted")
-    return process.stdout
+    return git_runtime.run(*args, cwd=repo, input_bytes=input_bytes)
 
 
 def head(name: str) -> str:

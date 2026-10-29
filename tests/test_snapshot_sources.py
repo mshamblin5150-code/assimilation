@@ -481,6 +481,69 @@ runpy.run_path(sys.argv[0], run_name='__main__')
                 self.assertEqual(self.state(), before)
                 path.unlink()
 
+    def test_snapshot_git_preserves_caller_transport_denial(self):
+        self.env.pop("GIT_ALLOW_PROTOCOL", None)
+        self.env["GIT_PROTOCOL_FROM_USER"] = "0"
+        before = self.state()
+        result = self.run_tool("refresh")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertEqual(self.state(), before)
+
+    def test_flattened_link_placeholder_is_not_accepted_as_source_symlink(self):
+        self.assertEqual(self.run_tool("refresh").returncode, 0)
+        link = self.root / "upstream/matt-pocock/AGENTS.md"
+        link.unlink()
+        link.write_text("CLAUDE.md")
+        denied = self.run_tool("verify")
+        self.assertNotEqual(denied.returncode, 0)
+        self.assertIn("Expected source symlink", denied.stderr)
+
+    def test_snapshot_destination_reparse_metadata_refuses_without_changes(self):
+        self.assertEqual(self.run_tool("refresh").returncode, 0)
+        before = self.state()
+        launcher = r"""
+import pathlib, runpy, sys, types
+root = pathlib.Path(sys.argv[1])
+original = pathlib.Path.lstat
+def synthetic_reparse(path):
+    info = original(path)
+    if path == root / 'upstream':
+        return types.SimpleNamespace(st_mode=info.st_mode, st_file_attributes=0x400)
+    return info
+pathlib.Path.lstat = synthetic_reparse
+sys.path.insert(0, str(root / 'scripts'))
+sys.argv = [str(root / 'scripts/snapshot_sources.py'), 'refresh', '--approve-update']
+runpy.run_path(sys.argv[0], run_name='__main__')
+"""
+        result = subprocess.run([sys.executable, "-c", launcher, str(self.root)],
+                                cwd=self.root, env=self.env, capture_output=True, text=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("reparse", result.stderr.lower())
+        self.assertEqual(self.state(), before)
+
+    def test_descendant_reparse_metadata_is_refused_before_source_read(self):
+        self.assertEqual(self.run_tool("refresh").returncode, 0)
+        for relative in ("skills", "asset.bin"):
+            launcher = r"""
+import pathlib, runpy, sys, types
+root = pathlib.Path(sys.argv[1])
+selected = root / 'upstream/matt-pocock' / sys.argv[2]
+original = pathlib.Path.lstat
+def synthetic_reparse(path):
+    info = original(path)
+    if path == selected:
+        return types.SimpleNamespace(st_mode=info.st_mode, st_size=info.st_size, st_file_attributes=0x400)
+    return info
+pathlib.Path.lstat = synthetic_reparse
+sys.path.insert(0, str(root / 'scripts'))
+sys.argv = [str(root / 'scripts/snapshot_sources.py'), 'verify']
+runpy.run_path(sys.argv[0], run_name='__main__')
+"""
+            result = subprocess.run([sys.executable, "-c", launcher, str(self.root), relative],
+                                    cwd=self.root, env=self.env, capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0, relative)
+            self.assertIn("reparse", result.stderr.lower())
+
     def test_git_config_cannot_redirect_fetch_to_an_external_helper(self):
         marker = self.work / "helper-executed"
         helper = self.work / "malicious-helper"

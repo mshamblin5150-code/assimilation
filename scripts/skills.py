@@ -15,9 +15,9 @@ from pathlib import Path, PureWindowsPath
 import re
 import shutil
 import stat
-import subprocess
 import sys
 import tempfile
+import git_runtime
 
 ROOT = Path(__file__).resolve().parents[1]
 LOCK = ROOT / "sources.lock.json"
@@ -46,23 +46,38 @@ SHA_RE = re.compile(r"^[a-f0-9]{40}$")
 
 
 def git(*args: str, cwd: Path | None = None, capture: bool = True) -> str:
-    cmd = ["git", *args]
-    proc = subprocess.run(cmd, cwd=cwd, text=True, stdout=subprocess.PIPE if capture else None,
-                          stderr=subprocess.PIPE, check=False)
-    if proc.returncode:
-        detail = (proc.stderr or "").strip()
-        raise RuntimeError(f"git {' '.join(args[:3])} failed: {detail[:600]}")
-    return (proc.stdout or "").strip()
+    return git_runtime.run(*args, cwd=cwd, capture=capture).decode("utf-8").strip()
 
 
 def effective_source(name: str) -> str:
-    # Override is for local mirrors and deterministic offline tests; never persisted as a credential.
-    return os.environ.get(f"ASSIMILATION_{name.upper()}_SOURCE", SOURCES[name]["url"])
+    if name not in SOURCES:
+        raise RuntimeError("Unknown source")
+    official = SOURCES[name]["url"]
+    selected = os.environ.get(f"ASSIMILATION_{name.upper()}_SOURCE", official)
+    if selected == official:
+        return official
+    if not selected or len(selected) > 4096 or any(ord(char) < 32 for char in selected):
+        raise RuntimeError("Invalid source mirror")
+    # Overrides are local filesystem mirrors, never credential-bearing URLs,
+    # scp syntax, remote helpers or alternate network authorities.
+    if "://" in selected or "::" in selected or (":" in selected and not (os.name == "nt" and PureWindowsPath(selected).drive)):
+        raise RuntimeError("Source overrides support local filesystem mirrors only")
+    return str(Path(selected).absolute())
+
+
+def source_acquisition(name: str) -> dict[str, str]:
+    selected = effective_source(name)
+    kind = "official-https" if selected == SOURCES[name]["url"] else "operator-local-mirror"
+    return {"kind": kind, "source_sha256": hashlib.sha256(selected.encode("utf-8")).hexdigest()}
 
 
 def head(name: str) -> str:
     spec = SOURCES[name]
-    value = git("ls-remote", effective_source(name), f"refs/heads/{spec['branch']}")
+    # No source comparison runs in a caller-controlled repository context.
+    with tempfile.TemporaryDirectory(prefix="assimilation-source-head-") as directory:
+        repo = Path(directory)
+        git("init", "--bare", "--quiet", cwd=repo)
+        value = git("ls-remote", effective_source(name), f"refs/heads/{spec['branch']}", cwd=repo)
     if not value:
         raise RuntimeError(f"Could not locate {name} branch {spec['branch']}")
     sha = value.split()[0]
@@ -107,17 +122,15 @@ def check() -> int:
 
 def clone_sparse(name: str, dest: Path, revision: str | None = None) -> str:
     spec = SOURCES[name]
-    if revision is None:
-        git("clone", "--quiet", "--depth", "1", "--filter=blob:none", "--sparse", "--branch", spec["branch"],
-            effective_source(name), str(dest))
-        git("sparse-checkout", "set", *spec["sparse"], cwd=dest)
-    else:
-        git("init", "--quiet", str(dest))
-        git("remote", "add", "origin", effective_source(name), cwd=dest)
-        git("sparse-checkout", "init", "--cone", cwd=dest)
-        git("sparse-checkout", "set", *spec["sparse"], cwd=dest)
-        git("fetch", "--quiet", "--depth", "1", "--filter=blob:none", "origin", revision, cwd=dest)
-        git("checkout", "--quiet", "--detach", "FETCH_HEAD", cwd=dest)
+    # Build a fresh repository before any remote operation. Unlike clone from
+    # the caller's cwd, fetch here cannot load that caller's local Git config.
+    git("init", "--quiet", str(dest))
+    git("remote", "add", "origin", effective_source(name), cwd=dest)
+    git("sparse-checkout", "init", "--cone", cwd=dest)
+    git("sparse-checkout", "set", *spec["sparse"], cwd=dest)
+    git("fetch", "--quiet", "--depth", "1", "--filter=blob:none", "origin",
+        revision if revision is not None else f"refs/heads/{spec['branch']}", cwd=dest)
+    git("checkout", "--quiet", "--detach", "FETCH_HEAD", cwd=dest)
     sha = git("rev-parse", "HEAD", cwd=dest)
     if not SHA_RE.fullmatch(sha) or (revision is not None and sha != revision):
         raise RuntimeError("Could not verify exact checkout hash")
@@ -145,6 +158,8 @@ def contained_link_file(link: Path, source_root: Path) -> Path:
                 continue
             cursor = cursor / part
             info = cursor.lstat()
+            if is_reparse_point(info) and not stat.S_ISLNK(info.st_mode):
+                raise RuntimeError("Unsupported source reparse point")
             if index != len(parts) - 1:
                 if not stat.S_ISDIR(info.st_mode):
                     raise RuntimeError(f"Symlink target traverses a non-directory or directory link: {link}")
@@ -160,16 +175,21 @@ def contained_link_file(link: Path, source_root: Path) -> Path:
     raise RuntimeError(f"Cyclic source symlink: {link}")
 
 
-def fingerprint(path: Path, *, file_link_roots: tuple[Path, ...] = ()) -> str:
+def fingerprint(path: Path, *, file_link_roots: tuple[Path, ...] = (),
+                exclude_git: bool = False) -> str:
     """Hash complete trees; only explicitly scoped fetched collections permit file links."""
     digest = hashlib.sha256()
 
     def visit(item: Path, relative: str) -> None:
         info = item.lstat()
         mode = stat.S_IMODE(info.st_mode)
+        if is_reparse_point(info) and not stat.S_ISLNK(info.st_mode):
+            raise RuntimeError("Unsupported source reparse point")
         if stat.S_ISDIR(info.st_mode):
             digest.update(json.dumps([relative, "directory", mode]).encode() + b"\0")
             for child in sorted(item.iterdir()):
+                if exclude_git and child.name == ".git":
+                    continue
                 visit(child, f"{relative}/{child.name}")
         elif stat.S_ISREG(info.st_mode):
             digest.update(json.dumps([relative, "file", mode]).encode() + b"\0")
@@ -189,13 +209,25 @@ def fingerprint(path: Path, *, file_link_roots: tuple[Path, ...] = ()) -> str:
     return digest.hexdigest()
 
 
+def is_reparse_point(info) -> bool:
+    """Recognize Windows reparse metadata, including on the Python 3.10 floor."""
+    return bool(getattr(info, "st_file_attributes", 0)
+                & getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400))
+
+
 def validate_path(path: Path) -> None:
-    """Reject links in destinations and their project-local ancestors."""
-    for part in [path, *path.parents]:
+    """Reject escapes and links/reparse points in project destinations."""
+    if ".." in path.parts or not path.absolute().is_relative_to(ROOT):
+        raise RuntimeError("Destination is outside the project")
+    for part in (path, *path.parents):
+        try:
+            info = part.lstat()
+        except FileNotFoundError:
+            info = None
+        if info is not None and (stat.S_ISLNK(info.st_mode) or is_reparse_point(info)):
+            raise RuntimeError("Symlink or reparse destination/ancestor is not supported")
         if part == ROOT:
             break
-        if part.is_symlink():
-            raise RuntimeError(f"Symlink destination or ancestor is not supported: {part}")
 
 
 def ownership(target: Path, *, allow_unowned: bool) -> dict[str, str]:
@@ -238,6 +270,9 @@ def write_ownership(target: Path, names: list[str], *, fetched: bool = False) ->
 def copy_source(source: Path, target: Path, *, fetched: bool = False) -> None:
     if source.is_symlink() or not source.is_dir():
         raise RuntimeError(f"Source root is not a regular directory: {source}")
+    # Validate the source before copytree can follow a junction and erase its
+    # reparse metadata. Exclude precisely the Git metadata copytree also ignores.
+    fingerprint(source, file_link_roots=(source,) if fetched else (), exclude_git=fetched)
     # Preserve link spelling; validate scoped targets before reading their bytes.
     shutil.copytree(source, target, symlinks=True,
                     ignore=shutil.ignore_patterns(".git") if fetched else None)
@@ -281,6 +316,144 @@ def replace_transaction(replacements: list[Replacement]) -> None:
             raise RuntimeError(f"Installation failed ({error}); rollback incomplete. "
                                "Keep and recover retained backups: " + "; ".join(failures)) from error
         raise
+
+
+def metadata_blocks(text: str) -> dict[str, tuple[str, list[str]]]:
+    """Read a deliberately bounded YAML mapping; refuse ambiguous structures.
+
+    This is not a general YAML loader. Nested blocks remain opaque until their
+    owning field validates them. Quoted simple keys and comments are supported.
+    """
+    result = {}
+    current = None
+    for line in text.splitlines():
+        if not line.strip() or line.lstrip().startswith("#"):
+            continue
+        if "\t" in line:
+            raise RuntimeError("Unsupported tab in skill metadata")
+        if line.startswith(" "):
+            if current is None:
+                raise RuntimeError("Detached skill metadata block")
+            result[current][1].append(line)
+            continue
+        matched = re.fullmatch(r'''(?:([A-Za-z][\w-]*)|'([A-Za-z][\w-]*)'|"([A-Za-z][\w-]*)"):\s*(.*)''', line)
+        if not matched:
+            raise RuntimeError("Unsupported skill metadata mapping syntax")
+        key = next(value for value in matched.groups()[:3] if value is not None)
+        if key in result:
+            raise RuntimeError(f"Duplicate skill metadata key: {key}")
+        result[key] = (matched[4], [])
+        current = key
+    return result
+
+
+def metadata_bool(value: tuple[str, list[str]]) -> bool:
+    scalar, children = value
+    matched = re.fullmatch(r"(true|false)\s*(?:#.*)?", scalar, re.I)
+    if children or not matched:
+        raise RuntimeError("Skill invocation policy must be an unambiguous boolean")
+    return matched[1].lower() == "true"
+
+
+def metadata_string(value: str) -> str:
+    value = value.strip()
+    if value.startswith('"'):
+        try:
+            parsed = json.loads(value)
+        except ValueError:
+            raise RuntimeError("Unsupported quoted skill metadata value") from None
+        if isinstance(parsed, str):
+            return parsed
+    elif value.startswith("'") and value.endswith("'"):
+        inner = value[1:-1]
+        if "'" not in inner.replace("''", ""):
+            return inner.replace("''", "'")
+    elif (re.fullmatch(r"[A-Za-z_./][A-Za-z0-9_./() :*?=,~-]*", value)
+          and value.lower() not in {"null", "true", "false", "yes", "no", "on", "off"}
+          and not re.search(r":(?:\s|$)", value)):
+        return value
+    raise RuntimeError("Unsupported skill metadata string; review its syntax")
+
+
+def metadata_scope(value: tuple[str, list[str]]) -> str | list[str]:
+    scalar, children = value
+    if not scalar or scalar.startswith("#"):
+        if not children:
+            raise RuntimeError("Empty skill scope declaration")
+        items = []
+        for line in children:
+            matched = re.fullmatch(r"  - (.+)", line)
+            if not matched:
+                raise RuntimeError("Unsupported skill scope list")
+            items.append(metadata_string(matched[1]))
+        return items
+    if children:
+        raise RuntimeError("Ambiguous skill scope declaration")
+    if scalar.startswith("[") and scalar.endswith("]"):
+        try:
+            parsed = json.loads(scalar)
+        except ValueError:
+            inner = scalar[1:-1].strip()
+            return [metadata_string(part) for part in inner.split(",")] if inner else []
+        if isinstance(parsed, list) and all(isinstance(item, str) for item in parsed):
+            return parsed
+        raise RuntimeError("Skill scope list must contain only strings")
+    return metadata_string(scalar)
+
+
+def bridge_policy(skill: Path) -> tuple[str, bool]:
+    """Preserve supported host restrictions without activating source tooling."""
+    lines = (skill / "SKILL.md").read_text(encoding="utf-8-sig").splitlines()
+    if not lines or lines[0] != "---":
+        fields = {}  # Legacy plain-text sources declare no frontmatter policy.
+    else:
+        if "---" not in lines[1:]:
+            raise RuntimeError("Skill metadata delimiter is incomplete")
+        fields = metadata_blocks("\n".join(lines[1:lines.index("---", 1)]))
+    for key in ("name", "description", "icon", "color"):
+        if key in fields:
+            scalar, children = fields[key]
+            if children and not (key == "description" and scalar in {">", ">-", ">+", "|", "|-", "|+"}):
+                raise RuntimeError("Unsupported nested skill metadata scalar")
+    supported = {"name", "description", "metadata", "icon", "color", "paths",
+                 "disable-model-invocation", "user-invocable", "allowed-tools"}
+    if set(fields) - supported:
+        raise RuntimeError("Unsupported skill metadata key; review before bridge activation")
+    disabled = metadata_bool(fields["disable-model-invocation"]) if "disable-model-invocation" in fields else None
+    implicit = None
+    sidecar = skill / "agents/openai.yaml"
+    if sidecar.exists():
+        host_fields = metadata_blocks(sidecar.read_text(encoding="utf-8-sig"))
+        if set(host_fields) - {"interface", "policy"}:
+            raise RuntimeError("Unsupported host metadata; no dependencies are activated by a bridge")
+        if "policy" in host_fields:
+            scalar, children = host_fields["policy"]
+            if scalar and not scalar.startswith("#"):
+                raise RuntimeError("Unsupported host policy mapping")
+            if any(not line.startswith("  ") for line in children):
+                raise RuntimeError("Unsupported host policy indentation")
+            policy = metadata_blocks("\n".join(line[2:] for line in children))
+            if set(policy) != {"allow_implicit_invocation"}:
+                raise RuntimeError("Unsupported host invocation policy")
+            implicit = metadata_bool(policy["allow_implicit_invocation"])
+    if disabled is not None and implicit is not None and disabled == implicit:
+        raise RuntimeError("Conflicting host invocation policies; reconcile the source")
+    restricted = disabled is True or implicit is False
+    declarations = []
+    if disabled is not None or restricted:
+        declarations.append(f"disable-model-invocation: {'true' if restricted else 'false'}\n")
+    if "user-invocable" in fields:
+        visible = metadata_bool(fields["user-invocable"])
+        declarations.append(f"user-invocable: {'true' if visible else 'false'}\n")
+    for key in ("allowed-tools", "paths"):
+        if key in fields:
+            value = metadata_scope(fields[key])
+            if isinstance(value, list):
+                declarations.append(key + ":\n" + "".join("  - " + json.dumps(item) + "\n" for item in value)
+                                    if value else key + ": []\n")
+            else:
+                declarations.append(key + ": " + json.dumps(value) + "\n")
+    return "".join(declarations), restricted
 
 
 def install(approve_update: bool, update_plan: Path | None = None, locked: bool = False) -> None:
@@ -367,19 +540,27 @@ def _install(approve_update: bool, update_plan: Path | None, locked: bool) -> No
             if not skills:
                 raise RuntimeError(f"{name} has no discoverable SKILL.md directories")
             for skill in skills:
+                if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", skill.name):
+                    raise RuntimeError("Unsupported skill directory name")
+                declarations, restricted = bridge_policy(skill)
                 key = f"{spec['prefix']}-{skill.name}"
                 folder = bridges / key
                 folder.mkdir()
                 source_path = (Path("vendor") / name / spec["skill_dir"] / skill.name / "SKILL.md").as_posix()
                 folder.joinpath("SKILL.md").write_text(
-                    "---\n" + f"name: {key}\n" + f"description: Entry point to the upstream {name} skill '{skill.name}'. Read full original source before use.\n" + "---\n\n" +
+                    "---\n" + f"name: {key}\n" + f"description: Entry point to the upstream {name} skill '{skill.name}'. Read full original source before use.\n" + declarations + "---\n\n" +
                     f"# {key}\n\nRead the complete original file at `{source_path}` and ALL its required references BEFORE doing the work. "
                     "Respect original invocation restrictions, prerequisites, tool capabilities and project authority. "
                     "This bridge is NOT an independent rewritten or automatically executed skill. "
                     "Read `AGENTS.md` for approval, safety, and reporting boundaries.\n",
                     encoding="utf-8")
+                if restricted:
+                    (folder / "agents").mkdir()
+                    (folder / "agents/openai.yaml").write_text(
+                        "policy:\n  allow_implicit_invocation: false\n", encoding="utf-8")
             total[name] = len(skills)
             locks[name] = {"repository": spec["url"], "branch": spec["branch"], "sha": sha,
+                           "acquisition": source_acquisition(name),
                            "skills_exposed": len(skills), "installed_at_utc": dt.datetime.now(dt.timezone.utc).isoformat()}
 
         # Make locally authored skills discoverable in the same namespaced directory.

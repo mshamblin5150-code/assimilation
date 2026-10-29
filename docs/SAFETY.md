@@ -17,3 +17,60 @@ Assimilation is intended for public sharing. It includes only **generalized** id
 **Fetched source links:** the installer preserves relative links to regular files contained within each fetched collection, including Matt's `AGENTS.md` link to `CLAUDE.md`. It rejects escaping, absolute, dangling, cyclic, directory, and special-file links. Destination paths, generated skills, local skill copies, and unmanaged content remain link-free. Source preservation does not execute or endorse the linked instructions.
 
 **Snapshot content checks:** exact license inventories and known private-key/GitHub-token signatures are checked before source publication. They are bounded checks, not a complete secret scanner, a code review, or permission to execute preserved files. Review changes independently.
+
+**Installer Git boundary:** source discovery and fetching use fresh repositories,
+not the caller's repository configuration. Installer Git subprocesses discard
+inherited `GIT_*` overrides, system/global config, askpass commands, hooks,
+templates, credential helpers and filesystem monitors. Only HTTPS and local file
+transports are permitted, intersected with a caller's narrower `GIT_ALLOW_PROTOCOL`
+limit. `GIT_PROTOCOL_FROM_USER=0` also keeps local file transport disabled.
+Explicit `ASSIMILATION_MATT_SOURCE` / `ASSIMILATION_PSTACK_SOURCE` overrides accept
+local filesystem paths only (not alternate remote URLs or `file://` URLs). The
+canonical official URL remains the expected source identity, while new unlocked
+lock entries record acquisition kind and a SHA-256 selection fingerprint without
+persisting private paths or credentials. That distinction is not official-host
+attestation; exact locked commit checks verify content identity. Existing locked
+bytes are preserved.
+Installer and snapshot commands share `scripts/git_runtime.py`; raw Git failures
+are suppressed and each Git subprocess has a timeout. This does not change host Git settings. It assumes a trusted Git executable,
+Python runtime and operating system. Custom credential-helper, SSH, proxy or URL
+rewrite configurations are not an installer compatibility promise; environments
+that require them need a separately reviewed source-access design.
+
+**Bridge invocation policy:** generated bridges preserve supported
+`disable-model-invocation`, `user-invocable`, `allowed-tools`, and `paths`
+restrictions. An explicit-only declaration in either source frontmatter or
+`agents/openai.yaml` yields both the frontmatter restriction and
+`policy.allow_implicit_invocation: false` in the generated sidecar. Sources with
+neither restriction retain ordinary invocation behavior. Original source bytes
+and source sidecars remain in `vendor/`; generated sidecars contain only invocation
+policy, never upstream dependency/tool activation. These are host discovery
+controls, not an operating-system sandbox, and host enforcement must be verified
+for the actual agent being used.
+
+The standard-library metadata reader accepts a bounded mapping form: simple or
+quoted keys, UTF-8 BOM/CRLF input, explicit boolean values with optional comments, scalar/list tool
+and path scopes, and the currently shipped source metadata. Aliases, merges,
+tags, conflicting host policy, duplicate keys, unknown activation fields and
+unsupported structures refuse before destination replacement. This intentionally
+requires review when upstream adds a new control. Plain-text legacy skills with
+no frontmatter remain supported and can still declare a sidecar policy. The
+reader is not a general YAML implementation.
+
+**Do not run upstream linking scripts as Assimilation setup.** In particular,
+[`upstream/matt-pocock/scripts/link-skills.sh`](../upstream/matt-pocock/scripts/link-skills.sh)
+is a preserved upstream maintainer script that deletes existing non-symlink
+skill directories in user-level destinations before creating links. Assimilation
+never calls it. Use only the reviewed first-party installer when installation is
+authorized. Keeping this script verbatim preserves provenance; its presence is
+not permission to execute it or to bypass collision/ownership checks.
+
+
+**Full audit reconciliation:** [finding-by-finding dispositions](AUDIT_RECONCILIATION.md)
+distinguish supported installer defects from preserved opt-in utility hazards.
+Watcher bootstrap, statechart runtime/view execution, worktree transcript access,
+credential wizards, broad permission instructions and regex guardrails remain
+inactive reference material, not approved operations. Host capabilities must
+constrain an explicitly selected workflow independently of its prose. Destination
+and source checks reject reparse metadata; concurrent path substitution, native
+Windows ACL/link behavior and live host enforcement still require separate tests.
