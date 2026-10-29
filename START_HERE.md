@@ -44,6 +44,12 @@ Original invocation/frontmatter restrictions still apply. Reading a source refer
 
 **Done when:** the task's selected original Matt and P-Stack material has actually been read, or a precise access/invocation blocker is recorded. Explain omissions when a collection has no applicable method; unrelated ceremony is not success.
 
+### Recognize a project that needs a map
+
+From the operator's plain-language goal, decide whether the route is both uncertain and too large for one session. If so, follow **`wayfinder` → `to-spec` → `to-tickets` → implementation** using [the connected workflow](docs/WORKFLOW.md#large-uncertain-projects-from-map-to-implementation). The operator does not need to request these skills by name. Read the original for each stage when it becomes relevant, record its output and the next unresolved gate, and carry that state into the handoff. Do not jump from a map directly to building or mistake planning approval for implementation authority. Preserve original invocation restrictions and required human decisions; if native invocation is unavailable, disclose the permitted procedural adaptation.
+
+For a small, understood edit, a bounded bug, or a factual question, use the direct appropriate skill instead. A large project with an already agreed specification can resume at ticketing after verifying that specification and its authority; do not rebuild an existing map merely to perform the ceremony.
+
 ## 4. Ground the plan in this project
 
 Read the smallest relevant code, data schema, documents and existing decisions. Reproduce a reported failure before proposing a fix, or work an acceptance example for a feature. Establish domain vocabulary from the project rather than importing Assimilation's example projects. Record significant new decisions with owner, alternatives and consequences using the project's format or [ADR template](docs/templates/ADR.md). An assumption is not an accepted decision.
