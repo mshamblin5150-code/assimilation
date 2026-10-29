@@ -34,3 +34,17 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+
+## Clinical Skills spelling scanner
+
+`scripts/spelling_scan.py` is derived from Matt-authorized Clinical Skills source,
+not independently authored Assimilation code. See [source provenance and authorization](docs/SPELLING_SCAN.md#source-and-authorization).
+The source commit contains no license file. On 2026-10-29, following the explicit
+ownership-conditional licensing question recorded in the provenance document,
+Matt Shamblin granted the copied/derived portions of this scanner, including its
+incorporated helper adaptations, under Assimilation's existing [MIT license](LICENSE).
+Copyright (c) 2026 Matt Shamblin. Retain that copyright and permission notice with
+copies or substantial portions as required by the license. Source history includes
+AI coauthor trailers; no claim of independent or sole authorship is made here.
+This narrow grant does not license unrelated Clinical Skills material or alter
+other upstream notices. No Clinical fixtures or private data are included.
