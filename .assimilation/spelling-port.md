@@ -170,5 +170,20 @@ no sole-authorship claim was added. Clinical working files remain unchanged.
 
 Changed files: scanner header, docs/SPELLING_SCAN.md, THIRD_PARTY_NOTICES.md,
 and this handoff. Runtime behavior and test code are unchanged.
-Full revalidation and independent review of this narrow change are pending.
+Independent Standards and Spec reviewers examined narrow candidate
+`3bd3b6c61fc23bbf4bc9000a7b90b6ef56a3bb85`: zero findings on each axis.
+Standards independently ran the 15 focused tests successfully. Both checked that
+executable scanner AST nodes are unchanged; only comments/module documentation
+changed. Spec also inspected named source-history identities and creation metadata.
+Snapshot verification passed and LICENSE, upstream trees and manifests have no diff.
+This evidence-only handoff update follows that review; the full suite and snapshot
+verifier must run on the resulting committed HEAD before push. The parent delivery
+will report the exact tested/pushed hash and actual results. Local validation log:
+`/tmp/assimilation-licensing-final-tests.log`.
+
 Parent retains final hosted verification and merge. No new PR will be created.
+Existing PR #7 metadata was verified as open, draft, unmerged on the expected
+branch/base before this update. Its description still contains the historical
+licensing hold; parent should replace that paragraph with the current narrow grant
+and latest candidate validation before final acceptance. The old proposed body
+above remains preserved as chronology rather than overwritten.
