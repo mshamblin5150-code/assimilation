@@ -1,5 +1,25 @@
 # Assimilation
 
+## If an explanation does not make sense, say “Wait, what?”
+
+You do not need engineering vocabulary to use this repository. Tell your agent: **“Wait, what? Use the `wait-what` skill to explain that again in plain language.”** Ask it to read [Matt Pocock’s original `wait-what` skill](upstream/matt-pocock/skills/productivity/wait-what/SKILL.md), give a little context, and use your project’s glossary when one exists. You can ask for another, simpler explanation whenever you need one.
+
+For example:
+
+> **Agent:** “Use bounded multi-agent delegation, coordinator synthesis, and independent adversarial verification.”
+>
+> **You:** “Wait, what?”
+>
+> **Agent:** “Give each AI helper one clear job. A coordinating AI agent puts the pieces together. A different reviewing AI agent checks whether the result works and looks for mistakes.”
+>
+> **You:** “Simpler, please.”
+>
+> **Agent:** “One AI agent does a small piece of work. A coordinating AI agent combines the pieces. A separate AI agent checks the result.”
+
+If separate AI agents are unavailable, the agent should say so and perform a clearly labeled sequential review where possible—not claim that independent drones checked its work.
+
+Simpler language should preserve the meaning, not talk down to you or hide important trade-offs. This is a **user-requested** skill, not an automatic trigger. Plain-language requests work as instructions when your agent can read the source; `/wait-what` is only an option if your host actually supports and has registered that command. Reading this repository does not install a command or give an agent new tools.
+
 > **New agent with only this URL? [Start here and perform one real task](START_HERE.md).** Establish actual capabilities, read relevant original skills, act within authority, and deliver evidence—not a doctrine recital.
 
 **A portable, public-ready, language-independent AI engineering doctrine.**
