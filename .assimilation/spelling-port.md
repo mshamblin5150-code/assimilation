@@ -54,15 +54,46 @@ Existing snapshots/licenses remain byte-identical.
 
 ## Verification status
 
-Focused scanner tests: 14 passed after tracked-file regression included the new
+Focused scanner tests: 15 passed after tracked-file regression included the new
 files. Covers all 37 entries/counterparts, bounded and deliberately missed forms,
 mentions, counts, staged vs unstaged bytes, quoted filenames, scope pruning,
 evidence separation, unreadable/invalid/NUL inputs, links, and safe diagnostics.
 `python scripts/spelling_scan.py --all`: exit 0, no listed maintained uses,
-46 text files read, 913 paths excluded at this point.
+46 text files read, 914 paths excluded after adding this handoff.
 `python scripts/snapshot_sources.py verify`: passed both upstream snapshots.
 The cloud checkout initially used 0600/0700 permissions due to its umask; restored
 Git-recorded 0644/0755 checkout modes for the pre-existing snapshot verifier.
 No upstream content changes were made.
 
-Full suite and independent review are pending; update before delivery.
+The first full-suite attempt (135 tests) failed because temporary checkout
+fixtures inherited cloud umask 077. Rerun with standard umask 022 passed all
+135 tests. Final full-suite rerun after the review fix: **136 passed in 41.500s**.
+Command (with umask 022):
+`GIT_ALLOW_PROTOCOL=file GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=/dev/null python -m unittest discover -s tests -v`.
+Full local log: `/tmp/assimilation-tests-final.log`.
+`--record`: exit 0, 97 evaluation text files read, no listed historical forms.
+Default staged command and `--all`: exit 0; final snapshot verification passed.
+
+## Independent review
+
+Standards reviewer: `/root/standards_review`. Spec reviewer: `/root/spec_review`.
+Both independently found filename-only symlinks bypassed regular-file checks.
+Commit `c2d53879dd8df703a125bb68c21b713c49c48fa8` validates every selected path's
+working-tree or index metadata before selecting contents, including `.txt`.
+Each reviewer independently reran the 15-test focused suite and confirmed the
+finding closed with no remaining findings on its own axis. No reviewers edited
+files or published anything. The injected-owned-prose test now invokes the actual
+CI regression test and observes its failure while the advisory CLI returns 0.
+
+Source equivalence: independent Spec review verified all nine vocabulary/pattern
+assignments and seven matching/mention/rendering AST definitions match the pinned
+Clinical source exactly. No private corpus was used.
+
+## Next safe action
+
+Implementation and verification are complete. Authorized publication is one
+reviewed branch push and one draft PR, with results/URL delivered to parent.
+The implementation reviewed by both agents is `c2d53879dd8df703a125bb68c21b713c49c48fa8`;
+subsequent changes only finalize this handoff's evidence.
+No merge; licensing grant and final candidate eligibility remain parent/owner
+choices. No denied or uncertain remote mutation has occurred.
