@@ -34,3 +34,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+
+## Clinical Skills spelling scanner
+
+`scripts/spelling_scan.py` is derived from Matt-authorized Clinical Skills source,
+not independently authored Assimilation code. See [source provenance and authorization](docs/SPELLING_SCAN.md#source-and-authorization).
+The source commit contains no license file. Assimilation's root MIT license does
+not assign a new license to the copied/derived source portions. A broader public
+redistribution grant remains unresolved pending the source owner's decision.
+No Clinical fixtures or private data are included.

@@ -62,6 +62,7 @@ The philosophy: no challenge is dismissed merely as “too big.” Break it down
 
 - [How to publish Assimilation publicly](docs/PUBLISH.md) — create the GitHub repository with the current package.
 
+- [Listed spelling check](docs/SPELLING_SCAN.md) — advisory reports and scoped CI regression coverage.
 - [Engineering doctrine](docs/DOCTRINE.md) — decision boundaries, autonomy, ADRs, quality and completion.
 - [Skill source manifest](docs/SOURCES.md) — precise upstream repositories, licenses, provenance, install choices.
 - [Routing skills](docs/WORKFLOW.md) — default grilling, Wayfinder, specs, tickets, implementation, review.
