@@ -39,7 +39,12 @@ SOFTWARE.
 
 `scripts/spelling_scan.py` is derived from Matt-authorized Clinical Skills source,
 not independently authored Assimilation code. See [source provenance and authorization](docs/SPELLING_SCAN.md#source-and-authorization).
-The source commit contains no license file. Assimilation's root MIT license does
-not assign a new license to the copied/derived source portions. A broader public
-redistribution grant remains unresolved pending the source owner's decision.
-No Clinical fixtures or private data are included.
+The source commit contains no license file. On 2026-10-29, following the explicit
+ownership-conditional licensing question recorded in the provenance document,
+Matt Shamblin granted the copied/derived portions of this scanner, including its
+incorporated helper adaptations, under Assimilation's existing [MIT license](LICENSE).
+Copyright (c) 2026 Matt Shamblin. Retain that copyright and permission notice with
+copies or substantial portions as required by the license. Source history includes
+AI coauthor trailers; no claim of independent or sole authorship is made here.
+This narrow grant does not license unrelated Clinical Skills material or alter
+other upstream notices. No Clinical fixtures or private data are included.

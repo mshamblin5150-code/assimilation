@@ -1,10 +1,14 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 Matt Shamblin
+# Source-derived portions licensed by Matt Shamblin on 2026-10-29; see ../LICENSE.
 """Advisory scan of Assimilation-owned writing for a bounded spelling list.
 
 Derived from Clinical Skills tools/spelling_scan.py, commit
 5f5be786eedca65a5c1a74bdf409b59bf6085b34, blob
 093d374364c1459c7b0a84d5318a53ca6d0db71c, copied with Matt Shamblin's
-explicit authorization. See docs/SPELLING_SCAN.md for provenance, scope,
-license limits, and the separate CI regression check. No hooks are installed.
+explicit authorization, including the MIT grant dated 2026-10-29 for these
+copied/derived portions. See LICENSE and docs/SPELLING_SCAN.md for provenance,
+scope, and the separate CI regression check. No hooks are installed.
 """
 from __future__ import annotations
 

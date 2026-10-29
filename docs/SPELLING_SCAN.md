@@ -107,10 +107,33 @@ Matt Shamblin explicitly requested copying the file from Clinical Skills to
 Assimilation, then approved a self-contained adaptation retaining its rules and
 behavior and scoped repeatable CI enforcement. This authorization is recorded
 from the delegated task on 2026-10-29. Inspection of the complete source commit's
-tracked tree found no license file. Copy authorization is not an upstream public
-license grant. The copied/derived scanner is **not silently relicensed** by
-Assimilation's root MIT notice; authorship and redistribution terms for these
-source-derived portions remain governed by the source owner's rights and explicit
-authorization. A broader public redistribution license grant remains unresolved
-and should be settled by the owner before public release. Existing upstream
-snapshots and their licenses remain unchanged.
+tracked tree found no license file; the initial copy authorization therefore did
+not itself establish MIT terms. That initial licensing hold is preserved in the
+[handoff chronology](../.assimilation/spelling-port.md).
+
+On **2026-10-29**, Matt granted licensing of the copied/derived scanner portions
+under Assimilation's existing [MIT license](../LICENSE), following the explicit
+question: “If you own the relevant scanner code, do you want to license those
+copied portions under Assimilation’s MIT license?” After being told that the
+spelling checker awaited his licensing decision before merge, he answered:
+“Well those few things that are waiting for my approval, consider them granted”.
+The parent relayed that approval for this narrow licensing update.
+
+The grant covers the Clinical-derived portions of `scripts/spelling_scan.py`,
+including the named helper adaptations incorporated in that file. It does not
+license the Clinical Skills repository generally or change any other upstream
+snapshot or notice. The MIT copyright and permission notice in the root LICENSE
+must accompany copies or substantial portions, as that license requires.
+
+Provenance checks examined the scanner and helper path histories and creation
+diffs at the pinned source commit, rather than inferring rights from repository
+ownership. Scanner creation commit `89a0665ff14ab3628cd94aa5083e53a343fa59c7`
+describes deriving it from the skill table and records Matt Shamblin as author
+with a `Co-Authored-By: Claude Opus 5` trailer. Helper creation commits are
+`a8c3b300c1d6663792afc7c639bdb765de6f85a6` (`console_codec.py`, also with that
+coauthor trailer), `aee97aaa9858a1e36217489e0d62015b4cc69234` (`git_paths.py`),
+and `a2c08899437e6e1ee12b0781645cbe8fc213b7b8` (`tree_walk.py`). Inspected path
+histories identify Matt Shamblin or his `mshamblin5150-code` identity; no conflicting
+third-party attribution or imported-source notice was found in the inspected
+source and history. This preserves AI-assisted provenance and does not assert
+sole authorship. Original source commit/blob identifiers above remain unchanged.

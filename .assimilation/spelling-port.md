@@ -1,5 +1,12 @@
 # Clinical spelling scanner port handoff
 
+Current continuation (2026-10-29): parent opened existing PR #7 after exact
+approval; parent reports hosted run `40878902649` passed 136 tests and snapshots.
+Matt subsequently granted the narrow MIT licensing decision as recorded in
+[the current provenance document](../docs/SPELLING_SCAN.md#source-and-authorization).
+The initial hold, denial, and proposed body below are historical evidence, not
+current instructions to reopen or duplicate the PR. This worker must not merge.
+
 Task received 2026-10-29; bounded cloud worker for Vox/Assimilation.
 Target: `mshamblin5150-code/assimilation`, base main
 `3a4fca9b5bcc998f97e30af7701db50deac7918c`.
@@ -140,3 +147,28 @@ Provenance and precise coverage: `docs/SPELLING_SCAN.md`. No hooks installed or 
 **Blast Radius:** maintenance
 
 The normal CI suite will refuse listed uses only in the documented tracked maintained population; the command remains advisory. This finite vocabulary cannot detect every British spelling. Explicit copy permission is recorded, but the source contains no license file: no blanket MIT grant is claimed for copied/derived portions. Broader downstream redistribution licensing remains an owner decision. Draft only; no merge authorized.
+
+
+## Licensing continuation — 2026-10-29
+
+Parent instructed continuation of the same PR #7 and branch from
+`274708e3400774e158fe1d8497361abd5c09c487`, with Matt's explicit grant answering
+the ownership-conditional MIT question. The initial licensing hold above is now
+resolved for the copied/derived portions of `scripts/spelling_scan.py` only,
+including the incorporated helper adaptations. This does not extend to unrelated
+Clinical files or change preserved upstream licenses. Existing root MIT text is
+unchanged; source attribution, commit/blob pins and AI-assisted provenance remain.
+
+Inspected scanner and source-test path histories and helper histories at source
+commit `5f5be786eedca65a5c1a74bdf409b59bf6085b34`. Also inspected creation diffs
+for console_codec (`a8c3b300`), git_paths (`aee97aaa`), tree_walk (`a2c08899`),
+and scanner creation metadata (`89a0665f`). Histories identify Matt Shamblin or
+his account identity and include Claude coauthor trailers; no conflicting
+third-party attribution or imported-source notice was found in the inspected
+source/history. No rights were inferred merely from repository ownership, and
+no sole-authorship claim was added. Clinical working files remain unchanged.
+
+Changed files: scanner header, docs/SPELLING_SCAN.md, THIRD_PARTY_NOTICES.md,
+and this handoff. Runtime behavior and test code are unchanged.
+Full revalidation and independent review of this narrow change are pending.
+Parent retains final hosted verification and merge. No new PR will be created.
