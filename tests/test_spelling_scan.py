@@ -136,6 +136,11 @@ class RepositoryModes(unittest.TestCase):
         self.write("README.md", "colour")
         self.git("add", ".")
         self.assertTrue(scan.scan(scan.tracked_files()).findings)
+        regression = MaintainedWritingRegression("test_tracked_maintained_writing_has_no_listed_uses")
+        result = unittest.TestResult()
+        regression.run(result)
+        self.assertEqual(len(result.failures), 1)
+        self.assertEqual(result.errors, [])
         code, output = self.main("--all")
         self.assertEqual(code, 0)
         self.assertIn("Unlisted forms are not detected", output)
@@ -158,6 +163,15 @@ class RepositoryModes(unittest.TestCase):
         self.assertEqual(self.main("docs/link.md")[0], 2)
         self.git("add", ".")
         self.assertEqual(self.main()[0], 2)
+
+    def test_filename_only_links_refuse_in_working_tree_and_index(self):
+        self.write("docs/a.md", "plain")
+        (self.root / "docs/link.txt").symlink_to(self.root / "missing.txt")
+        self.git("add", ".")
+        for args in (("--all",), ()):
+            code, output = self.main(*args)
+            self.assertEqual(code, 2)
+            self.assertNotIn("no listed form found", output)
 
     def test_unreadable_directory_and_link_directory_refuse(self):
         self.write("docs/a.md", "plain")

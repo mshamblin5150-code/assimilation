@@ -340,12 +340,16 @@ def read_file(path: str) -> str:
         raise InputError("selected input is unreadable; population incomplete") from None
 
 
-def read_staged(path: str) -> str:
+def check_staged_path(path: str) -> None:
     metadata = git_bytes("ls-files", "--stage", "-z", "--", path)
     if not metadata.startswith(b"100644 ") and not metadata.startswith(b"100755 "):
         raise InputError("selected index input is not an ordinary unambiguous file")
     if len(metadata.split(b"\0")) != 2:
         raise InputError("selected index input is ambiguous")
+
+
+def read_staged(path: str) -> str:
+    check_staged_path(path)
     return decode_text(git_bytes("show", f":{path}"))
 
 
@@ -361,7 +365,8 @@ def path_findings(path: str, text: str | None) -> list[Finding]:
     return findings
 
 
-def scan(paths, read=read_file, *, records: bool = False, added_lines=None) -> Report:
+def scan(paths, read=read_file, *, records: bool = False, added_lines=None,
+         check_path=check_ordinary_path) -> Report:
     findings, evidence = [], []
     read_count = excluded = 0
     for raw_path in sorted(set(paths)):
@@ -370,6 +375,7 @@ def scan(paths, read=read_file, *, records: bool = False, added_lines=None) -> R
         if not selected:
             excluded += 1
             continue
+        check_path(path)
         text = read(path) if is_scannable_source(path) else None
         if text is not None:
             read_count += 1
@@ -406,7 +412,8 @@ def staged_additions(paths: list[str]) -> dict[str, set[int]]:
 
 def scan_staged() -> Report:
     paths = staged_paths()
-    return scan(paths, read_staged, added_lines=staged_additions(paths))
+    return scan(paths, read_staged, added_lines=staged_additions(paths),
+                check_path=check_staged_path)
 
 
 def files_under(targets: list[Path]) -> list[str]:
