@@ -96,4 +96,47 @@ reviewed branch push and one draft PR, with results/URL delivered to parent.
 The implementation reviewed by both agents is `c2d53879dd8df703a125bb68c21b713c49c48fa8`;
 subsequent changes only finalize this handoff's evidence.
 No merge; licensing grant and final candidate eligibility remain parent/owner
-choices. No denied or uncertain remote mutation has occurred.
+choices. The reviewed branch was successfully pushed and verified at
+`1b02682109266f08704bacdc6e654223dd76de2d` before this final publication-status
+record. No code changed after independent review.
+
+Draft PR creation was **denied**, not pending or uncertain, by automatic approval
+review through the GitHub connector. Target: public repository
+`mshamblin5150-code/assimilation`, base `main`, head
+`port/clinical-spelling-scan`, title “Port Clinical spelling scanner with scoped
+owned-writing regression checks”. The rejection stated that public draft PR
+publication and its detailed body lacked explicit user authorization. The parent
+mission packet did authorize a draft PR, but auto-review did not accept that as
+sufficient. No retry or alternate publication route was attempted; no PR is
+claimed created. Obtain explicit authorization from Matt for the public draft PR
+and its body before any retry. Branch push itself succeeded and was not denied.
+The proposed PR description is retained below so approval can be concrete.
+
+
+## Proposed draft PR body (not published)
+
+## Summary
+
+Port the actual Matt-authorized Clinical scanner from `5f5be786eedca65a5c1a74bdf409b59bf6085b34` (`093d374364c1459c7b0a84d5318a53ca6d0db71c`) as a self-contained standard-library tool. Preserve its 31 table entries, 3 stem changes, 3 drug forms, bounded inflections, and exact mention semantics.
+
+```text
+maintained first-party text → bounded matcher → advisory CLI report
+                                           → normal unittest regression → existing CI
+upstream / licenses / generated vendor / evals → excluded from enforcement
+```
+
+Provenance and precise coverage: `docs/SPELLING_SCAN.md`. No hooks installed or snapshot/license bytes changed. `--record` reports evaluation evidence separately.
+
+## Evidence
+
+- Before: no repeatable owned-writing spelling regression. Synthetic injected prose now fails the actual regression test while the CLI still returns 0 for findings.
+- After: 15 focused tests pass; source AST comparison confirms copied matching/mention code and vocabulary. Separate Standards and Spec reviewers found a filename-only symlink gap; it was fixed and independently rechecked with no remaining findings on either axis.
+- Full suite: **136 tests passed** with standard umask 022 and offline fixture isolation. Snapshot verification passes both pinned upstream trees. Privacy-safe refusal and scope/false-positive/false-negative cases are covered by synthetic tests; no Clinical fixtures or patient corpus were used.
+
+## Merge Danger
+
+**Door:** two-way
+
+**Blast Radius:** maintenance
+
+The normal CI suite will refuse listed uses only in the documented tracked maintained population; the command remains advisory. This finite vocabulary cannot detect every British spelling. Explicit copy permission is recorded, but the source contains no license file: no blanket MIT grant is claimed for copied/derived portions. Broader downstream redistribution licensing remains an owner decision. Draft only; no merge authorized.
