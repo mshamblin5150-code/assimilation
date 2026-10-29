@@ -20,7 +20,9 @@ ROUTES = {
     'bug': [('matt', 'engineering/diagnosing-bugs'), ('pstack', 'principle-fix-root-causes'), ('pstack', 'principle-prove-it-works')],
     'feature': [('matt', 'engineering/grill-with-docs'), ('matt', 'engineering/tdd'), ('pstack', 'principle-model-the-domain')],
     'review': [('matt', 'engineering/code-review'), ('pstack', 'principle-test-behavior-not-implementation'), ('pstack', 'principle-prove-it-works')],
-    'planning': [('matt', 'engineering/wayfinder'), ('pstack', 'principle-sequence-verifiable-units')],
+    'planning': [('matt', 'engineering/wayfinder'), ('matt', 'engineering/to-spec'),
+                 ('matt', 'engineering/to-tickets'), ('matt', 'engineering/implement'),
+                 ('pstack', 'principle-sequence-verifiable-units')],
     'writing': [('matt', 'productivity/writing-for-agents'), ('pstack', 'technical-writing')],
     'unknown': [('matt', 'engineering/ask-matt'), ('pstack', 'principle-attack-the-premise')],
 }
@@ -45,7 +47,7 @@ def route(report: dict, task_type: str) -> dict:
         report['status'] = 'needs-context'
         report['next_actions'].insert(0, 'Establish the operator goal, task stage and target project before choosing an implementation route.')
     if task_type == 'planning':
-        report['next_actions'].insert(0, 'Wayfinder is for large multi-session work; use a short scoped plan instead when this task is small.')
+        report['next_actions'].insert(0, 'Recognize large, uncertain multi-session work from the ordinary-language goal: wayfinder -> to-spec -> to-tickets -> implementation. Follow docs/WORKFLOW.md for stage outputs and human/authorization gates; this index neither invokes skills nor grants permission. Use a direct route for small tasks, and resume trustworthy existing artifacts instead of duplicating them.')
     if task_type == 'writing':
         report['next_actions'].insert(0, 'Writing-for-agents applies to agent-facing instructions; for another audience, use technical-writing and select an audience-appropriate procedure.')
     return report

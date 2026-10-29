@@ -65,8 +65,27 @@ class OnboardTests(unittest.TestCase):
                 self.assertEqual(result.returncode, 0, result.stderr)
                 report = json.loads(result.stdout)
                 self.assertEqual({skill['source'] for skill in report['skills']}, {'matt', 'pstack'})
-                self.assertLessEqual(len(report['skills']), 3)
+                self.assertLessEqual(len(report['skills']), 5 if task_type == 'planning' else 3)
                 self.assertFalse(report['skills_loaded'])
+
+    def test_planning_route_orders_originals_without_claiming_execution_or_permission(self):
+        result = self.run_cli('route', '--task-type', 'planning')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        report = json.loads(result.stdout)
+        matt = [entry['path'].split('/')[-2] for entry in report['skills'] if entry['source'] == 'matt']
+        self.assertEqual(matt, ['wayfinder', 'to-spec', 'to-tickets', 'implement'])
+        self.assertFalse(report['skills_loaded'])
+        guidance = ' '.join(report['next_actions'])
+        for boundary in ('ordinary-language goal', 'human/authorization gates',
+                         'neither invokes skills nor grants permission', 'direct route for small tasks'):
+            self.assertIn(boundary, guidance)
+
+    def test_direct_bug_route_does_not_force_large_project_sequence(self):
+        result = self.run_cli('route', '--task-type', 'bug')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        report = json.loads(result.stdout)
+        paths = [entry['path'] for entry in report['skills']]
+        self.assertFalse(any('/wayfinder/' in path or '/to-tickets/' in path for path in paths))
 
     def test_git_unavailable_is_not_inferred_as_network_or_delegation_access(self):
         result = self.run_cli('inspect', env={**os.environ, 'PATH': ''})
