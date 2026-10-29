@@ -4,6 +4,8 @@
 
 You do not need engineering vocabulary to use this repository. Tell your agent: **“Wait, what? Use the `wait-what` skill to explain that again in plain language.”** Ask it to read [Matt Pocock’s original `wait-what` skill](upstream/matt-pocock/skills/productivity/wait-what/SKILL.md), give a little context, and use your project’s glossary when one exists. You can ask for another, simpler explanation whenever you need one.
 
+Use this request anywhere in Assimilation: Matt Pocock or P-Stack skills, planning, setup, workflows, technical terms, or anything else that is unclear. Ask for context, a concrete example, or a simpler explanation until it makes sense. The explanation should keep important constraints and limitations intact.
+
 For example:
 
 > **Agent:** “Use bounded multi-agent delegation, coordinator synthesis, and independent adversarial verification.”
