@@ -31,6 +31,17 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class WindowsOnboardingTests(unittest.TestCase):
+    def test_minimum_python_prerequisite_is_reported_without_admission(self):
+        for version, status in (((3, 9, 9), 'unsupported'), ((3, 10, 0), 'satisfied'),
+                                ((3, 12, 8), 'satisfied')):
+            with self.subTest(version=version), patch('sys.version_info', version):
+                result = windows_onboarding.report()
+                self.assertEqual(result['python_prerequisite'],
+                                 {'minimum': [3, 10], 'status': status})
+                self.assertFalse(result['installation_admitted'])
+                if status == 'unsupported':
+                    self.assertIn('Python 3.10', ' '.join(result['next_actions']))
+
     def run_cli(self, *args, env=None):
         return subprocess.run(
             [sys.executable, '-B', str(ROOT / 'scripts/windows_onboarding.py'), *args],

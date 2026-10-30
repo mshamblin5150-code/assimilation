@@ -11,6 +11,8 @@ def report():
     return {
         'schema': 1,
         'status': 'observed-not-qualified',
+        'python_prerequisite': {'minimum': [3, 10], 'status':
+                                'satisfied' if sys.version_info[:2] >= (3, 10) else 'unsupported'},
         'runtime': {'platform': sys.platform, 'os_name': os.name,
                     'python': list(sys.version_info[:3]),
                     'pointer_bits': struct.calcsize('P') * 8,
@@ -33,6 +35,8 @@ def report():
                           ('acl', 'ownership', 'junctions', 'symlinks',
                            'rollback', 'concurrency', 'msys')},
         'next_actions': [
+            *(['Stop: use an existing trusted Python 3.10+ interpreter; do not install one automatically.']
+              if sys.version_info[:2] < (3, 10) else []),
             'Do not install dependencies or change PATH, Git, ACLs or security settings automatically.',
             'Read docs/WINDOWS_ONBOARDING.md; record missing prerequisites and request only the required operator action.',
             'Native Windows source operations remain unsupported; POSIX runtime identity alone does not qualify a filesystem.',

@@ -30,8 +30,8 @@ class PullRequestValidationTests(unittest.TestCase):
         self.assertEqual(len(actions), 4)
         self.assertTrue(all(re.fullmatch(r'actions/(checkout|setup-python)@[0-9a-f]{40}', action) for action in actions))
         commands = re.findall(r'^        run: (.+)$', workflow, re.M)
-        self.assertEqual(commands, ['python -m unittest discover -s tests -v', 'python scripts/snapshot_sources.py verify',
-                                    'python -B tests/windows_contract.py --expected-sha "$env:CONTRACT_EXPECTED_SHA"',
+        self.assertEqual(commands, ['python -B tests/onboarding_clean_checkout.py', 'python -m unittest discover -s tests -v', 'python scripts/snapshot_sources.py verify',
+                                    'python -B tests/onboarding_clean_checkout.py', 'python -B tests/windows_contract.py --expected-sha "$env:CONTRACT_EXPECTED_SHA"',
                                     'python -B -m unittest discover -s tests -p test_windows_onboarding.py -v'])
         self.assertEqual(workflow.count('ref: ${{ github.event.pull_request.head.sha }}'), 2)
         self.assertEqual(workflow.count('persist-credentials: false'), 2)
@@ -53,7 +53,7 @@ class PullRequestValidationTests(unittest.TestCase):
         self.assertEqual(expected, {name: hashlib.sha256((SOURCE / name).read_bytes()).hexdigest() for name in files})
         onboarding = 'python -B -m unittest discover -s tests -p test_windows_onboarding.py -v'
         self.assertEqual(re.findall(r'^        run: (.+)$', windows, re.M),
-                         ['python -B tests/windows_contract.py --expected-sha "$env:CONTRACT_EXPECTED_SHA"',
+                         ['python -B tests/onboarding_clean_checkout.py', 'python -B tests/windows_contract.py --expected-sha "$env:CONTRACT_EXPECTED_SHA"',
                           onboarding])
         self.assertEqual(windows.count(onboarding), 1)
         self.assertNotRegex(windows.replace(onboarding, ''),

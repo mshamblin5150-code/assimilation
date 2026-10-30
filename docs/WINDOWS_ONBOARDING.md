@@ -39,6 +39,8 @@ ACLs, account identities, credentials or arbitrary environment values. It does
 not list a directory, start a child process, open a socket or write a file.
 It is not an OS sandbox and does not qualify paths, redirections or external tools.
 
+The Python prerequisite explicitly reports minimum [3, 10] and satisfied or unsupported. An unsupported version gives a stop/use-existing-interpreter explanation; it never installs or admits installation. Version-injection tests are synthetic, not execution on an older interpreter.
+
 Exit 0 means the observation completed, with status `observed-not-qualified`.
 Exit 1 means observation was unavailable; exit 2 means invalid arguments.
 Help performs no prerequisite discovery. Every successful report keeps
@@ -103,3 +105,5 @@ environment values in public evidence. Link dependent work to [issue #9](https:/
 and use the [issue guide](ISSUES.md) for safe actionable tickets. Completing this
 onboarding slice does not close the full installer outcome. Independent review
 and explicit human merge approval remain required; no automatic approval/merge.
+
+The CI-only tests/onboarding_clean_checkout.py harness runs report and help before other tests in both exact-head jobs. It compares Git status including ignored/untracked entries and a complete bounded worktree inventory (excluding root .git internals). Git and filesystem reads belong to that test harness, not the report. It does not qualify native installation.
