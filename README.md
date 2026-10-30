@@ -60,6 +60,8 @@ The philosophy: no challenge is dismissed merely as “too big.” Break it down
 
 ## Where to look
 
+- [Windows prerequisite observations](docs/WINDOWS_ONBOARDING.md) - read-only runtime report; installation remains unqualified.
+
 - [Writing actionable issues](docs/ISSUES.md) — duplicate search, safe drafts, acceptance and handoff.
 
 - [How to publish Assimilation publicly](docs/PUBLISH.md) — create the GitHub repository with the current package.
