@@ -75,6 +75,22 @@ and the harness before importing product code. A materialization mismatch fails
 closed; newline conversion is not normalized away. Updating these sources requires
 updating the reviewed workflow hash inventory too.
 
+Hosted diagnostic head `1e94c56180efe78fc072ac520104a6904017c242`
+confirmed CRLF conversion in all six inputs: every observed newline was CRLF,
+and a diagnostic-only LF projection matched each reviewed hash exactly. The
+runner's system config reported `core.autocrlf=true`; those bounded file
+observations do not infer all effective Git precedence. The raw check refused
+before any contract test, and both failed runs remain historical evidence.
+
+Repository `.gitattributes` now declares `text eol=lf` for exactly those six
+maintained Python paths. It changes repository checkout treatment, not global or
+host Git configuration; no upstream paths, licenses or snapshots are selected.
+The harness still hashes raw bytes and never uses its diagnostic projection for
+acceptance. A synthetic Linux checkout control reproduces CRLF without these
+declarations and preserves exact reviewed bytes with them, while an outside file
+continues to receive the fixture's CRLF conversion. Native results for the
+corrected exact candidate must still be recorded separately.
+
 After trusted test bootstrap/imports, four native tests exercise real runtime
 identity, 11 public API refusal boundaries, seven CLI entry points and four help
 entry points. A Python audit hook rejects file opens, directory access/mutation

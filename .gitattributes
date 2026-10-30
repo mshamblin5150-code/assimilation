@@ -1,0 +1,7 @@
+# Preserve exact reviewed contract inputs; upstream snapshots keep their attributes.
+/scripts/skills.py text eol=lf
+/scripts/snapshot_sources.py text eol=lf
+/scripts/git_runtime.py text eol=lf
+/scripts/propose_update.py text eol=lf
+/scripts/publish_update.py text eol=lf
+/tests/windows_contract.py text eol=lf

@@ -77,6 +77,47 @@ class PullRequestValidationTests(unittest.TestCase):
                     operation()
                 self.assertEqual(len(monitor.ATTEMPTS), 1)
 
+    @unittest.skipIf(os.name == 'nt', 'POSIX synthetic checkout control; native contract checks actual Windows bytes separately')
+    def test_scoped_lf_attributes_preserve_contract_bytes_under_autocrlf(self):
+        names = ('scripts/skills.py', 'scripts/snapshot_sources.py', 'scripts/git_runtime.py',
+                 'scripts/propose_update.py', 'scripts/publish_update.py', 'tests/windows_contract.py')
+        attributes = (SOURCE / '.gitattributes').read_bytes()
+        declarations = [line for line in attributes.decode('ascii').splitlines() if line and not line.startswith('#')]
+        self.assertEqual(set(declarations), {f'/{name} text eol=lf' for name in names})
+        with tempfile.TemporaryDirectory() as folder:
+            work = Path(folder)
+            repo = work / 'source'
+            repo.mkdir()
+            env = {**os.environ, 'GIT_ALLOW_PROTOCOL': 'file', 'GIT_CONFIG_NOSYSTEM': '1', 'GIT_CONFIG_GLOBAL': os.devnull}
+
+            def git(*args, cwd=repo):
+                return subprocess.run(['git', *args], cwd=cwd, env=env, check=True, capture_output=True)
+
+            git('init', '--quiet')
+            git('config', 'user.name', 'Synthetic Fixture')
+            git('config', 'user.email', 'fixture@example.invalid')
+            expected = {name: (SOURCE / name).read_bytes() for name in names}
+            for name, raw in expected.items():
+                target = repo / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(raw)
+            (repo / 'outside.txt').write_bytes(b'Outside the scoped declaration\n')
+            git('add', '.')
+            git('commit', '--quiet', '-m', 'unattributed fixture')
+            before = work / 'before'
+            git('-c', 'core.autocrlf=true', 'clone', '--quiet', str(repo), str(before), cwd=work)
+            for name, raw in expected.items():
+                self.assertNotEqual((before / name).read_bytes(), raw)
+                self.assertEqual((before / name).read_bytes().replace(b'\r\n', b'\n'), raw)
+            (repo / '.gitattributes').write_bytes(attributes)
+            git('add', '.gitattributes')
+            git('commit', '--quiet', '-m', 'scoped LF declaration')
+            after = work / 'after'
+            git('-c', 'core.autocrlf=true', 'clone', '--quiet', str(repo), str(after), cwd=work)
+            for name, raw in expected.items():
+                self.assertEqual((after / name).read_bytes(), raw)
+            self.assertEqual((after / 'outside.txt').read_bytes(), b'Outside the scoped declaration\r\n')
+
     def test_snapshot_check_accepts_complete_fixture_and_rejects_changed_bytes(self):
         workflow = self.workflow()
         command = re.findall(r'^        run: (.+)$', workflow, re.M)[1].split()
