@@ -35,6 +35,34 @@ def runtime_locale(path):
             and not candidate.is_relative_to(ROOT))
 
 
+def checkout_config_observations():
+    """Bounded diagnostic reads; no Git process, includes, or raw config output."""
+    paths = {"checkout-local": ROOT / ".git/config", "runner-user": Path.home() / ".gitconfig",
+             "git-system": Path(os.environ.get("ProgramFiles", "C:/Program Files")) / "Git/etc/gitconfig"}
+    result = {}
+    for label, path in paths.items():
+        try:
+            with path.open("rb") as stream:
+                raw = stream.read(65537)
+            if len(raw) > 65536:
+                result[label] = {"status": "oversized"}
+                continue
+            values, section = {}, ""
+            for line in raw.decode("utf-8-sig").splitlines():
+                line = line.strip()
+                if line.startswith("["):
+                    section = line.lower()
+                elif section == "[core]" and "=" in line:
+                    key, value = (part.strip().lower() for part in line.split("=", 1))
+                    value = value.strip('"')
+                    if key in {"autocrlf", "eol", "symlinks"} and value in {"true", "false", "input", "lf", "crlf", "native"}:
+                        values[key] = value
+            result[label] = {"status": "observed", "core": values}
+        except (OSError, UnicodeError):
+            result[label] = {"status": "unavailable"}
+    return result  # Observed files only; include/effective precedence is not inferred.
+
+
 def denied(event, *args, **kwargs):
     ATTEMPTS.append(event)
     raise AssertionError("Contract attempted filesystem I/O or process creation: " + event)
@@ -151,8 +179,20 @@ def main():
     expected = json.loads(os.environ["CONTRACT_SOURCE_SHA256"])
     if set(expected) != set(SOURCE_FILES):
         parser.error("Incomplete contract source identity")
-    actual = {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in SOURCE_FILES}
+    raw_sources = {name: (ROOT / name).read_bytes() for name in SOURCE_FILES}
+    actual = {name: hashlib.sha256(raw).hexdigest() for name, raw in raw_sources.items()}
     if actual != expected:
+        print("WINDOWS_CONTRACT_BOOTSTRAP_FAILURE " + json.dumps({
+            "checkout_head": head, "expected_head": args.expected_sha,
+            "sys_platform": sys.platform, "os_name": os.name, "system": platform.system(),
+            "windows_version": list(sys.getwindowsversion()), "python": sys.version,
+            "tests_run": 0, "reason": "materialized_source_mismatch",
+            "config_observations": checkout_config_observations(),
+            "mismatches": {name: {"expected_sha256": expected[name], "actual_sha256": actual[name],
+                                  "bytes": len(raw), "crlf": raw.count(b"\r\n"), "lf": raw.count(b"\n"),
+                                  "diagnostic_lf_projection_sha256": hashlib.sha256(raw.replace(b"\r\n", b"\n")).hexdigest()}
+                           for name, raw in raw_sources.items() if actual[name] != expected[name]},
+        }, sort_keys=True), flush=True)
         parser.error("Materialized contract/source bytes differ from reviewed bytes")
     IDENTITY.update(expected_head=args.expected_sha, checkout_head=head, source_sha256=actual,
                     sys_platform=sys.platform, os_name=os.name, system=platform.system(),
