@@ -57,6 +57,42 @@ and link failures cannot be reproduced in this Linux executor; those dependent
 diagnosis phases stop rather than manufacture a cause or run prohibited native
 probes. The existing desktop owner remains the sole native execution owner.
 
+## Hosted native refusal contract
+
+The PR workflow preserves full Ubuntu validation and adds a separate
+`windows-2022` contract-only job. It uses the same commit-pinned checkout/Python
+actions, read-only contents permission, exact PR-head checkout and disabled
+credential persistence. It runs only:
+
+```powershell
+python -B tests/windows_contract.py --expected-sha "$env:CONTRACT_EXPECTED_SHA"
+```
+
+The harness fails on a non-Windows host instead of skipping or replacing
+`os.name`. It records actual OS/Python identity and checks detached checkout
+identity plus raw SHA-256 values for all five imported first-party source modules
+and the harness before importing product code. A materialization mismatch fails
+closed; newline conversion is not normalized away. Updating these sources requires
+updating the reviewed workflow hash inventory too.
+
+After trusted test bootstrap/imports, four native tests exercise real runtime
+identity, 11 public API refusal boundaries, seven CLI entry points and four help
+entry points. A Python audit hook rejects file opens, directory access/mutation
+and process creation during those calls; explicit Path metadata guards cover
+stat/lstat operations and direct OS stat/lstat/access probes lacking audit events. Runtime identity and product platform
+checks are never mocked in this job. Logs report test/failure/error/skip counts
+and attempted monitored operations. Bootstrap checkout, Python setup, source
+identity reads/imports and test reporting are outside that monitored boundary;
+argparse's read-only standard-library locale catalog lookup is also allowed,
+strictly outside the repository. Source inputs and all writes remain guarded.
+This is test instrumentation, not an OS sandbox.
+
+The Windows job does not run the unsupported installer suite, source acquisition,
+Git/MSYS probes, upstream tools, junction/ACL tests or a live installation. Passing
+refusal/help tests cannot establish installer support, solve the prior denial,
+or qualify native link preservation, ACLs, junctions, races or host enforcement.
+Actual hosted results and exact source/OS identities belong in the final receipt.
+
 Unsupported-runtime regression tests exercise public API refusals, nonzero CLI
 diagnostics, no child processes/source reads, no guard/stage/output writes and
 available help. They simulate runtime eligibility, not Windows ACL enforcement.
