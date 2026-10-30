@@ -125,7 +125,10 @@ class PullRequestValidationTests(unittest.TestCase):
 
     def test_snapshot_check_accepts_complete_fixture_and_rejects_changed_bytes(self):
         workflow = self.workflow()
-        command = re.findall(r'^        run: (.+)$', workflow, re.M)[1].split()
+        commands = re.findall(r'^        run: (.+)$', workflow, re.M)
+        snapshot_command = 'python scripts/snapshot_sources.py verify'
+        self.assertEqual(commands.count(snapshot_command), 1)
+        command = snapshot_command.split()
         with tempfile.TemporaryDirectory() as temp:
             work = Path(temp)
             target = work / 'target'
