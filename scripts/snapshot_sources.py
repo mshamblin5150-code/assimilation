@@ -54,6 +54,7 @@ def regular_path(path: Path) -> None:
 
 
 def read_pins(root: Path) -> dict:
+    skills.require_supported_runtime()
     path = root / "sources.lock.json"
     regular_path(path)
     if not path.is_file() or stat.S_IMODE(path.stat().st_mode) != 0o644:
@@ -249,6 +250,7 @@ def verify_tree(root: Path, files: dict) -> None:
 
 
 def verify(root: Path = ROOT) -> dict:
+    skills.require_supported_runtime()
     root = root.absolute()
     path = root / MANIFEST
     regular_path(path)
@@ -375,6 +377,7 @@ def build_package(output: Path, pins: dict, fetch_root: Path) -> dict:
 
 
 def refresh(approve_update: bool) -> dict:
+    skills.require_supported_runtime()
     guard = ROOT / ".assimilation-install.lock"
     try:
         guard.mkdir(mode=0o700)

@@ -149,3 +149,19 @@ passed. Syntax, snapshot integrity and spelling checks passed. The final commit
 will be independently checked for closure of the descendant-reparse finding and
 run through the full suite before the already-authorized branch/PR upload. No
 publication attempt, denial or uncertain remote mutation has occurred yet.
+
+## Later publication and native validation continuation
+
+The preceding publication-status text is historical. Draft PR #8 was published
+at `434de392f0fd57ea673e652177f8aae0c007fe64`, tree
+`836b7c09fd1b69fbbb9f699fad8aaa95fd4b2f93`, with 157 hosted Linux tests passing.
+The parent then reported native Windows failures against those exact bytes.
+Fixture-only local commit `48ab9d6678558c980ccc77e10c34e4d8595dd691` preserved the
+baseline and passed 157 Linux tests; its receipt remains separate from native
+evidence. See `docs/WINDOWS_VALIDATION.md` for all seven dispositions and native
+evidence hashes. Matt subsequently requested the full bounded swarm investigation
+and explicit refusal where equivalent guarantees cannot be verified. The current
+integration preserves the fixture corrections and adds that runtime boundary;
+final exact head/tree, independent review and validation/publication receipts are
+reported separately. No native support, MSYS cause, ACL/junction proof or live
+installation clearance is inferred from Linux tests.

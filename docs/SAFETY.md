@@ -18,6 +18,8 @@ Assimilation is intended for public sharing. It includes only **generalized** id
 
 **Snapshot content checks:** exact license inventories and known private-key/GitHub-token signatures are checked before source publication. They are bounded checks, not a complete secret scanner, a code review, or permission to execute preserved files. Review changes independently.
 
+**Native Windows source operations:** installation, source comparison, snapshot verification/refresh/preparation, proposal generation and publication require a POSIX runtime and otherwise refuse before source I/O, guards, staging or child processes. Native Windows permission metadata is not an equivalent ACL guarantee; neither a Git commit SHA nor a flattened link proves materialization. This eligibility check preserves all actual POSIX mode, content, type, link and ownership checks. It does not certify any POSIX filesystem, host or runtime. The [seven-item validation disposition](WINDOWS_VALIDATION.md) records the unresolved MSYS denial and separates native, Linux and simulated evidence. No workaround, settings change or Windows installation is approved by this documentation.
+
 **Installer Git boundary:** source discovery and fetching use fresh repositories,
 not the caller's repository configuration. Installer Git subprocesses discard
 inherited `GIT_*` overrides, system/global config, askpass commands, hooks,

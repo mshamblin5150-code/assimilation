@@ -6,6 +6,11 @@ This revision reconciles the supplied **audit-findings.md**,
 `3b374928df1bbda642573f7d5d1b2a076b26b1b6`. It is a bounded remediation,
 not a complete security certification or clearance for workstation installation.
 
+Later native testing of the published candidate exposed separate portability
+limits. The [seven-item Windows disposition](WINDOWS_VALIDATION.md) records those
+results and the operator's fail-closed decision. Historical Linux and synthetic
+claims below do not establish native Windows support.
+
 ## Evidence identity and limits
 
 The parent verified archive SHA-256

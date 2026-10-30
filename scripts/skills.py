@@ -45,6 +45,14 @@ SOURCES = {
 SHA_RE = re.compile(r"^[a-f0-9]{40}$")
 
 
+def require_supported_runtime() -> None:
+    """Eligibility only; actual mode, content, link and ownership checks still apply."""
+    if os.name != "posix":
+        raise RuntimeError(
+            "Unsupported runtime: source operations require POSIX file modes and literal symlink preservation. "
+            "Native Windows guarantees are not established; no source operation started.")
+
+
 def git(*args: str, cwd: Path | None = None, capture: bool = True) -> str:
     return git_runtime.run(*args, cwd=cwd, capture=capture).decode("utf-8").strip()
 
@@ -87,6 +95,7 @@ def head(name: str) -> str:
 
 
 def read_lock() -> dict:
+    require_supported_runtime()
     validate_path(LOCK)
     if not LOCK.exists():
         return {"schema": 1, "sources": {}}
@@ -457,6 +466,7 @@ def bridge_policy(skill: Path) -> tuple[str, bool]:
 
 
 def install(approve_update: bool, update_plan: Path | None = None, locked: bool = False) -> None:
+    require_supported_runtime()
     guard = ROOT / ".assimilation-install.lock"
     try:
         guard.mkdir(mode=0o700)

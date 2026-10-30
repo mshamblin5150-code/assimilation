@@ -467,11 +467,14 @@ runpy.run_path(sys.argv[0], run_name='__main__')
 
     def test_windows_superscript_device_names_fail_closed(self):
         repo = self.repos["matt"]
+        baseline = self.git(repo, "rev-parse", "HEAD")
+        blob = subprocess.run(["git", "hash-object", "-w", "--stdin"], cwd=repo, env=self.env,
+                              input=b"Portable path counterexample\n", capture_output=True, check=True).stdout.decode("ascii").strip()
         for name in ("COM¹.txt", "LPT².md", "com³", "lpt¹.log"):
             with self.subTest(name=name):
-                path = repo / name
-                path.write_text("Portable path counterexample\n")
-                self.git(repo, "add", ".")
+                # Build each tree independently without creating Windows device paths.
+                self.git(repo, "read-tree", baseline)
+                self.git(repo, "update-index", "--add", "--cacheinfo", "100644", blob, name)
                 self.git(repo, "commit", "-m", "reserved Windows alias")
                 self.write_lock()
                 before = self.state()
@@ -479,7 +482,6 @@ runpy.run_path(sys.argv[0], run_name='__main__')
                 self.assertEqual(result.returncode, 1, result.stderr)
                 self.assertIn("Unsafe source path", result.stderr)
                 self.assertEqual(self.state(), before)
-                path.unlink()
 
     def test_snapshot_git_preserves_caller_transport_denial(self):
         self.env.pop("GIT_ALLOW_PROTOCOL", None)
