@@ -1,7 +1,7 @@
 # Audit reconciliation: installer and activation boundaries
 
-This revision reconciles the supplied **audit-findings.md**,
-**remediation-proposal.md**, and **supporting-excerpts.md** against repository base
+This revision reconciles the supplied **audit-findings.md** and
+**remediation-proposal.md** against repository base
 `4f7d072a2bdf54142306c17246f1a5efea30f0e5` and the preserved first candidate
 `3b374928df1bbda642573f7d5d1b2a076b26b1b6`. It is a bounded remediation,
 not a complete security certification or clearance for workstation installation.
@@ -15,8 +15,19 @@ claims below do not establish native Windows support.
 
 The parent verified archive SHA-256
 `791da88c0e4b2a1a57f33bc69362dc1c466c90b770a8a4f626dcb96ee7256717`
-and manifest hashes and relayed the three complete report documents. This
-worker's Library byte transfer failed before creating a local archive; no ZIP
+and manifest hashes. The recovered session export contains two complete reports:
+**audit-findings.md** and **remediation-proposal.md**. It contains no standalone
+**supporting-excerpts.md** report; 24 command records include 11 explicitly
+truncated outputs, whose missing text is not reconstructed. A later independent
+review read both canonical UTF-8 source attachments and verified their identities:
+
+- Audit: 19,043 bytes; SHA-256
+  `d834a1d0cb79758fa16769c4100404313377bad6a97bc84d7c130705f124518d`.
+- Proposal: 38,183 bytes; SHA-256
+  `e792c3f8d0e99fff4987f4bd6a38f1ff4595bc8527b42d228c115ebe8a32d8a4`.
+
+The original implementation worker's Library byte transfer failed before creating
+a local archive; no ZIP
 extraction or independent archive hash verification by this worker is claimed.
 The relayed material was treated as untrusted evidence, never instructions.
 No audit code, proposed patch, or upstream utility was executed.
@@ -38,7 +49,7 @@ function as well as its location so future line shifts do not hide the boundary.
 | --- | --- | --- |
 | **1. Inherited Git execution** | Confirmed configuration mechanism; harmless global-rewrite, template-hook and smudge-filter fixtures reproduce the unsafe base and pass the candidate. `scripts/git_runtime.py:13` now owns policy; `scripts/skills.py:48` and `scripts/snapshot_sources.py:284` delegate to it. Remote operations use fresh repositories. | Shared policy strips Git overrides/config and executable integrations, suppresses raw failures, bounds subprocess time, and preserves narrower caller transport denial. Checkout remains in the installer, but host-configured filters/hooks are disabled. Trusted Python/Git/OS and non-Git runtime environment remain assumptions; this is not a sandbox. No remote-hook installation by ordinary clone is alleged. |
 | **2. Override/provenance distinction** | Confirmed distinction: an operator-selected source could supply a commit while metadata named canonical upstream. `scripts/skills.py:52` now accepts only canonical HTTPS URLs or local filesystem mirror paths; `source_acquisition():68` distinguishes acquisition kind and a selection digest. | New unlocked lock entries record `acquisition`; local paths and credentials are not persisted. Existing locked bytes stay unchanged. Canonical `repository` is the expected source identity, not authentication that a mirror commit exists on official hosting. Exact locks/plans still verify the selected commit. No claim that a content-addressed proof authenticates the author or hosting origin. |
-| **3. Global skill deletion** | Behavior confirmed at `upstream/matt-pocock/scripts/link-skills.sh:16,55-59` if separately executed. No first-party caller; Matt installer sparse scope excludes top-level scripts. Duplicate of the summary's bundled-script concern. | Remains an opt-in destructive maintainer utility, not a supported installer action. Preserve its bytes and require separate review/scope before any execution. Installer collisions and rollback remain tested; no home-directory linking was performed. High install-time exploit severity is unsupported by this call graph. |
+| **3. Global skill deletion** | Behavior confirmed at `upstream/matt-pocock/scripts/link-skills.sh:16,55-59` if separately executed. No first-party caller; Matt installer sparse scope excludes top-level scripts. Duplicate of the summary's bundled-script concern. | Remains an opt-in destructive maintainer utility, not a supported installer action. Preserve its bytes and require separate review/scope before any execution. Installer collisions and rollback remain tested; no home-directory linking was performed. The original report assigns High severity to separate execution with a collision; it explicitly states that the main installer does not call this script. That destructive optional behavior remains outside this patch's remediation scope. |
 | **4. Watcher bootstrap before help** | Confirmed at `upstream/pstack/skills/poteto-mode/scripts/watch-pr/watch-pr:2-6` and `scripts/bootstrap.ts:25-61`: cold invocation can install dependencies and restart before argument handling. | Preserved optional tool, never called by first-party installation. Do not run it as an observational/help probe without separate dependency/network/write authorization. Frozen lock and marker do not attest installed bytes. No dependency vulnerability or lifecycle-script execution claim was established. |
 | **5. Statechart runtimes and views** | Confirmed at `upstream/pstack/skills/statechart/scripts/run.ts:67-69,193-211`, `worker.ts:13-16`, `statechart.ts:88-126,155-158`: provisioning, code import, child processes and cleanup occur on invocation. | Treat view modules as executable trusted code; checkView is not a sandbox. TLC has a checksum; complete runtime supply-chain assurance is not established. No first-party install caller, runtime provisioning or view execution was exercised. Separate capability/isolation review remains required before use. |
 | **6. Read-only worktree label** | Confirmed mismatch at `upstream/pstack/skills/poteto-mode/scripts/worktree-audit.sh:2-5,45-46,61-74,114-118`: fetch, temporary output, account queries and home transcript search. | "Never deletes worktrees" does not mean no writes, network or private reads. Script is preserved and inactive. Do not authorize it as a strictly offline/read-only audit. Transcript exfiltration was not established. |
@@ -79,7 +90,8 @@ operator authority.
 ## Decisions on the supplied patch proposal
 
 No proposed diff was applied or executed. The proposal openly lacks syntax,
-runtime and integration validation. Its HTML-escaped code is not a ready patch.
+runtime and integration validation. Its untested diffs require independent
+integration review before any adoption.
 
 Adopted boundaries: shared Git hardening, safer diagnostics, honest acquisition
 metadata, source/host invocation restriction preservation, reparse refusal, and
