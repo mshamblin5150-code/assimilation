@@ -14,6 +14,17 @@ First inspect the **actual** applicable source `SKILL.md` and its reference file
 | Material conclusion | Claim-and-refutation | Claims, counterevidence, reconciled conclusion |
 | CAD fabrication | `assimilation-cad` plus relevant design/test skills | Parametric source + STL where tools exist, validated prototype |
 
+## Issues, specifications and tickets
+
+Use [the issue guide](ISSUES.md) and [template](templates/ISSUE.md) for actionable
+problem reports, duplicate searches and evidence. An issue describes an outcome;
+a PR proposes a change. Ordinary bugs can use the direct diagnosis route.
+Larger work follows the stages below, including their seam and ticket-review
+requirements. Verify the intended project tracker before an authorized write;
+without access, keep an explicitly unpublished draft. A closed duplicate does
+not establish that a blocking outcome was delivered. To-tickets does not close
+or modify its parent issue.
+
 ## Large, uncertain projects: from map to implementation
 
 Recognize the need from the operator's ordinary-language goal, not from whether they know a command name. When the route is unclear and spans multiple sessions, select this connected sequence:
@@ -38,3 +49,4 @@ For example, “I want a printable 3D scepter” may be a short design task when
 **ADRs are highly valuable:** record significant decisions as they are resolved, with alternatives and consequences. Avoid the opposite mistake of adding endless process files that prevent engineering.
 
 **All skills ≠ use all skills on every task.** Never run irrelevant P-Stack, multi-provider review, Cursor-specific tool, or external plugins on another host merely because their files exist. Report unsupported capabilities and host-specific adaptations. Respect original skill invocation constraints where the host does.
+

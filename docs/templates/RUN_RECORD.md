@@ -36,8 +36,17 @@ Distinguish source reading, native invocation, and procedural application. A lis
 - Independent review evidence, or explicit self-review limitation:
 - Scope not verified (for example live service, Windows or human acceptance):
 
+## Tracker and work ownership
+- Intended repository/tracker and verified issue or unpublished draft location:
+- Open/closed duplicate search and context reviewed, or exact access limit:
+- Accountable owner, blocking outcomes and evidence they were satisfied:
+- Linked PR/exact candidate, acceptance evidence and remaining checks:
+- External write/readback receipt, or denied/pending/uncertain outcome:
+- Parent outcome remains open when this is only a partial slice:
+
 ## Handoff
 - Outcome complete, or exact blocker:
 - Pending external actions and known receipts (inspect before retry):
 - Current owner and next safe action:
 - Required operator decision, if any:
+

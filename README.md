@@ -60,6 +60,8 @@ The philosophy: no challenge is dismissed merely as “too big.” Break it down
 
 ## Where to look
 
+- [Writing actionable issues](docs/ISSUES.md) — duplicate search, safe drafts, acceptance and handoff.
+
 - [How to publish Assimilation publicly](docs/PUBLISH.md) — create the GitHub repository with the current package.
 
 - [Listed spelling check](docs/SPELLING_SCAN.md) — advisory reports and scoped CI regression coverage.
@@ -94,3 +96,4 @@ This repository contains **no live Open Brain access**, no personal memory archi
 ## Credits
 
 Portable doctrine assembled from engineering lessons of **Matt Shamblin** (GitHub: `mshamblin5150-code`), with upstream skills authored by **Matt Pocock** and **Lauren Tan**. This is an independent starter package and is not an official upstream distribution or a substitute for reading each skill's complete source.
+
