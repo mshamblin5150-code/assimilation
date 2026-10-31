@@ -19,6 +19,21 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
+      - name: Verify fixture detection fails closed for missing paths
+        shell: pwsh
+        run: |
+          $missingSource = 'examples/chad-organizer/absent-fixture-source-for-ci.py'
+          $missingTest = 'examples/chad-organizer/absent-fixture-test-for-ci.py'
+          if ((Test-Path $missingSource -PathType Leaf) -or (Test-Path $missingTest -PathType Leaf)) {
+            throw 'Synthetic missing-fixture names unexpectedly exist; choose fresh names'
+          }
+          $bothMissing = (Test-Path $missingSource -PathType Leaf) -and (Test-Path $missingTest -PathType Leaf)
+          $sourceMissing = (Test-Path $missingSource -PathType Leaf) -and (Test-Path 'examples/chad-organizer/test_organizer.py' -PathType Leaf)
+          $testMissing = (Test-Path 'examples/chad-organizer/organizer.py' -PathType Leaf) -and (Test-Path $missingTest -PathType Leaf)
+          if ($bothMissing -or $sourceMissing -or $testMissing) {
+            throw 'Missing organizer fixture must not qualify for test discovery'
+          }
+          Write-Host 'PASS: missing source, missing tests, and both missing refuse discovery'
       - name: Check whether practice organizer exists on this PR head
         id: fixture
         shell: pwsh
