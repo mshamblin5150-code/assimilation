@@ -1,0 +1,48 @@
+{
+  "repository": "mshamblin5150-code/clinical-skills",
+  "ref": "6fc9d32c32b246ef3dc022f3d7a8e677ad2f2e66",
+  "verified": "2026-10-31",
+  "method": "Public GitHub API read; upstream code not executed",
+  "files": [
+    {
+      "path": "README.md",
+      "blob": "b8b6afba4e3ff9a72a7033e0f0dbd40bd5227ecc",
+      "url": "https://github.com/mshamblin5150-code/clinical-skills/blob/6fc9d32c32b246ef3dc022f3d7a8e677ad2f2e66/README.md"
+    },
+    {
+      "path": "skills/setup-clinical-skills/SKILL.md",
+      "blob": "a27f95db2f11f2c489c4d9ebb2ebd0a1d27d1c4b",
+      "url": "https://github.com/mshamblin5150-code/clinical-skills/blob/6fc9d32c32b246ef3dc022f3d7a8e677ad2f2e66/skills/setup-clinical-skills/SKILL.md"
+    },
+    {
+      "path": "tools/pdf_engine.py",
+      "blob": "048185034ff644ebc554228de9ec80877aaee2a5",
+      "url": "https://github.com/mshamblin5150-code/clinical-skills/blob/6fc9d32c32b246ef3dc022f3d7a8e677ad2f2e66/tools/pdf_engine.py"
+    },
+    {
+      "path": "tools/test_pdf_engine.py",
+      "blob": "8cee30003bd6861e68838a440e6ebaedd3f98d58",
+      "url": "https://github.com/mshamblin5150-code/clinical-skills/blob/6fc9d32c32b246ef3dc022f3d7a8e677ad2f2e66/tools/test_pdf_engine.py"
+    },
+    {
+      "path": "tools/test_pdf_engine_contract.py",
+      "blob": "ee420ecf5f959fc3ada61c40ffe5feeeb59c709c",
+      "url": "https://github.com/mshamblin5150-code/clinical-skills/blob/6fc9d32c32b246ef3dc022f3d7a8e677ad2f2e66/tools/test_pdf_engine_contract.py"
+    },
+    {
+      "path": "docs/adr/0001-fixture-asserts-on-named-findings.md",
+      "blob": "666d9c1cc1a19ecddc0342910ac97e3369af830b",
+      "url": "https://github.com/mshamblin5150-code/clinical-skills/blob/6fc9d32c32b246ef3dc022f3d7a8e677ad2f2e66/docs/adr/0001-fixture-asserts-on-named-findings.md"
+    },
+    {
+      "path": "docs/adr/0175-a-skill-needing-the-pdf-engine-asks-to-install-it-and-walks-by-eye-only-when-it-cannot.md",
+      "blob": "ee10871a2d74481e5ab99150a4ebc423b4a6667a",
+      "url": "https://github.com/mshamblin5150-code/clinical-skills/blob/6fc9d32c32b246ef3dc022f3d7a8e677ad2f2e66/docs/adr/0175-a-skill-needing-the-pdf-engine-asks-to-install-it-and-walks-by-eye-only-when-it-cannot.md"
+    },
+    {
+      "path": "AGENTS.md",
+      "blob": "465ed7c487fdcf0a186df99a661c9fd29c7f420b",
+      "url": "https://github.com/mshamblin5150-code/clinical-skills/blob/6fc9d32c32b246ef3dc022f3d7a8e677ad2f2e66/AGENTS.md"
+    }
+  ]
+}
