@@ -30,6 +30,11 @@ or modify its parent issue.
 
 ## Large, uncertain projects: from map to implementation
 
+For a beginner-friendly practice, follow [From a foggy idea to agent-ready work](CHAD-PLANNING.md).
+It distinguishes decision maps, specifications, implementation tickets and the
+separate gates of readiness, dependencies and authorization using unpublished
+organizer examples.
+
 Recognize the need from the operator's ordinary-language goal, not from whether they know a command name. When the route is unclear and spans multiple sessions, select this connected sequence:
 
 **`wayfinder` → `to-spec` → `to-tickets` → implementation**
