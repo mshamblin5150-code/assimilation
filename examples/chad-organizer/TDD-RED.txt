@@ -1,0 +1,41 @@
+test_added_after_preview (test_organizer.OrganizerTests.test_added_after_preview) ... ok
+test_category_path_occupied_by_file_refuses_before_journal (test_organizer.OrganizerTests.test_category_path_occupied_by_file_refuses_before_journal) ... ERROR
+test_changed_after_preview (test_organizer.OrganizerTests.test_changed_after_preview) ... ok
+test_collision_appearing_after_preflight (test_organizer.OrganizerTests.test_collision_appearing_after_preflight) ... ok
+test_collision_preserves_both (test_organizer.OrganizerTests.test_collision_preserves_both) ... ok
+test_existing_journal_is_preserved (test_organizer.OrganizerTests.test_existing_journal_is_preserved) ... ok
+test_interrupt_after_rename_before_ack (test_organizer.OrganizerTests.test_interrupt_after_rename_before_ack) ... ok
+test_malformed_interior_recovery_refused (test_organizer.OrganizerTests.test_malformed_interior_recovery_refused) ... ok
+test_move_and_repeatable_undo (test_organizer.OrganizerTests.test_move_and_repeatable_undo) ... ok
+test_path_escape (test_organizer.OrganizerTests.test_path_escape) ... ok
+test_preview_is_exact_and_read_only (test_organizer.OrganizerTests.test_preview_is_exact_and_read_only) ... ok
+test_stop_after_first_move_then_undo (test_organizer.OrganizerTests.test_stop_after_first_move_then_undo) ... ok
+test_stop_preserves_inputs (test_organizer.OrganizerTests.test_stop_preserves_inputs) ... ok
+test_tampered_preview (test_organizer.OrganizerTests.test_tampered_preview) ... ok
+test_torn_tail_recovery_preserves_evidence (test_organizer.OrganizerTests.test_torn_tail_recovery_preserves_evidence) ... ok
+test_undo_changed_destination (test_organizer.OrganizerTests.test_undo_changed_destination) ... ok
+test_undo_conflict_preserves_files (test_organizer.OrganizerTests.test_undo_conflict_preserves_files) ... ok
+test_wrong_approval (test_organizer.OrganizerTests.test_wrong_approval) ... ok
+
+======================================================================
+ERROR: test_category_path_occupied_by_file_refuses_before_journal (test_organizer.OrganizerTests.test_category_path_occupied_by_file_refuses_before_journal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<isolated-workspace>\examples\chad-organizer\test_organizer.py", line 110, in test_category_path_occupied_by_file_refuses_before_journal
+    with self.assertRaises(NotADirectoryError): self.apply()
+                                                ~~~~~~~~~~^^
+  File "<isolated-workspace>\examples\chad-organizer\test_organizer.py", line 18, in apply
+    o.apply(self.plan, self.plan["id"], self.log)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<isolated-workspace>\examples\chad-organizer\organizer.py", line 102, in apply
+    dst.parent.mkdir(exist_ok=True)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "<python-home>\Lib\pathlib\__init__.py", line 1011, in mkdir
+    os.mkdir(self, mode)
+    ~~~~~~~~^^^^^^^^^^^^
+FileExistsError: [WinError 183] Cannot create a file when that file already exists: '<isolated-workspace>\\tmpzm12g0ej\\practice\\Text'
+
+----------------------------------------------------------------------
+Ran 18 tests in 0.493s
+
+FAILED (errors=1)

@@ -32,9 +32,11 @@ Assimilation helps a person turn ordinary-language ideas into specified, reviewa
 
 > **Browse the actual skills:** [Matt Pocock — complete repository](upstream/matt-pocock/) · [P-Stack — complete subtree](upstream/pstack/) · [source index and authority boundary](upstream/README.md).
 >
-> This repository includes four local Assimilation skills, full upstream reference sources, their pinned lock/provenance, and an optional host installer. The initial visible baseline contains **38 Matt skill files** (20 engineering, 7 productivity, 4 miscellaneous, 7 in-progress) and **61 P-Stack skill files** (including 3 dormant Benny skills). Browsable source is not automatic host activation.
+> This repository includes five local Assimilation skills, full upstream reference sources, their pinned lock/provenance, and an optional host installer. The initial visible baseline contains **38 Matt skill files** (20 engineering, 7 productivity, 4 miscellaneous, 7 in-progress) and **61 P-Stack skill files** (including 3 dormant Benny skills). Browsable source is not automatic host activation.
 
 ## For Chad: five-minute orientation
+
+**Learn by building:** [Start the practice-folder organizer tutorial](docs/CHAD-ORGANIZER.md). Choose your own skill name, preview synthetic files, approve one exact plan, and practice undo. Continue into Writing for Agents, TDD, implementation, P-Stack and a read-only public Clinical Skills study. The example needs no third-party packages; actual moves require Windows and an already available Python 3.12+. It does not install skills or authorize work on personal files.
 
 1. **Give the agent a concrete goal and [Start here](START_HERE.md).** It should inspect its actual capabilities and project, select and read original skills, then perform a bounded task. [Operating instructions](AGENTS.md) preserve the authority boundaries.
 2. **Using ChatGPT without coding tools?** Follow [the ChatGPT-only start](docs/CHATGPT.md). You can use the thinking and documentation practices without paying for a particular plan; access to tools and projects may vary.
