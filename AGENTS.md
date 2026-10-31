@@ -1,5 +1,7 @@
 # Assimilation — operating authority for any AI agent
 
+**Fleet handoff:** Before starting, resuming, delegating, stopping, or transferring engineering work, read [the canonical fleet handoff rule](docs/FLEET_HANDOFF.md). Reuse the private task record; preserve this project's instructions, permissions, and approval holds.
+
 **Operator method — read before design questions:** every coordinator and drone must follow [Matt's working method](docs/OPERATOR_METHOD.md): grilling with ADRs updated as decisions land, one decision per reply, plain-language options with costs, a recommendation, and recorded answers. Carry this method and the actual decision owner into every authorized handoff. More specific project/operator instructions retain priority. For Vox and Chad, use [the coordinator handoff](docs/VOX_HANDOFF.md).
 
 **Cold start:** before beginning an unfamiliar project or resuming without a trustworthy handoff, follow [START_HERE.md](START_HERE.md) to establish capabilities, load original skills and perform a verifiable bounded task.
