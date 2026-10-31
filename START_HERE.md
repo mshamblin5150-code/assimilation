@@ -6,6 +6,8 @@ If you cannot retrieve repository files, say exactly which reads failed and requ
 
 ## 1. Establish the working boundary
 
+Read [Matt's working method](docs/OPERATOR_METHOD.md) before asking design questions. Carry its one-question grilling format, ADR discipline and named decision owner into every authorized drone handoff. Coordinators arriving through Chad or Vox also read [VOX_HANDOFF.md](docs/VOX_HANDOFF.md).
+
 Read the active system/host instructions and the target project's own instructions first. Locate the actual project, not just this Assimilation checkout. Inspect its README, working state and relevant files through tools you really have. Identify the requested outcome, domain terms, acceptance example, permitted changes and approval holds. Keep private target material out of this public repository.
 
 **Done when:** you can name the target, one observable success condition and what is outside your authority. If an essential fact is missing, state the exact blocker and continue independent authorized work. Use a reversible assumption only where it cannot decide a material product, safety, financial or privacy question for the operator.
