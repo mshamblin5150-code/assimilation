@@ -32,7 +32,8 @@ class PullRequestValidationTests(unittest.TestCase):
         commands = re.findall(r'^        run: (.+)$', workflow, re.M)
         self.assertEqual(commands, ['python -B tests/onboarding_clean_checkout.py', 'python -m unittest discover -s tests -v', 'python scripts/snapshot_sources.py verify',
                                     'python -B tests/onboarding_clean_checkout.py', 'python -B tests/windows_contract.py --expected-sha "$env:CONTRACT_EXPECTED_SHA"',
-                                    'python -B -m unittest discover -s tests -p test_windows_onboarding.py -v'])
+                                    'python -B -m unittest discover -s tests -p test_windows_onboarding.py -v',
+                                    'python -B -m unittest discover -s tests -p test_windows_view_names.py -v'])
         self.assertEqual(workflow.count('ref: ${{ github.event.pull_request.head.sha }}'), 2)
         self.assertEqual(workflow.count('persist-credentials: false'), 2)
         self.assertNotIn('GIT_ALLOW_PROTOCOL', workflow.split('    steps:', 1)[0])
@@ -40,7 +41,7 @@ class PullRequestValidationTests(unittest.TestCase):
         self.assertIn('GIT_CONFIG_GLOBAL: /dev/null', workflow)
         self.assertIn('timeout-minutes: 15', workflow)
 
-    def test_windows_job_is_refusal_and_onboarding_only_and_binds_contract_source_bytes(self):
+    def test_windows_job_is_refusal_onboarding_and_synthetic_preflight_only_and_binds_contract_source_bytes(self):
         workflow = self.workflow()
         windows = workflow.split('  windows-contract:\n', 1)[1]
         self.assertIn('runs-on: windows-2022', windows)
@@ -54,9 +55,11 @@ class PullRequestValidationTests(unittest.TestCase):
         onboarding = 'python -B -m unittest discover -s tests -p test_windows_onboarding.py -v'
         self.assertEqual(re.findall(r'^        run: (.+)$', windows, re.M),
                          ['python -B tests/onboarding_clean_checkout.py', 'python -B tests/windows_contract.py --expected-sha "$env:CONTRACT_EXPECTED_SHA"',
-                          onboarding])
+                          onboarding, 'python -B -m unittest discover -s tests -p test_windows_view_names.py -v'])
         self.assertEqual(windows.count(onboarding), 1)
-        self.assertNotRegex(windows.replace(onboarding, ''),
+        preflight = 'python -B -m unittest discover -s tests -p test_windows_view_names.py -v'
+        self.assertEqual(windows.count(preflight), 1)
+        self.assertNotRegex(windows.replace(onboarding, '').replace(preflight, ''),
                             r'pip install|git fetch|unittest discover|skills.py install|snapshot_sources.py verify')
 
     @unittest.skipIf(sys.platform == 'win32', 'Linux negative control; native contract is run separately')
