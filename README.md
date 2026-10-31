@@ -1,5 +1,7 @@
 # Assimilation
 
+**For Chad, Vox and every drone:** read [Matt's working method](docs/OPERATOR_METHOD.md) before asking design questions: grilling with ADRs, one decision at a time, clear options and costs, and decisions recorded as they land. [Vox's directive and a copyable chat for Chad](docs/VOX_HANDOFF.md) provide the reading order and handoff.
+
 ## If an explanation does not make sense, say “Wait, what?”
 
 You do not need engineering vocabulary to use this repository. Tell your agent: **“Wait, what? Use the `wait-what` skill to explain that again in plain language.”** Ask it to read [Matt Pocock’s original `wait-what` skill](upstream/matt-pocock/skills/productivity/wait-what/SKILL.md), give a little context, and use your project’s glossary when one exists. You can ask for another, simpler explanation whenever you need one.

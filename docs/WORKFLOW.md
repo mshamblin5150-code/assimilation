@@ -1,5 +1,7 @@
 # Skill routing: make the complete upstream collections available
 
+Before a design interview, read [the operator method](OPERATOR_METHOD.md): grilling with ADRs, one decision question at a time. Coordinators pass that method into authorized drone handoffs; [the Vox directive](VOX_HANDOFF.md) provides a concrete startup instruction.
+
 First inspect the **actual** applicable source `SKILL.md` and its reference files. The manifest in `docs/SOURCES.md` is an index, not an alternate implementation. After `scripts/skills.py install --locked` for a committed baseline, upstream files are in `vendor/matt/` and `vendor/pstack/`; bridge entries are in `.agents/skills/`.
 
 | Situation | Default route | End product |
@@ -7,6 +9,7 @@ First inspect the **actual** applicable source `SKILL.md` and its reference file
 | Idea with meaningful unknowns, in a repo, resolvable in one session | Matt Pocock `grill-with-docs` and `domain-modeling` | Decisions, ADRs where durable, glossary |
 | Multi-session idea with obscure route | Matt Pocock `wayfinder` | Decision map → `to-spec` → `to-tickets` → authorized implementation |
 | No repo | Matt Pocock `grill-me` | Clarified requirements |
+| Incoming ticket with unresolved design choices | `triage` → `grill-with-docs`, one decision at a time; [ticket-to-brief workflow](TRIAGE_WORKFLOW.md) | Recorded decisions and glossary, confirmed scope, testable brief and directed tracker state |
 | Known substantial feature | `to-spec` → `to-tickets` → `implement` or `implement-spec` | Reviewed, tested change |
 | Bug | `diagnosing-bugs` and applicable P-Stack investigation | Reproduction, fix, regression proof |
 | Architecture | `codebase-design`, P-Stack `how` / `architect` / boundary discipline | Compared options, ADR, test seams |
