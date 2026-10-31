@@ -34,7 +34,8 @@ class PullRequestValidationTests(unittest.TestCase):
                                     'python -B tests/onboarding_clean_checkout.py', 'python -B tests/windows_contract.py --expected-sha "$env:CONTRACT_EXPECTED_SHA"',
                                     'python -B -m unittest discover -s tests -p test_windows_onboarding.py -v',
                                     'python -B -m unittest discover -s tests -p test_windows_view_names.py -v',
-                                    'python -B -m unittest discover -s tests -p test_windows_view_transaction_model.py -v'])
+                                    'python -B -m unittest discover -s tests -p test_windows_view_transaction_model.py -v',
+                                    'python -B -m unittest discover -s tests -p test_windows_disposable_fixture.py -v'])
         self.assertEqual(workflow.count('ref: ${{ github.event.pull_request.head.sha }}'), 2)
         self.assertEqual(workflow.count('persist-credentials: false'), 2)
         self.assertNotIn('GIT_ALLOW_PROTOCOL', workflow.split('    steps:', 1)[0])
@@ -57,13 +58,16 @@ class PullRequestValidationTests(unittest.TestCase):
         self.assertEqual(re.findall(r'^        run: (.+)$', windows, re.M),
                          ['python -B tests/onboarding_clean_checkout.py', 'python -B tests/windows_contract.py --expected-sha "$env:CONTRACT_EXPECTED_SHA"',
                           onboarding, 'python -B -m unittest discover -s tests -p test_windows_view_names.py -v',
-                          'python -B -m unittest discover -s tests -p test_windows_view_transaction_model.py -v'])
+                          'python -B -m unittest discover -s tests -p test_windows_view_transaction_model.py -v',
+                          'python -B -m unittest discover -s tests -p test_windows_disposable_fixture.py -v'])
         self.assertEqual(windows.count(onboarding), 1)
         preflight = 'python -B -m unittest discover -s tests -p test_windows_view_names.py -v'
         self.assertEqual(windows.count(preflight), 1)
         transaction = 'python -B -m unittest discover -s tests -p test_windows_view_transaction_model.py -v'
         self.assertEqual(windows.count(transaction), 1)
-        self.assertNotRegex(windows.replace(onboarding, '').replace(preflight, '').replace(transaction, ''),
+        fixture = 'python -B -m unittest discover -s tests -p test_windows_disposable_fixture.py -v'
+        self.assertEqual(windows.count(fixture), 1)
+        self.assertNotRegex(windows.replace(onboarding, '').replace(preflight, '').replace(transaction, '').replace(fixture, ''),
                             r'pip install|git fetch|unittest discover|skills.py install|snapshot_sources.py verify')
 
     @unittest.skipIf(sys.platform == 'win32', 'Linux negative control; native contract is run separately')
