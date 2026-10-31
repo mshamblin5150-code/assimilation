@@ -1,5 +1,7 @@
 # What to tell Chad
 
+For a complete first-project walkthrough, use [blank project to verified delivery](CHAD-BLANK-PROJECT.md): choose the project/folder, initialize Git, choose per-repository or personal/global skills, then plan and implement. Follow [monthly maintenance for that scope](CHAD-SKILLS-MAINTENANCE.md) and the separate [adversarial prose-review lesson](CHAD-ADVERSARIAL-REVIEW.md).
+
 For Matt's specific working method and a copyable instruction for Vox, use
 [the Vox handoff](VOX_HANDOFF.md). Every coordinator and drone reads
 [the operator method](OPERATOR_METHOD.md) before design questions. Confirm the

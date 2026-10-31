@@ -1,5 +1,7 @@
 # Chad's next lesson: take one issue from request to main
 
+Need to create your own project first? [Start from an empty folder](CHAD-BLANK-PROJECT.md), then return here for the hosted issue/PR mechanics. Check delivery claims with [adversarial prose review](CHAD-ADVERSARIAL-REVIEW.md).
+
 You have learned to write instructions, build tickets and test behavior. Now
 connect those skills: **understand the request, prepare one worktree, implement
 the agreed brief, review the change, then integrate it within your authority.**

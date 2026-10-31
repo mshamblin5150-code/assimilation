@@ -38,6 +38,10 @@ Assimilation helps a person turn ordinary-language ideas into specified, reviewa
 
 ## For Chad: five-minute orientation
 
+**Starting your own project from nothing?** [Choose a folder, initialize Git, install upstream skills and build through the complete workflow](docs/CHAD-BLANK-PROJECT.md). Choose **per-repository or personal/global** skills, then follow [the matching monthly maintenance steps](docs/CHAD-SKILLS-MAINTENANCE.md).
+
+**Checking a polished AI report?** [Practice evidence-grounded adversarial prose review](docs/CHAD-ADVERSARIAL-REVIEW.md) with a separate source packet, deliberately faulty draft and clean control.
+
 **Keeping an active project easy to change?** [Practice periodic architecture surveys with a TDD safety net](docs/CHAD-ARCHITECTURE-UPKEEP.md), using a separate preview-only lab with deliberately tangled code.
 
 **Ready to take a ticket through implementation?** [Follow one issue from triage to a reviewed PR and main](docs/CHAD-ISSUE-TO-MAIN.md), with a disposable worktree rehearsal and safe cleanup gates.
