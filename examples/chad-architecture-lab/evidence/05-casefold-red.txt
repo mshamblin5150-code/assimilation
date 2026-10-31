@@ -1,0 +1,15 @@
+test_uppercase_extensions_have_matching_rows_and_counts (__main__.StageContract.test_uppercase_extensions_have_matching_rows_and_counts) ... FAIL
+
+======================================================================
+FAIL: test_uppercase_extensions_have_matching_rows_and_counts (__main__.StageContract.test_uppercase_extensions_have_matching_rows_and_counts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<lab>/checks.py", line 83, in test_uppercase_extensions_have_matching_rows_and_counts
+    self.assertEqual(self.preview(self.folder), {"rows": [
+AssertionError: {'row[37 chars]y': 'Keep', 'destination': None}, {'source': '[229 chars]: 1}} != {'row[37 chars]y': 'Text', 'destination': 'Text/NOTES.TXT'}, [268 chars]: 1}}
+Diff is 757 characters long. Set self.maxDiff to None to see it. : Uppercase extensions agree in rows and summary
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+FAILED (failures=1)

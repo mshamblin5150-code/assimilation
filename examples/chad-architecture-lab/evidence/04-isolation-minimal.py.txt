@@ -1,0 +1,20 @@
+"""Minimal isolation fix, before review-stage structural cleanup."""
+from pathlib import Path
+
+def preview(folder):
+    rows = []
+    for path in sorted(Path(folder).iterdir()):
+        if not path.is_file():
+            continue
+        category = {".txt": "Text", ".jpg": "Images"}.get(path.suffix, "Keep")
+        rows.append({"source": path.name, "category": category,
+                     "destination": None if category == "Keep"
+                     else f"{category}/{path.name}"})
+    # Deliberate shortcut: summary knows the classification rule a second time.
+    counts = {}
+    for path in sorted(Path(folder).iterdir()):
+        if not path.is_file():
+            continue
+        category = {".txt": "Text", ".jpg": "Images"}.get(path.suffix, "Keep")
+        counts[category] = counts.get(category, 0) + 1
+    return {"rows": rows, "counts": counts}

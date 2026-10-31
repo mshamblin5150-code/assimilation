@@ -38,6 +38,8 @@ Assimilation helps a person turn ordinary-language ideas into specified, reviewa
 
 ## For Chad: five-minute orientation
 
+**Keeping an active project easy to change?** [Practice periodic architecture surveys with a TDD safety net](docs/CHAD-ARCHITECTURE-UPKEEP.md), using a separate preview-only lab with deliberately tangled code.
+
 **Ready to take a ticket through implementation?** [Follow one issue from triage to a reviewed PR and main](docs/CHAD-ISSUE-TO-MAIN.md), with a disposable worktree rehearsal and safe cleanup gates.
 
 **Continuing a long task?** [Practice context checkpoints and a fresh-task handoff](docs/CHAD-CONTEXT-HANDOFF.md), then learn how to transfer coordinator ownership without restarting the team.

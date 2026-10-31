@@ -1,0 +1,14 @@
+test_summary_counts_match_the_plan (__main__.StageContract.test_summary_counts_match_the_plan) ... FAIL
+
+======================================================================
+FAIL: test_summary_counts_match_the_plan (__main__.StageContract.test_summary_counts_match_the_plan)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<lab>/checks.py", line 64, in test_summary_counts_match_the_plan
+    self.assertEqual(result.get("counts"), {"Images": 1, "Keep": 1, "Text": 1},
+AssertionError: None != {'Images': 1, 'Keep': 1, 'Text': 1} : Summary counts describe the proposed plan
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+FAILED (failures=1)
