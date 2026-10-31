@@ -12,6 +12,12 @@ Read the active system/host instructions and the target project's own instructio
 
 ## 2. Check capabilities, with evidence
 
+On native Windows, use [the prerequisite guide](docs/WINDOWS_ONBOARDING.md)
+and `python -B scripts/windows_onboarding.py` with an existing trusted Python.
+It reports bounded runtime/environment observations without Git execution or
+installation. Missing prerequisites require an operator decision, never an
+automatic dependency or security change. It does not verify source snapshots.
+
 Record only capabilities relevant to this task in a small run record. Prefer the target project’s existing equivalent; otherwise use `.assimilation/run.md` in an approved target-project location with [this template](docs/templates/RUN_RECORD.md). Preserve an existing record rather than overwriting another worker’s work. Return its text if files cannot be written.
 
 | Capability | How to establish it | If missing |
