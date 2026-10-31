@@ -54,3 +54,5 @@ jobs:
         run: python -B tests/windows_contract.py --expected-sha "$env:CONTRACT_EXPECTED_SHA"
       - name: Check read-only Windows onboarding observations
         run: python -B -m unittest discover -s tests -p test_windows_onboarding.py -v
+      - name: Check Windows generated-view name preflight (synthetic only)
+        run: python -B -m unittest discover -s tests -p test_windows_view_names.py -v
