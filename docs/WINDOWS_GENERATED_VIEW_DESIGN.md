@@ -45,3 +45,17 @@ Do not confuse levels. This draft establishes **no** native ACL, junction, rollb
 ## Review gates
 
 Independent security/spec review, precise source identity, explicit evidence of failed/blocked cases, exact-head Ubuntu and Windows CI, and explicit human merge approval are required. Do not change host PATH, ACLs, elevation, Developer Mode, dependencies, Git transport, or execute upstream tools. No patient data, secrets or private environment values in reports.
+
+## Native Windows disposable-fixture test plan (not yet executed)
+
+**Prerequisites:** separate review and approval for a dedicated temporary directory owned by the test runner; no operator home, installed tree, or user-selected destination. Use only harmless synthetic bytes. Do not change ACLs or privileges to make a test pass.
+
+1. Establish baseline: record Windows volume type, filesystem semantics, absolute fixture root, canonical handle-derived identity and ACL/owner evidence. Fail closed on unsupported observations.
+2. Ancestor confinement: create test-owned regular directory chains; reject a fixture path when an ancestor or leaf is replaced by a symlink, junction, or unexpected reparse point. Require handle-based revalidation, not string prefix matching.
+3. Collision privacy: create an unmanaged sentinel with unique bytes. Assert a refused collision does not read, overwrite, rename, or delete that sentinel; observe operations via explicit instrumentation.
+4. Staging integrity: stage known synthetic bytes, calculate independent expected SHA-256, mutate staged bytes before the commit gate, and assert no destination mutation.
+5. Identity races: substitute a test-owned destination/parent between observation and commit, then require refusal without touching the replacement. Test two simultaneous writers and a third-party substitution.
+6. Interruption/recovery: inject termination at each durable journal boundary; restart with authenticated fixture ownership and refuse ambiguous/missing/tampered journal states. Document fsync/durability limitations and whether rollback is actually possible.
+7. Teardown: delete only objects whose identities remain proven test-owned; otherwise quarantine and report. Never follow unexpected reparse links during cleanup.
+
+**Exit criteria:** record exact commit, runner image, native APIs used, fixture boundaries, instrumentation, failures and limits. A synthetic state-machine pass is not evidence for any of the native claims above. This plan is not an installer implementation or permission to run native adversarial tests.
