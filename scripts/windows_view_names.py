@@ -36,4 +36,8 @@ def validate_view_names(paths):
             raise ValueError("casefold-collision")
         seen.add(key)
         result.append(key)
+    for key in seen:
+        parts = key.split("/")
+        if any("/".join(parts[:i]) in seen for i in range(1, len(parts))):
+            raise ValueError("file-directory-collision")
     return tuple(result)
