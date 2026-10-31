@@ -1,0 +1,25 @@
+test_jpg_has_an_image_destination (__main__.StageContract.test_jpg_has_an_image_destination) ... FAIL
+
+======================================================================
+FAIL: test_jpg_has_an_image_destination (__main__.StageContract.test_jpg_has_an_image_destination)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<lab>/checks.py", line 55, in test_jpg_has_an_image_destination
+    self.assertEqual(self.preview(self.folder)["rows"], [
+AssertionError: Lists differ: [{'so[108 chars]y': 'Keep', 'destination': None}, {'source': '[50 chars]one}] != [{'so[108 chars]y': 'Images', 'destination': 'Images/photo.jpg[66 chars]one}]
+
+First differing element 1:
+{'source': 'photo.jpg', 'category': 'Keep', 'destination': None}
+{'source': 'photo.jpg', 'category': 'Images', 'destination': 'Images/photo.jpg'}
+
+  [{'category': 'Text', 'destination': 'Text/garden.txt', 'source': 'garden.txt'},
+-  {'category': 'Keep', 'destination': None, 'source': 'photo.jpg'},
++  {'category': 'Images',
++   'destination': 'Images/photo.jpg',
++   'source': 'photo.jpg'},
+   {'category': 'Keep', 'destination': None, 'source': 'unknown.bin'}] : JPG category is part of the proposed plan
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+FAILED (failures=1)

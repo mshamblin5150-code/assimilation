@@ -81,6 +81,11 @@ Writing for Agents contributes specific repair levers: sharpen an approval compl
 
 ## Continue the lesson
 
+To see how tests and design reviews complement each other as a project grows,
+try [periodic architecture surveys with a TDD safety net](CHAD-ARCHITECTURE-UPKEEP.md).
+Its separate preview-only lab deliberately introduces a small tangle; it does
+not modify this organizer or rewrite the test history above.
+
 Read [what implementation does and where P-Stack fits](CHAD-IMPLEMENTATION.md) for inputs, decisions, outputs and done criteria.
 
 Keep the beginner lesson self-contained. Then read [skill mechanics](CHAD-SKILL-MECHANICS.md) and [the public Clinical Skills trace](CHAD-CLINICAL-SKILLS-STUDY.md). The advanced trace shows mocked dependency status tests and text-contract tests, with explicit ceilings. Read public clinical code as reference only; none of these exercises requires real patient data, installation, account access or clinical execution.

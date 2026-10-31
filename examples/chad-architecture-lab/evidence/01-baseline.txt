@@ -1,0 +1,7 @@
+test_text_and_unknown_plan (__main__.StageContract.test_text_and_unknown_plan) ... ok
+test_preview_preserves_files_and_ignores_directories (__main__.StageContract.test_preview_preserves_files_and_ignores_directories) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.003s
+
+OK
