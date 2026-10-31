@@ -1,5 +1,7 @@
 # What implementation does, and where P-Stack fits
 
+For your own new repository, start with [the blank-project walkthrough](CHAD-BLANK-PROJECT.md). After implementation, use [adversarial prose review](CHAD-ADVERSARIAL-REVIEW.md) to check the agent's completion claims against actual evidence.
+
 Read this after [Writing for Agents with TDD](CHAD-TDD.md). Keep the first organizer lesson short: inspect an exact preview before approving changes. This reference explains the development process behind the example.
 
 The installed Matt Pocock implement skill was read for this lesson. It takes a user spec or tickets, uses TDD at agreed interfaces, runs focused checks regularly and the full suite at the end, requests code review, and commits the work. It is not a planning substitute or permission to merge. Here the delegated requirements supply the spec; no issue tracker or ticket publication is needed.

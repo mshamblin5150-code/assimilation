@@ -1,5 +1,7 @@
 # From a foggy idea to agent-ready work
 
+Starting in an empty folder rather than the organizer? Use [the complete blank-project walkthrough](CHAD-BLANK-PROJECT.md) for folder/Git setup, the two installation scopes and the full route through implementation.
+
 You do not need to know how to build something before asking for it. You do need
 a way to separate **what you want**, **what remains undecided**, and **what an
 agent can safely do next**.
