@@ -15,7 +15,7 @@ Matt's initial skill breakdown is 20 engineering, 7 productivity, 4 miscellaneou
 python3 scripts/snapshot_sources.py verify  # offline; no source execution
 ```
 
-Exact snapshot verification has been tested on Linux with Python 3.12. It requires preserved Unix modes and file symlinks; native Windows snapshot verification has not been established. Browsing the source files does not require that verifier.
+Exact snapshot verification has been tested on Linux with Python 3.12. Source operations require a POSIX runtime and preserved exact file modes and literal file symlinks. Native Windows operations explicitly refuse before starting: reported permission metadata and link materialization do not establish equivalent guarantees. POSIX eligibility alone is insufficient; the existing per-file mode, type, content, link and provenance checks still apply. See [native validation findings and remaining limits](WINDOWS_VALIDATION.md) and [ADR 0007](adr/0007-fail-closed-native-source-operations.md). Browsing the source files does not require that verifier.
 
 Do not hand-edit managed source snapshots. Monthly reviewed PRs contain the full proposed snapshots, minimal updated pin lock, provenance, and frozen plan together. A reviewed merge adopts the files and matching metadata atomically. Proposed pins do not invent installation timestamps or bridge counts. See [monthly updates](UPDATES.md).
 

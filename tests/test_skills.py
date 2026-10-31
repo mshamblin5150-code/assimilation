@@ -111,6 +111,7 @@ def operation(original, src, dst, *args, **kwargs):
     return original(src, dst, *args, **kwargs)
 os.rename = lambda src, dst, *args, **kwargs: operation(original_rename, src, dst, *args, **kwargs)
 os.replace = lambda src, dst, *args, **kwargs: operation(original_replace, src, dst, *args, **kwargs)
+sys.path.insert(0, str(root / 'scripts'))
 sys.argv = [str(root / 'scripts/skills.py'), 'install', '--approve-update']
 runpy.run_path(sys.argv[0], run_name='__main__')
 """
@@ -124,6 +125,291 @@ runpy.run_path(sys.argv[0], run_name='__main__')
         self.assertEqual(result.returncode, 1, result.stderr)
         self.assertIn("injected backup-vendor failure", result.stderr)
         self.assertEqual(self.snapshot(), before)
+
+    def test_inherited_global_git_config_cannot_execute_external_transport(self):
+        marker = self.work / "external-helper-ran"
+        helper = self.work / "external-helper.py"
+        helper.write_text("from pathlib import Path\nPath(" + repr(str(marker)) + ").write_text('ran')\n")
+        config = self.work / "hostile.gitconfig"
+        git(self.work, "config", "--file", str(config),
+            "url.ext::" + sys.executable + " " + str(helper) + ".insteadOf", str(self.matt))
+        self.env["GIT_CONFIG_GLOBAL"] = str(config)
+        self.env["GIT_ALLOW_PROTOCOL"] = "file:ext"
+        result = self.run_tool("install")
+        self.assertFalse(marker.exists(), "inherited Git configuration executed a transport helper")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertTrue((self.target / ".agents/skills/matt-wayfinder/SKILL.md").exists())
+
+    def test_inherited_git_environment_cannot_redirect_repositories(self):
+        redirected = self.work / "not-a-repository"
+        self.env.update(GIT_DIR=str(redirected), GIT_WORK_TREE=str(self.work),
+                        GIT_CONFIG_COUNT="1", GIT_CONFIG_KEY_0="url.ext::false.insteadOf",
+                        GIT_CONFIG_VALUE_0=str(self.matt))
+        result = self.run_tool("install")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertFalse(redirected.exists())
+        self.assertEqual(self.run_tool("check").returncode, 0)
+
+    def test_caller_repository_url_rewrites_do_not_redirect_sources(self):
+        git(self.target, "init", "--initial-branch=main")
+        git(self.target, "config", "url.file:///nonexistent-mirror.insteadOf", str(self.matt))
+        result = self.run_tool("install")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(self.run_tool("check").returncode, 0)
+
+    def test_inherited_template_hooks_and_smudge_filters_are_not_executed(self):
+        marker = self.work / "git-execution-ran"
+        helper = self.work / "marker.py"
+        helper.write_text("from pathlib import Path\nPath(" + repr(str(marker)) + ").write_text('ran')\n")
+        template = self.work / "template"
+        hook = template / "hooks/post-checkout"
+        hook.parent.mkdir(parents=True)
+        hook.write_text("#!/bin/sh\n" + sys.executable + " " + str(helper) + "\n")
+        hook.chmod(0o755)
+        config = self.work / "hostile.gitconfig"
+        git(self.work, "config", "--file", str(config), "init.templateDir", str(template))
+        git(self.work, "config", "--file", str(config), "filter.marker.smudge", sys.executable + " " + str(helper))
+        attrs = self.matt / ".gitattributes"
+        attrs.write_text("* filter=marker\n")
+        git(self.matt, "add", ".")
+        git(self.matt, "commit", "-m", "synthetic attributes")
+        self.env.update(GIT_CONFIG_GLOBAL=str(config), GIT_TEMPLATE_DIR=str(template))
+        result = self.run_tool("install")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertFalse(marker.exists())
+
+    def test_caller_protocol_restrictions_are_not_broadened(self):
+        self.env["GIT_ALLOW_PROTOCOL"] = "https"
+        result = self.run_tool("install")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertFalse((self.target / "vendor").exists())
+        self.assertFalse((self.target / ".agents/skills").exists())
+
+    def test_bridge_preserves_invocation_restrictions_for_both_hosts(self):
+        original = ("---\nname: wayfinder\ndescription: Synthetic\n"
+                    "disable-model-invocation: true\nuser-invocable: false\n"
+                    "allowed-tools:\n  - Read\n  - Grep\n---\nOriginal content\n")
+        source = self.matt / "skills/engineering/wayfinder/SKILL.md"
+        source.write_text(original)
+        policy = source.parent / "agents/openai.yaml"
+        policy.parent.mkdir()
+        policy.write_text("interface:\n  display_name: Synthetic\npolicy:\n  allow_implicit_invocation: false\n")
+        git(self.matt, "add", ".")
+        git(self.matt, "commit", "-m", "restricted synthetic skill")
+        result = self.run_tool("install")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        bridge = self.target / ".agents/skills/matt-wayfinder"
+        wrapper = (bridge / "SKILL.md").read_text()
+        self.assertIn("disable-model-invocation: true", wrapper)
+        self.assertIn("user-invocable: false", wrapper)
+        self.assertIn('allowed-tools:\n  - "Read"\n  - "Grep"\n', wrapper)
+        self.assertEqual((bridge / "agents/openai.yaml").read_text(),
+                         "policy:\n  allow_implicit_invocation: false\n")
+        self.assertEqual((self.target / "vendor/matt/skills/engineering/wayfinder/SKILL.md").read_text(), original)
+        ordinary = (self.target / ".agents/skills/matt-grill-with-docs/SKILL.md").read_text()
+        self.assertNotIn("disable-model-invocation", ordinary)
+        self.assertFalse((self.target / ".agents/skills/matt-grill-with-docs/agents/openai.yaml").exists())
+
+    def test_sidecar_only_and_frontmatter_only_restrictions_cross_host_boundary(self):
+        source = self.matt / "skills/engineering/wayfinder/SKILL.md"
+        policy = source.parent / "agents/openai.yaml"
+        policy.parent.mkdir()
+        policy.write_text("policy:\n  allow_implicit_invocation: false # human only\n")
+        pstack = self.pstack / "pstack/skills/how/SKILL.md"
+        pstack.write_bytes(b"---\r\nname: how\r\ndescription: Synthetic\r\n"
+                          b"'disable-model-invocation': true # explicit\r\n"
+                          b"allowed-tools: 'Read, Grep'\r\npaths: [\"**/*.ts\"]\r\n---\r\nOriginal\r\n")
+        for repo in (self.matt, self.pstack):
+            git(repo, "add", ".")
+            git(repo, "commit", "-m", "synthetic cross-host restrictions")
+        result = self.run_tool("install")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        for name in ("matt-wayfinder", "pstack-how"):
+            bridge = self.target / ".agents/skills" / name
+            self.assertIn("disable-model-invocation: true", (bridge / "SKILL.md").read_text())
+            self.assertEqual((bridge / "agents/openai.yaml").read_text(),
+                             "policy:\n  allow_implicit_invocation: false\n")
+        self.assertIn('allowed-tools: "Read, Grep"',
+                      (self.target / ".agents/skills/pstack-how/SKILL.md").read_text())
+
+    def test_ambiguous_or_unsupported_restrictions_refuse_before_replacement(self):
+        self.assertEqual(self.run_tool("install").returncode, 0)
+        before = self.snapshot()
+        source = self.matt / "skills/engineering/wayfinder/SKILL.md"
+        for declaration in (
+            "disable-model-invocation: true\ndisable-model-invocation: false",
+            'disable-model-invocation: "true"',
+            "disable-model-invocation: &alias true",
+            "disable-model-invocation: *alias",
+            "disable-model-invocation: [true]",
+            "disable-model-invocation: yes",
+            "  disable-model-invocation: true",
+            "allowed-tools: {unexpected: mapping}",
+            "allowed-tools: *tools",
+            "allowed-tools: [*tools]",
+            "allowed-tools: null",
+            "allowed-tools: [true]",
+            "hooks: {PostToolUse: executable}",
+            "<<: *policy",
+        ):
+            with self.subTest(declaration=declaration):
+                source.write_text("---\nname: wayfinder\ndescription: Synthetic\n" + declaration + "\n---\nSource\n")
+                git(self.matt, "add", ".")
+                git(self.matt, "commit", "-m", "ambiguous synthetic metadata")
+                result = self.run_tool("install", "--approve-update")
+                self.assertNotEqual(result.returncode, 0)
+                self.assertEqual(self.snapshot(), before)
+
+    def test_conflicting_host_policy_and_dependency_configuration_refuse(self):
+        source = self.matt / "skills/engineering/wayfinder/SKILL.md"
+        source.write_text("---\nname: wayfinder\ndescription: Synthetic\n"
+                          "disable-model-invocation: true\n---\nSource\n")
+        sidecar = source.parent / "agents/openai.yaml"
+        sidecar.parent.mkdir()
+        for policy in ("policy:\n  allow_implicit_invocation: true\n",
+                       "policy: {allow_implicit_invocation: false}\n",
+                       "policy:\n  allow_implicit_invocation: false\n  unknown: false\n",
+                       "dependencies:\n  tools: []\n"):
+            with self.subTest(policy=policy):
+                sidecar.write_text(policy)
+                git(self.matt, "add", ".")
+                git(self.matt, "commit", "-m", "unsupported synthetic host policy")
+                result = self.run_tool("install")
+                self.assertNotEqual(result.returncode, 0)
+                self.assertFalse((self.target / "vendor").exists())
+                self.assertFalse((self.target / ".agents/skills").exists())
+
+    def test_copied_upstream_scripts_are_preserved_but_never_executed(self):
+        marker = self.work / "upstream-script-ran"
+        script = self.pstack / "pstack/scripts/link-skills.sh"
+        script.parent.mkdir()
+        payload = "#!/bin/sh\nprintf ran > " + str(marker) + "\n"
+        script.write_text(payload)
+        script.chmod(0o755)
+        git(self.pstack, "add", ".")
+        git(self.pstack, "commit", "-m", "inert synthetic upstream script")
+        result = self.run_tool("install")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertFalse(marker.exists())
+        self.assertEqual((self.target / "vendor/pstack/scripts/link-skills.sh").read_text(), payload)
+
+    def test_git_protocol_from_user_denial_is_not_broadened(self):
+        self.env.pop("GIT_ALLOW_PROTOCOL", None)
+        self.env["GIT_PROTOCOL_FROM_USER"] = "0"
+        control = subprocess.run(["git", "ls-remote", str(self.matt)],
+                                 cwd=self.work, env=self.env, capture_output=True)
+        self.assertNotEqual(control.returncode, 0)
+        denied = self.run_tool("install")
+        self.assertNotEqual(denied.returncode, 0)
+        self.assertFalse((self.target / "vendor").exists())
+        self.env.pop("GIT_PROTOCOL_FROM_USER")
+        self.assertEqual(self.run_tool("install").returncode, 0)
+
+    def test_utf8_bom_does_not_discard_invocation_policy(self):
+        source = self.matt / "skills/engineering/wayfinder/SKILL.md"
+        source.write_text("\ufeff---\nname: wayfinder\ndescription: Synthetic\n"
+                          "disable-model-invocation: true\n---\nSource\n", encoding="utf-8")
+        git(self.matt, "add", ".")
+        git(self.matt, "commit", "-m", "synthetic encoded frontmatter")
+        installed = self.run_tool("install")
+        self.assertEqual(installed.returncode, 0, installed.stderr)
+        wrapper = self.target / ".agents/skills/matt-wayfinder/SKILL.md"
+        self.assertIn("disable-model-invocation: true", wrapper.read_text())
+        source.write_text("---\nname: wayfinder\ndescription: Synthetic\n---\nSource\n")
+        sidecar = source.parent / "agents/openai.yaml"
+        sidecar.parent.mkdir()
+        sidecar.write_text("\ufeffpolicy:\n  allow_implicit_invocation: false\n", encoding="utf-8")
+        git(self.matt, "add", ".")
+        git(self.matt, "commit", "-m", "synthetic encoded host policy")
+        updated = self.run_tool("install", "--approve-update")
+        self.assertEqual(updated.returncode, 0, updated.stderr)
+        self.assertIn("disable-model-invocation: true", wrapper.read_text())
+
+    def test_mirror_acquisition_is_distinguished_from_canonical_upstream(self):
+        installed = self.run_tool("install")
+        self.assertEqual(installed.returncode, 0, installed.stderr)
+        lock = json.loads((self.target / "sources.lock.json").read_text())
+        source = lock["sources"]["matt"]
+        self.assertEqual(source["repository"], "https://github.com/mattpocock/skills.git")
+        self.assertEqual(source["acquisition"]["kind"], "operator-local-mirror")
+        self.assertEqual(len(source["acquisition"]["source_sha256"]), 64)
+        self.assertNotIn(str(self.matt), (self.target / "sources.lock.json").read_text())
+
+    def test_nonlocal_override_and_git_failure_do_not_echo_sensitive_input(self):
+        sentinel = "SYNTHETIC-SENSITIVE-SOURCE"
+        self.env["ASSIMILATION_MATT_SOURCE"] = "https://user:" + sentinel + "@example.invalid/repo.git"
+        result = self.run_tool("install")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertNotIn(sentinel, result.stdout + result.stderr)
+        self.assertFalse((self.target / "vendor").exists())
+
+    def test_destination_reparse_metadata_refuses_without_replacement(self):
+        self.assertEqual(self.run_tool("install").returncode, 0)
+        before = self.snapshot()
+        launcher = r"""
+import pathlib, runpy, sys, types
+root = pathlib.Path(sys.argv[1])
+original = pathlib.Path.lstat
+def synthetic_reparse(path):
+    info = original(path)
+    if path == root / 'vendor':
+        return types.SimpleNamespace(st_mode=info.st_mode, st_file_attributes=0x400)
+    return info
+pathlib.Path.lstat = synthetic_reparse
+sys.path.insert(0, str(root / 'scripts'))
+sys.argv = [str(root / 'scripts/skills.py'), 'install', '--approve-update']
+runpy.run_path(sys.argv[0], run_name='__main__')
+"""
+        result = subprocess.run([sys.executable, "-c", launcher, str(self.target)],
+                                cwd=self.target, env=self.env, capture_output=True, text=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("reparse", result.stderr.lower())
+        self.assertEqual(self.snapshot(), before)
+
+    def test_git_failure_suppresses_remote_stderr_and_arguments(self):
+        launcher = r"""
+import pathlib, subprocess, sys
+sys.path.insert(0, str(pathlib.Path(sys.argv[1]) / 'scripts'))
+import skills
+subprocess.run = lambda *a, **k: subprocess.CompletedProcess(a, 1, b'', b'SYNTHETIC-STDERR-SECRET')
+try:
+    skills.git('ls-remote', 'https://SYNTHETIC-URL-SECRET@example.invalid/repo')
+except RuntimeError as error:
+    print(error)
+else:
+    raise SystemExit('expected Git refusal')
+"""
+        result = subprocess.run([sys.executable, "-c", launcher, str(self.target)],
+                                cwd=self.target, env=self.env, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("failed", result.stdout)
+        self.assertNotIn("SYNTHETIC-STDERR-SECRET", result.stdout + result.stderr)
+        self.assertNotIn("SYNTHETIC-URL-SECRET", result.stdout + result.stderr)
+
+    def test_source_reparse_is_refused_before_copying_any_payload(self):
+        launcher = r"""
+import pathlib, sys, types
+root, source = pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2])
+sys.path.insert(0, str(root / 'scripts'))
+import skills
+original = pathlib.Path.lstat
+def synthetic_reparse(path):
+    info = original(path)
+    if path == source / 'skills/engineering':
+        return types.SimpleNamespace(st_mode=info.st_mode, st_file_attributes=0x400)
+    return info
+pathlib.Path.lstat = synthetic_reparse
+try:
+    skills.copy_source(source, root / 'unaccepted-copy', fetched=True)
+except RuntimeError as error:
+    print(error)
+    raise SystemExit(1)
+"""
+        result = subprocess.run([sys.executable, "-c", launcher, str(self.target), str(self.matt)],
+                                cwd=self.target, env=self.env, capture_output=True, text=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("reparse", result.stdout.lower())
+        self.assertFalse((self.target / "unaccepted-copy").exists())
 
     def test_full_install_readonly_check_and_controlled_update(self):
         first = self.run_tool("install")

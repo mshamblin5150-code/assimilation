@@ -124,7 +124,7 @@ class UpdateProposalTests(unittest.TestCase):
         self.assertFalse(self.output.exists())
         self.assertEqual(self.lock.read_bytes(), original)
 
-    @unittest.skipUnless(shutil.which("bash"), "Bash is required to check the Linux workflow shell")
+    @unittest.skipUnless(sys.platform == "linux" and shutil.which("bash"), "Linux workflow shell requires Linux and Bash")
     def test_monthly_workflow_reports_missing_lock_and_skips_update_handoff(self):
         workflow = (SOURCE / ".github/workflows/monthly-skill-review.yml").read_text()
         script = workflow.split("        run: |\n", 1)[1].split("      - name:", 1)[0]
@@ -140,7 +140,8 @@ class UpdateProposalTests(unittest.TestCase):
         self.assertIn("no committed sources.lock.json", summary.read_text())
         self.assertFalse((self.work / "skill-update-proposal").exists())
 
-    @unittest.skipUnless(shutil.which("bash") and shutil.which("tar"), "Linux workflow fixture requires bash and tar")
+    @unittest.skipUnless(sys.platform == "linux" and shutil.which("bash") and shutil.which("tar"),
+                         "Linux workflow fixture requires Linux, bash and tar")
     def test_workflow_archives_hidden_metadata_modes_links_and_the_generation_digest(self):
         self.create_sources_and_lock()
         advance_matt(self.repositories["matt"], self.env)
@@ -187,7 +188,7 @@ class MonthlyWorkflowContractTests(unittest.TestCase):
         self.assertNotIn("gh pr review", self.workflow)
         self.assertNotIn("pull_request_target", self.workflow)
 
-    @unittest.skipUnless(shutil.which("bash"), "Bash is required to check the Linux workflow shell")
+    @unittest.skipUnless(sys.platform == "linux" and shutil.which("bash"), "Linux workflow shell requires Linux and Bash")
     def test_embedded_shell_scripts_are_syntactically_valid(self):
         lines = self.workflow.splitlines()
         scripts = []
@@ -219,9 +220,10 @@ class GeneratedStateSafetyTests(unittest.TestCase):
                      ".assimilation-install.lock/owner", ".agents/.assimilation-stage-fixture/backup-skills/SKILL.md",
                      ".assimilation-snapshot-stage-fixture/fetch/.git/config",
                      "upstream/.assimilation-snapshot-stage-fixture/backup-matt/README.md"]
-            result = subprocess.run(["git", "check-ignore", "--stdin"], cwd=root, env=env,
-                                    input="\n".join(paths) + "\n", text=True, capture_output=True)
-            self.assertEqual(result.stdout.splitlines(), paths)
+            result = subprocess.run(["git", "check-ignore", "-z", "--stdin"], cwd=root, env=env,
+                                    input=("\0".join(paths) + "\0").encode("utf-8"), capture_output=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(result.stdout.split(b"\0"), [path.encode("utf-8") for path in paths] + [b""])
 
 
 if __name__ == "__main__":

@@ -1,0 +1,198 @@
+{
+  "schema_version": "triage-finding/v0",
+  "repository": {
+    "path": "/workspace/assimilation",
+    "revision": "4f7d072a2bdf54142306c17246f1a5efea30f0e5"
+  },
+  "findings": [
+    {
+      "triage_item_id": "triage-001",
+      "input_id": "supplied-summary-1",
+      "source_type": "freeform",
+      "title": "Installer inherits Git configuration",
+      "normalized_input": {
+        "vulnerable_component": "scripts/skills.py",
+        "claimed_source": "inherited Git environment and developer/caller Git configuration",
+        "claimed_sink": "Git subprocess and checkout/remote handling",
+        "claimed_control": "see supplied summary",
+        "affected_version_or_path": "reported revision unknown; inspected 4f7d072a2bdf54142306c17246f1a5efea30f0e5",
+        "preconditions": [
+          "Operator uses the relevant supported surface or separately executes the named upstream script."
+        ],
+        "impact": "Execution/invocation boundary concern; audit severity and actor unspecified.",
+        "references": [
+          "Chad AI summary relayed by Matt; full content not yet established."
+        ]
+      },
+      "verdict": "needs_review",
+      "confidence": "medium",
+      "affected_locations": [
+        {
+          "label": "source/control/sink",
+          "path": "scripts/skills.py",
+          "lines": "48-69; 108-123",
+          "detail": "Inherited configuration is demonstrated statically, but supplied summary does not establish a lower-trust actor or supported exploit preconditions."
+        }
+      ],
+      "reachable_path": [
+        "scripts/skills.py install/check",
+        "inherited Git environment and developer/caller Git configuration",
+        "Git subprocess and checkout/remote handling"
+      ],
+      "boundary_assessment": {
+        "product_surface": "CLI",
+        "source_trust": "trusted_developer_config",
+        "boundary_crossed": null,
+        "policy_basis": "No applicable SECURITY.md found; root AGENTS.md, README.md, docs/SAFETY.md and original invocation documentation reviewed."
+      },
+      "exploitability_stack_rank": {
+        "rank_queue": "needs_review",
+        "rank": 1,
+        "rationale": "Inherited configuration is demonstrated statically, but supplied summary does not establish a lower-trust actor or supported exploit preconditions.",
+        "drivers": [
+          "reachability",
+          "configuration/host preconditions",
+          "guard strength"
+        ]
+      },
+      "evidence": [
+        "Git subprocess has no explicit environment or command-level execution restrictions.",
+        "head() has no isolated cwd; clone_sparse() checks out fetched content."
+      ],
+      "counterevidence": [
+        "Local Git configuration can be an intentional trusted-operator choice.",
+        "Snapshot helper already has a separate hardened implementation."
+      ],
+      "proof_gaps": [
+        "Audit actor, controlled configuration source and affected revision are unspecified."
+      ],
+      "recommended_next_step": "clarify exploit boundary; scoped hardening",
+      "fix_finding_handoff": null
+    },
+    {
+      "triage_item_id": "triage-002",
+      "input_id": "supplied-summary-2",
+      "source_type": "freeform",
+      "title": "Bundled upstream linking script can delete existing skill directories",
+      "normalized_input": {
+        "vulnerable_component": "upstream/matt-pocock/scripts/link-skills.sh",
+        "claimed_source": "separately invoked upstream maintainer script",
+        "claimed_sink": "rm -rf of existing non-symlink target",
+        "claimed_control": "see supplied summary",
+        "affected_version_or_path": "reported revision unknown; inspected 4f7d072a2bdf54142306c17246f1a5efea30f0e5",
+        "preconditions": [
+          "Operator uses the relevant supported surface or separately executes the named upstream script."
+        ],
+        "impact": "Execution/invocation boundary concern; audit severity and actor unspecified.",
+        "references": [
+          "Chad AI summary relayed by Matt; full content not yet established."
+        ]
+      },
+      "verdict": "not_actionable",
+      "confidence": "high",
+      "affected_locations": [
+        {
+          "label": "source/control/sink",
+          "path": "upstream/matt-pocock/scripts/link-skills.sh",
+          "lines": "4-6; 15-16; 55-59",
+          "detail": "No supported first-party execution path found; preserved upstream instructions do not authorize activation."
+        }
+      ],
+      "reachable_path": [
+        "separate manual script invocation",
+        "separately invoked upstream maintainer script",
+        "rm -rf of existing non-symlink target"
+      ],
+      "boundary_assessment": {
+        "product_surface": "vendored",
+        "source_trust": "trusted_operator",
+        "boundary_crossed": false,
+        "policy_basis": "No applicable SECURITY.md found; root AGENTS.md, README.md, docs/SAFETY.md and original invocation documentation reviewed."
+      },
+      "exploitability_stack_rank": {
+        "rank_queue": null,
+        "rank": null,
+        "rationale": "No supported first-party execution path found; preserved upstream instructions do not authorize activation.",
+        "drivers": []
+      },
+      "evidence": [
+        "Script removes existing non-symlink destinations before linking."
+      ],
+      "counterevidence": [
+        "Script labels itself dev-only, not a supported installer.",
+        "Root AGENTS.md and docs/SAFETY.md keep upstream scripts inert.",
+        "First-party installer never invokes this script."
+      ],
+      "proof_gaps": [
+        "Full audit could identify an additional first-party caller absent from the summary."
+      ],
+      "recommended_next_step": "retain inert boundary; document hazard",
+      "fix_finding_handoff": null
+    },
+    {
+      "triage_item_id": "triage-003",
+      "input_id": "supplied-summary-3",
+      "source_type": "freeform",
+      "title": "Generated bridges omit original invocation restrictions",
+      "normalized_input": {
+        "vulnerable_component": "scripts/skills.py",
+        "claimed_source": "upstream skill invocation declarations during bridge generation",
+        "claimed_sink": "host discovery of generated bridge without restrictions",
+        "claimed_control": "see supplied summary",
+        "affected_version_or_path": "reported revision unknown; inspected 4f7d072a2bdf54142306c17246f1a5efea30f0e5",
+        "preconditions": [
+          "Operator uses the relevant supported surface or separately executes the named upstream script."
+        ],
+        "impact": "Execution/invocation boundary concern; audit severity and actor unspecified.",
+        "references": [
+          "Chad AI summary relayed by Matt; full content not yet established."
+        ]
+      },
+      "verdict": "confirmed",
+      "confidence": "high",
+      "affected_locations": [
+        {
+          "label": "source/control/sink",
+          "path": "scripts/skills.py",
+          "lines": "374-384",
+          "detail": "Supported bridge generation drops explicit source restrictions before a host can decide whether autonomous invocation is allowed."
+        }
+      ],
+      "reachable_path": [
+        "scripts/skills.py install/check",
+        "upstream skill invocation declarations during bridge generation",
+        "host discovery of generated bridge without restrictions"
+      ],
+      "boundary_assessment": {
+        "product_surface": "CLI",
+        "source_trust": "untrusted",
+        "boundary_crossed": true,
+        "policy_basis": "No applicable SECURITY.md found; root AGENTS.md, README.md, docs/SAFETY.md and original invocation documentation reviewed."
+      },
+      "exploitability_stack_rank": {
+        "rank_queue": "confirmed",
+        "rank": 1,
+        "rationale": "Supported bridge generation drops explicit source restrictions before a host can decide whether autonomous invocation is allowed.",
+        "drivers": [
+          "reachability",
+          "configuration/host preconditions",
+          "guard strength"
+        ]
+      },
+      "evidence": [
+        "Generated frontmatter contains only name/description.",
+        "Original Matt implement declares disable-model-invocation:true and sidecar allow_implicit_invocation:false.",
+        "Pinned P-Stack sources include explicit-only frontmatter."
+      ],
+      "counterevidence": [
+        "Bridge body instructs reading original restrictions, but that happens after host discovery.",
+        "Original source bytes are retained."
+      ],
+      "proof_gaps": [
+        "Actual installed host enforcement is not exercised by static source inspection."
+      ],
+      "recommended_next_step": "fix-finding",
+      "fix_finding_handoff": "Use $fix-finding for scripts/skills.py bridge generation: carry source explicit-only declarations, visibility/tool/path restrictions and host policy to generated metadata before discovery; refuse ambiguous policy before transactional replacement; preserve source bytes, licenses, ordinary invocation and unmanaged skills. Static host behavior remains a proof gap."
+    }
+  ]
+}

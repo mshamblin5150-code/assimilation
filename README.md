@@ -44,7 +44,7 @@ Assimilation helps a person turn ordinary-language ideas into specified, reviewa
    python3 scripts/skills.py install --locked
    ```
 
-   On Windows, `py -3 scripts/skills.py install --locked` is an alternative. **Git and Python 3.10+ are required**; no TypeScript is required. The command fetches the **exact commits in `sources.lock.json`**, saves its declared source scope locally under `vendor/`, and creates engineering/P-Stack bridge skills under `.agents/skills/` without hiding upstream references. For a fresh copy without a lock, use `python3 scripts/skills.py install` once to record the initial upstream revisions. The installer refuses unknown vendor content, edited managed content, and unmanaged skill-name collisions. Review source code before installing; don't execute unknown tools blindly.
+   **Git, Python 3.10+, and a POSIX runtime preserving exact file modes and symlinks are required**; no TypeScript is required. Linux is the tested platform. Native Windows source operations refuse before starting because equivalent guarantees have not been established; see the [seven-item Windows validation disposition](docs/WINDOWS_VALIDATION.md). Browsing the preserved sources remains available. The command fetches the **exact commits in `sources.lock.json`**, saves its declared source scope locally under `vendor/`, and creates engineering/P-Stack bridge skills under `.agents/skills/` without hiding upstream references. For a fresh copy without a lock, use `python3 scripts/skills.py install` once to record the initial upstream revisions. The installer refuses unknown vendor content, edited managed content, and unmanaged skill-name collisions. Review source code before installing; don't execute unknown tools blindly. Generated bridges retain supported invocation restrictions; unfamiliar policy syntax stops installation for review. See [installer boundaries and limitations](docs/SAFETY.md#security-privacy-licensing-verification).
 4. **Ask the agent to read `AGENTS.md`.** Give it a concrete goal in your own words. For nontrivial design ambiguity it should use **`grill-with-docs`** (interview plus documentation). For a large, multi-session effort whose path remains uncertain it should use **`wayfinder` → `to-spec` → `to-tickets` → implementation** ([connected workflow](docs/WORKFLOW.md#large-uncertain-projects-from-map-to-implementation): resolve decisions, specify the agreed design, review bounded dependent work, then build within authority). It can use **all** the installed engineering and P-Stack skills as appropriate, but should not run unrelated skills on every task.
 5. **Remain in charge.** The AI may declare *zero blocking fog* with evidence when all in-scope decisions are settled; that is **not** approval to deploy, merge, spend money, publish, or perform other sensitive actions.
 
@@ -59,6 +59,8 @@ The original system uses **Number One** as Chief of Staff and **Nexus** (DAVID),
 The philosophy: no challenge is dismissed merely as “too big.” Break it down, identify unknowns, investigate alternatives, and report genuine blockers candidly. An agent must not claim work is done without verifiable evidence, invent decisions, or exceed its authorization.
 
 ## Where to look
+
+- [Writing actionable issues](docs/ISSUES.md) — duplicate search, safe drafts, acceptance and handoff.
 
 - [How to publish Assimilation publicly](docs/PUBLISH.md) — create the GitHub repository with the current package.
 
@@ -94,3 +96,4 @@ This repository contains **no live Open Brain access**, no personal memory archi
 ## Credits
 
 Portable doctrine assembled from engineering lessons of **Matt Shamblin** (GitHub: `mshamblin5150-code`), with upstream skills authored by **Matt Pocock** and **Lauren Tan**. This is an independent starter package and is not an official upstream distribution or a substitute for reading each skill's complete source.
+
