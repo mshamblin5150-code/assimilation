@@ -35,27 +35,14 @@ jobs:
             }
           }
           Write-Host 'PASS: real guard returns correct results for all four combinations'
-      - name: Verify fixture detection fails closed for missing paths
-        shell: pwsh
-        run: |
-          $missingSource = 'examples/chad-organizer/absent-fixture-source-for-ci.py'
-          $missingTest = 'examples/chad-organizer/absent-fixture-test-for-ci.py'
-          if ((Test-Path $missingSource -PathType Leaf) -or (Test-Path $missingTest -PathType Leaf)) {
-            throw 'Synthetic missing-fixture names unexpectedly exist; choose fresh names'
-          }
-          $bothMissing = (Test-Path $missingSource -PathType Leaf) -and (Test-Path $missingTest -PathType Leaf)
-          $sourceMissing = (Test-Path $missingSource -PathType Leaf) -and (Test-Path 'examples/chad-organizer/test_organizer.py' -PathType Leaf)
-          $testMissing = (Test-Path 'examples/chad-organizer/organizer.py' -PathType Leaf) -and (Test-Path $missingTest -PathType Leaf)
-          if ($bothMissing -or $sourceMissing -or $testMissing) {
-            throw 'Missing organizer fixture must not qualify for test discovery'
-          }
-          Write-Host 'PASS: missing source, missing tests, and both missing refuse discovery'
       - name: Check whether practice organizer exists on this PR head
         id: fixture
         shell: pwsh
         run: |
-          $present = (Test-Path 'examples/chad-organizer/organizer.py' -PathType Leaf) -and (Test-Path 'examples/chad-organizer/test_organizer.py' -PathType Leaf)
-          if ($present) { 'present=true' >> $env:GITHUB_OUTPUT } else { 'present=false' >> $env:GITHUB_OUTPUT; Write-Host 'Organizer absent from this PR head; no organizer tests can run.' }
+          $present = & ./scripts/check_practice_organizer_fixture.ps1 -SourcePath 'examples/chad-organizer/organizer.py' -TestPath 'examples/chad-organizer/test_organizer.py'
+          if ($present -notin @('true', 'false')) { throw 'Invalid fixture guard output' }
+          "present=$present" >> $env:GITHUB_OUTPUT
+          if ($present -eq 'false') { Write-Host 'Organizer absent from this PR head; no organizer tests can run.' }
       - name: Test only disposable practice-folder fixtures
         if: steps.fixture.outputs.present == 'true'
         run: python -B -m unittest discover -s examples/chad-organizer -v
