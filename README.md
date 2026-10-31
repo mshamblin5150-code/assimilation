@@ -38,6 +38,8 @@ Assimilation helps a person turn ordinary-language ideas into specified, reviewa
 
 ## For Chad: five-minute orientation
 
+**Ready to take a ticket through implementation?** [Follow one issue from triage to a reviewed PR and main](docs/CHAD-ISSUE-TO-MAIN.md), with a disposable worktree rehearsal and safe cleanup gates.
+
 **Continuing a long task?** [Practice context checkpoints and a fresh-task handoff](docs/CHAD-CONTEXT-HANDOFF.md), then learn how to transfer coordinator ownership without restarting the team.
 
 **Learn by building:** [Start the practice-folder organizer tutorial](docs/CHAD-ORGANIZER.md). Choose your own skill name, preview synthetic files, approve one exact plan, and practice undo. Continue into Writing for Agents, TDD, implementation, P-Stack and a read-only public Clinical Skills study. The example needs no third-party packages; actual moves require Windows and an already available Python 3.12+. It does not install skills or authorize work on personal files.
