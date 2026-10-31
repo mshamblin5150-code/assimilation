@@ -16,6 +16,11 @@ class WindowsViewNamesTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "casefold-collision"):
             validate_view_names(["Docs/File.txt", "docs/file.TXT"])
 
+    def test_refuse_file_directory_conflict_in_either_order(self):
+        for paths in (["a", "a/b.txt"], ["A/B.txt", "a"]):
+            with self.subTest(paths=paths), self.assertRaisesRegex(ValueError, "file-directory-collision"):
+                validate_view_names(paths)
+
     def test_refuse_unsafe_components(self):
         bad = ("../secret", "/root", "a//b", "a/./b", "a/../b",
                "CON", "con.txt", "LPT1.log", "COM9", "NUL", "AUX",
