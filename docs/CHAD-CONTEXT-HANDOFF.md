@@ -259,3 +259,7 @@ can do that in plain language—not when you can quote a token limit.
 
 If anything is unclear, say **“Wait, what?”** and ask for a simpler example while
 keeping the scope and approval rules intact.
+
+## Next lesson: take the work through integration
+
+[Follow one issue from triage to main](CHAD-ISSUE-TO-MAIN.md), carrying its decisions, worktree ownership, evidence and holds through implementation, review and the actual integration gate.
