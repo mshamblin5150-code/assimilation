@@ -16,13 +16,18 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           persist-credentials: false
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          path: .ci-guard
+          persist-credentials: false
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
       - name: Regression — exercise the actual fixture guard
         shell: pwsh
         run: |
-          $guard = './scripts/check_practice_organizer_fixture.ps1'
+          $guard = './.ci-guard/scripts/check_practice_organizer_fixture.ps1'
           foreach ($case in @(
             @{ source = 'examples/chad-organizer/organizer.py'; test = 'examples/chad-organizer/test_organizer.py'; expected = 'true' },
             @{ source = 'examples/chad-organizer/missing-source-for-ci.py'; test = 'examples/chad-organizer/test_organizer.py'; expected = 'false' },
@@ -39,7 +44,7 @@ jobs:
         id: fixture
         shell: pwsh
         run: |
-          $present = & ./scripts/check_practice_organizer_fixture.ps1 -SourcePath 'examples/chad-organizer/organizer.py' -TestPath 'examples/chad-organizer/test_organizer.py'
+          $present = & ./.ci-guard/scripts/check_practice_organizer_fixture.ps1 -SourcePath 'examples/chad-organizer/organizer.py' -TestPath 'examples/chad-organizer/test_organizer.py'
           if ($present -notin @('true', 'false')) { throw 'Invalid fixture guard output' }
           "present=$present" >> $env:GITHUB_OUTPUT
           if ($present -eq 'false') { Write-Host 'Organizer absent from this PR head; no organizer tests can run.' }
