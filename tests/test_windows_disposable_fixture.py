@@ -61,6 +61,41 @@ class WindowsDisposableFixtureTests(unittest.TestCase):
             regular.write_bytes(b"test-owned regular")
             self.assertEqual(regular.lstat().st_file_attributes & 0x400, 0)
 
+    def test_observer_accepts_regular_chain_and_refuses_reparse_leaf(self):
+        sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+        from windows_fixture_observer import observe_regular_chain, Refused
+        with tempfile.TemporaryDirectory(prefix="assimilation-windows-fixture-") as root:
+            base = Path(root)
+            (base / "folder").mkdir()
+            (base / "folder" / "normal.txt").write_bytes(b"synthetic")
+            self.assertTrue(observe_regular_chain(base, ("folder", "normal.txt")))
+            (base / "folder" / "target.txt").write_bytes(b"synthetic target")
+            link = base / "folder" / "link.txt"
+            try:
+                link.symlink_to(base / "folder" / "target.txt")
+            except (OSError, NotImplementedError) as exc:
+                self.skipTest("symlink unavailable: " + type(exc).__name__)
+            with self.assertRaisesRegex(Refused, "reparse-point"):
+                observe_regular_chain(base, ("folder", "link.txt"))
+
+    def test_observer_refuses_reparse_ancestor_and_missing_leaf(self):
+        sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+        from windows_fixture_observer import observe_regular_chain, Refused
+        with tempfile.TemporaryDirectory(prefix="assimilation-windows-fixture-") as root:
+            base = Path(root)
+            real = base / "real"
+            real.mkdir()
+            (real / "file.txt").write_bytes(b"synthetic")
+            with self.assertRaisesRegex(Refused, "unobservable-path"):
+                observe_regular_chain(base, ("missing", "file.txt"))
+            link = base / "linked"
+            try:
+                link.symlink_to(real, target_is_directory=True)
+            except (OSError, NotImplementedError) as exc:
+                self.skipTest("directory symlink unavailable: " + type(exc).__name__)
+            with self.assertRaisesRegex(Refused, "reparse-point"):
+                observe_regular_chain(base, ("linked", "file.txt"))
+
 
 if __name__ == "__main__":
     unittest.main()
