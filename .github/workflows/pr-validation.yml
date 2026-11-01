@@ -50,7 +50,7 @@ jobs:
         env:
           PYTHONDONTWRITEBYTECODE: '1'
           CONTRACT_EXPECTED_SHA: ${{ github.event.pull_request.head.sha }}
-          CONTRACT_SOURCE_SHA256: '{"scripts/git_runtime.py":"70309b8d367849bd651f70c8d7a092b52e84015e64788265e0fea373e5ac0eec","scripts/propose_update.py":"a250efcd5d374dfea7d9b46f12b9238db78d084d96590fe241e6fcb1207acc6e","scripts/publish_update.py":"9ea05bd8b2e3d11dd9eba2f6cbb0e396737a862248215bed7c759b3947e451b4","scripts/skills.py":"16a97c1822d7ae52ef6b9fe76578ba11dfff7928210f63210cb1384870740e05","scripts/snapshot_sources.py":"1287f3cb6a54e9fd6066e8a793e73ae6c93a199ecbe182b4002d30ed75f19260","tests/windows_contract.py":"afb5d1d37f1b881cabe87d12568fe28fdf791fd1d54785f15fd286d583a9bd25"}'
+          CONTRACT_SOURCE_SHA256: '{"scripts/git_runtime.py":"70309b8d367849bd651f70c8d7a092b52e84015e64788265e0fea373e5ac0eec","scripts/propose_update.py":"a250efcd5d374dfea7d9b46f12b9238db78d084d96590fe241e6fcb1207acc6e","scripts/publish_update.py":"53a6083b60a1442a35541b2a1f0bb91877fe5d7ebc7fd4722ae67bb866e174b1","scripts/skills.py":"16a97c1822d7ae52ef6b9fe76578ba11dfff7928210f63210cb1384870740e05","scripts/snapshot_sources.py":"1287f3cb6a54e9fd6066e8a793e73ae6c93a199ecbe182b4002d30ed75f19260","tests/windows_contract.py":"afb5d1d37f1b881cabe87d12568fe28fdf791fd1d54785f15fd286d583a9bd25"}'
         run: python -B tests/windows_contract.py --expected-sha "$env:CONTRACT_EXPECTED_SHA"
       - name: Check read-only Windows onboarding observations
         run: python -B -m unittest discover -s tests -p test_windows_onboarding.py -v
