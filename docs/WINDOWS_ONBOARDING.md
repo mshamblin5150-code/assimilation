@@ -1,5 +1,53 @@
 # Windows onboarding: observations before installation
 
+## Optional explicitly selected Git diagnostic
+
+The passive/default statements below describe invocation WITHOUT a selection.
+An optional `--git-executable ABSOLUTE_PATH` opts into one trusted-process
+`--version` observation on Windows. No PATH search or automatic selection occurs.
+The diagnostic trusts the operator's selected existing local installation,
+its dependencies and stable path components, Python and Windows. Lexical
+validation is NOT proof of local volume, object identity, no reparse points,
+authenticity or confinement. No signature/hash database is consulted.
+
+Choose a drive-rooted .exe spelling, including spaces or Unicode. Relative,
+drive-relative, UNC/device/extended names, streams, traversal, wildcard/control
+characters, trailing-dot/space aliases and wrappers refuse before launch.
+Unknown/missing/duplicate arguments and unsupported explicit runtimes exit 2
+with a structured blocked diagnostic. Review the selection; do not hunt for a
+replacement, change PATH or repair permissions automatically.
+
+Exactly the selected executable and `--version` run without shell, interactive
+input, source operations, fallback or retry. The child receives only inherited
+SystemRoot/WINDIR/TEMP/TMP startup variables plus fixed Git config/helper/prompt/
+transport suppression settings; their values are never reported. This changes
+only the child environment, not host configuration. It is a trusted-process
+invocation, not an OS sandbox or a universal no-I/O guarantee for arbitrary code.
+
+The execution deadline is five seconds after creation. Combined application
+stdout/stderr capture is capped at 4096 bytes while reading unbuffered pipes;
+overflow detection may consume an extra byte but never stores excess output.
+Timeout/overflow stop and reap the direct child, close owned pipes and join
+owned readers once. Cleanup failure is reported without retry. Creation,
+termination and OS pipe-close latency are not covered by a hard wall-clock
+promise; descendant processes are not contained. Synthetic reader tests do not
+qualify actual Windows scheduling, dependency behavior or pipe termination.
+
+Exit 0 reports observed-not-qualified, available/observed, parsed ASCII version
+and compatibility unverified. No minimum Git version is invented. Exit 1 reports
+blocked with availability/version/compatibility unverified and a bounded
+launch-failed, timeout, output-limit, invalid-output, nonzero-exit or cleanup-failed
+reason. Raw child output, selected paths, exceptions and environment values are
+not returned. A valid result is exactly one `git version X.Y...` ASCII record,
+optional LF/CRLF, empty stderr and exit zero. No invalid output is echoed.
+
+All three admission/verification flags remain false in every mode. A version
+observation does not qualify source operations or an installer. Issue #9 gains
+explicit diagnostic outcomes; it remains open for independent review, full
+repository/hosted regressions, separately authorized exact native probing and
+operator acceptance. This private candidate has not performed any real Git
+probe, publication or merge. No installation or automatic repair is offered.
+
 This is a read-only prerequisite report for issue #9, separate from PR #8's
 hardening and [issue-writing training](ISSUES.md). It does not install skills,
 verify source snapshots, qualify a destination or grant permission to proceed.
