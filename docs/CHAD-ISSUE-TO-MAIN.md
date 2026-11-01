@@ -265,12 +265,50 @@ For separately authorized real work:
    issue's acceptance, not merely a green badge. Deployment, activation or native
    qualification can still be outstanding.
 
-Use a closing keyword such as `Closes #ACTUAL_ISSUE` only when this PR genuinely
-satisfies that whole issue. GitHub interprets closing keywords for PRs targeting
-the default branch; a linked issue can close automatically on merge. A partial
-slice should use a non-closing reference and retain its remaining work.
+### Merge a slice without closing the parent
+
+A parent ticket can need several separately reviewed PRs. Merging one part is
+useful progress; it does not mean the parent's whole acceptance contract is met.
+Use **`Part 1 of issue #9`** and **`Part 2 of issue #9`** for non-final slices in
+the [worked three-slice example](../examples/chad-issue-to-main/THREE-SLICE-EXAMPLE.md).
+It uses real parent #9 and PR #10 evidence, labels future work as prospective,
+and shows what each slice delivers, what remains and when closure is allowed.
+
+Before merging an authorized partial slice:
+
+1. Read the parent acceptance checklist and current state. The PR body names
+   delivered behavior, exact evidence, remaining work/holds and next owner.
+2. Inspect the **PR title and body**, every included commit message, and the
+   **actual proposed merge or squash title/body**. Remove unintended parent
+   closing directives from the text that will land; changing only the PR body
+   does not repair an included commit message. A history repair needs its own
+   reviewed revision and applicable checks, not an unapproved force push.
+3. Use a plain reference, not a closing Development/sidebar relationship to the
+   parent. Check any existing closing links before merge. A separate child
+   ticket may close when its own scope is complete while the parent stays open.
+4. After merge, read back the merged PR, target commit/content **and the parent's
+   actual open state**. Record the slice receipt and the unchecked remainder.
+   If it closed unexpectedly, preserve the event/commit evidence, report the
+   incomplete scope and reopen only with authority. Do not guess the cause.
+
+GitHub supports `close/closes/closed`, `fix/fixes/fixed` and
+`resolve/resolves/resolved` with issue references, including case/colon variants.
+Its documented triggers include PR descriptions targeting the default branch
+and commit messages that reach it; manual closing links matter too.
 [GitHub's linking documentation](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue)
-explains the mechanism; automatic closure is not independent acceptance evidence.
+describes those mechanisms. A PR title is not a separately documented keyword
+trigger, but can become part of a [merge commit message](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/configuring-commit-merging-for-pull-requests)
+or [squash message](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/configuring-commit-squashing-for-pull-requests).
+Inspect the generated text rather than assuming its defaults are safe.
+Repository automation may also affect issue state; inspect applicable rules and
+keep the post-merge readback even when these text/link checks find no problem.
+
+Only the final accepted slice may use a parent-closing directive. First reconcile
+**all** parent criteria against actual evidence and required owner acceptance;
+check current merge/closure authority. If acceptance depends on post-merge
+deployment, activation or native verification, merge without auto-closing and
+close the parent separately only after that gate passes. A green badge or
+automatic issue closure never supplies the missing acceptance.
 
 **Done:** the approved change is verified on the intended branch and the issue
 accurately reflects what is delivered versus still blocked.
