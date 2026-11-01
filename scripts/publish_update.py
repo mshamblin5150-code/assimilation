@@ -22,6 +22,43 @@ def git_blob_sha(content: bytes) -> str:
     return hashlib.sha1(b"blob " + str(len(content)).encode() + b"\0" + content).hexdigest()
 
 
+def service_error_hint(body: str) -> str:
+    """Return only fixed labels; the untrusted service response is never logged."""
+    if len(body) > 8192:
+        return "unclassified"
+    def reject_constant(value):
+        raise ValueError("Nonstandard JSON constant")
+    def unique_object(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError("Duplicate JSON key")
+            result[key] = value
+        return result
+    try:
+        response = json.loads(body, parse_constant=reject_constant, object_pairs_hook=unique_object)
+    except (ValueError, RecursionError):
+        return "unclassified"
+    pending = [(response, 1)]
+    while pending:
+        value, depth = pending.pop()
+        if not isinstance(value, (dict, list)):
+            continue
+        if depth > 16:
+            return "unclassified"
+        children = value.values() if isinstance(value, dict) else value
+        pending.extend((child, depth + 1) for child in children)
+    message = response.get("message") if isinstance(response, dict) else None
+    if message in ("Resource not accessible by integration",
+                   "Resource not accessible by personal access token"):
+        return "resource-access-denied"
+    if isinstance(message, str) and message.startswith("You have exceeded a secondary rate limit."):
+        return "secondary-rate-limit"
+    if isinstance(message, str) and message.startswith("API rate limit exceeded for "):
+        return "primary-rate-limit"
+    return "unclassified"
+
+
 class GitHub:
     def __init__(self, repository: str):
         self.repository = repository
@@ -35,9 +72,10 @@ class GitHub:
         result = subprocess.run(command, input=json.dumps(payload) if payload is not None else None,
                                 text=True, capture_output=True, check=False)
         if result.returncode:
-            # Only allowlisted numeric diagnostics: never echo service/account data or tokens.
+            # Only numeric diagnostics and fixed labels; never echo service/account data or tokens.
             status = re.search(r"\(HTTP ([1-5][0-9]{2})\)", result.stderr)
             diagnostic = "HTTP " + status.group(1) if status else "HTTP status unavailable"
+            diagnostic += "; service hint=" + service_error_hint(result.stdout)
             if route == "/git/trees" and payload is not None:
                 diagnostic += f"; tree entries={len(payload.get('tree', []))}"
             raise RuntimeError(f"GitHub API {method} {route.split('?')[0]} failed ({diagnostic}); inspect the workflow's permissions and repository state")
