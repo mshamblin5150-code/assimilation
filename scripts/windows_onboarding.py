@@ -6,7 +6,7 @@ import struct
 import sys
 
 
-def report():
+def report(*, git_requested=False):
     """Observe runtime categories without filesystem discovery or Git execution."""
     return {
         'schema': 1,
@@ -40,28 +40,66 @@ def report():
             'Do not install dependencies or change PATH, Git, ACLs or security settings automatically.',
             'Read docs/WINDOWS_ONBOARDING.md; record missing prerequisites and request only the required operator action.',
             'Native Windows source operations remain unsupported; POSIX runtime identity alone does not qualify a filesystem.',
-            'Git availability/version are unverified: no PATH search, configuration read, execution or transport probe is performed.'],
+            ('Compatibility is unverified. Review any failure; do not retry, repair or install automatically.'
+             if git_requested else 'Git availability/version are unverified: no PATH search, configuration read, execution or transport probe is performed.')],
     }
 
 
-def main(argv=None):
+def main(argv=None, *, resources=None, platform=None):
     args = sys.argv[1:] if argv is None else argv
     if args == ['--help']:
-        print('Usage: python -B scripts/windows_onboarding.py [--help]\n'
-              'Read-only prerequisite categories. No installation or security changes. '
-              'No Git execution, source verification or filesystem qualification.')
+        print('Usage: python -B scripts/windows_onboarding.py [--git-executable ABSOLUTE_PATH]\n'
+              'No installation or security changes. Default/help are passive; no Git discovery. '
+              'Optional selected trusted Windows .exe runs only --version, no shell/input/retry. '
+              'Trust its installation, dependencies, stable paths and runtime; lexical validation is not confinement. '
+              'Five-second deadline after creation; 4 KiB combined output cap during reading. '
+              'Creation/termination latency and hostile descendants are not bounded/contained. '
+              'Timeout/overflow stop/reap the direct child; cleanup failure refuses without retry. '
+              'Observed version compatibility remains unverified; no installation admission.')
         return 0
-    if args:
-        print(json.dumps({'schema': 1, 'status': 'blocked', 'error': 'invalid-arguments'}))
-        return 2
+    reason = None
+    status = 0
+    selected = None
+    if args and (len(args) != 2 or args[0] != '--git-executable'):
+        reason, status = 'invalid-arguments', 2
+    elif args:
+        try:
+            from selected_git import capture_version, valid_selection
+        except (ImportError, OSError, ValueError):
+            reason, status = 'observation-unavailable', 1
+        else:
+            if not valid_selection(args[1]):
+                reason, status = 'invalid-selection', 2
+            elif (sys.platform if platform is None else platform) != 'win32':
+                reason, status = 'unsupported-platform', 2
+            else:
+                selected = args[1]
     try:
-        observed = report()
+        observed = report(git_requested=selected is not None)
     except (OSError, ValueError):
-        print(json.dumps({'schema': 1, 'status': 'blocked', 'error': 'observation-unavailable',
-                          'installation_admitted': False}))
-        return 1
+        observed = {'schema': 1, 'status': 'blocked', 'error': 'observation-unavailable',
+                    'installation_admitted': False, 'filesystem_verified': False,
+                    'source_verified': False,
+                    'git': {'discovery': 'not-probed', 'execution': 'not-probed',
+                            'availability': 'unverified', 'version': 'unverified',
+                            'compatibility': 'unverified'}}
+        if reason:
+            observed['error'] = reason
+        print(json.dumps(observed, sort_keys=True))
+        return status or 1
+    if selected is not None:
+        version, reason = capture_version(selected, resources=resources)
+        status = 1 if reason else 0
+        observed['git'].update(availability='unverified' if reason else 'available',
+                               execution='failed' if reason else 'observed',
+                               version='unverified' if reason else version,
+                               compatibility='unverified')
+    if reason:
+        observed['status'] = 'blocked'
+        observed['error'] = reason
+        observed['git']['compatibility'] = 'unverified'
     print(json.dumps(observed, sort_keys=True))
-    return 0
+    return status
 
 
 if __name__ == '__main__':
