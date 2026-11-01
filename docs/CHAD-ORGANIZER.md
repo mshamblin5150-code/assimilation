@@ -85,6 +85,10 @@ PDF classification is already available by extension. Reading PDF content is a s
 
 Standard PyMuPDF does not supply this lesson with Office-format reading. [PyMuPDF Office](https://pymupdf.readthedocs.io/en/latest/pymupdf-office/) is a separate commercial extension for formats including DOC/DOCX, XLS/XLSX and PPT/PPTX, with licensing and evaluation restrictions. Check current vendor terms and authorized entitlement; neither the skill nor this tutorial assumes a key, authorizes purchase, or installs a package. PyMuPDF itself also has license terms to review. An Office file remains Keep in the baseline. An owner-provided plain-text export is a useful alternative.
 
+## Next step: keep your progress
+
+[Practice a context checkpoint and fresh-task handoff](CHAD-CONTEXT-HANDOFF.md) using only this organizer's preview. Learn to preserve decisions, evidence and approval holds before moving to larger work.
+
 ## Next step: advanced case study
 
 Continue with [skill mechanics](CHAD-SKILL-MECHANICS.md), then [the public Clinical Skills guided trace](CHAD-CLINICAL-SKILLS-STUDY.md). These explain invocation and setup, then follow a verified public instruction through implementation, synthetic tests and ADR history. Clinical Skills can illustrate how instructions, code, tests and independent review scale across a larger project. Use an invented training scenario and public architecture only. This lesson imports no private code, memories, patient data or clinical records. Clinical decisions and sensitive data require their own qualified oversight and authorization.

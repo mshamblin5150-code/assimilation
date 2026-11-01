@@ -1,5 +1,7 @@
 # What implementation does, and where P-Stack fits
 
+For your own new repository, start with [the blank-project walkthrough](CHAD-BLANK-PROJECT.md). After implementation, use [adversarial prose review](CHAD-ADVERSARIAL-REVIEW.md) to check the agent's completion claims against actual evidence.
+
 Read this after [Writing for Agents with TDD](CHAD-TDD.md). Keep the first organizer lesson short: inspect an exact preview before approving changes. This reference explains the development process behind the example.
 
 The installed Matt Pocock implement skill was read for this lesson. It takes a user spec or tickets, uses TDD at agreed interfaces, runs focused checks regularly and the full suite at the end, requests code review, and commits the work. It is not a planning substitute or permission to merge. Here the delegated requirements supply the spec; no issue tracker or ticket publication is needed.
@@ -46,3 +48,7 @@ Start by explaining preview output. Then make one synthetic behavior test fail, 
 Later, use the public Clinical Skills trace to see a small dependency interface, synthetic status tests, instruction contract tests and durable ADR reasoning in a larger project. If Chad proposes a broader organizer, then discuss design alternatives and impact with the advanced P-Stack sources. Keep all work bounded to authorized practice inputs.
 
 Done when Chad can identify requirements, agent instructions, the failing expectation, implementation decision, passing result, review challenge and remaining uncertainty without treating them as interchangeable.
+
+## Practice the whole route
+
+[Take one issue from triage to main](CHAD-ISSUE-TO-MAIN.md): clarify it with the actual skills, agree a brief, implement in an owned worktree, review the exact change and distinguish local rehearsal from an authorized real PR merge.
