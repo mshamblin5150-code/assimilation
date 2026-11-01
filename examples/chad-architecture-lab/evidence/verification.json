@@ -1,0 +1,80 @@
+{
+  "outcomes": [
+    {
+      "errors": 0,
+      "expected_behavior_failures": [
+        "test_jpg_has_an_image_destination"
+      ],
+      "passed": 2,
+      "skips": 0,
+      "stage": "01-start",
+      "tests_run": 3
+    },
+    {
+      "errors": 0,
+      "expected_behavior_failures": [
+        "test_summary_counts_match_the_plan"
+      ],
+      "passed": 3,
+      "skips": 0,
+      "stage": "02-category",
+      "tests_run": 4
+    },
+    {
+      "errors": 0,
+      "expected_behavior_failures": [],
+      "passed": 4,
+      "skips": 0,
+      "stage": "03-tangled",
+      "tests_run": 4
+    },
+    {
+      "errors": 0,
+      "expected_behavior_failures": [
+        "test_later_preview_does_not_change_an_earlier_plan"
+      ],
+      "passed": 0,
+      "skips": 0,
+      "stage": "03-tangled",
+      "tests_run": 1
+    },
+    {
+      "errors": 0,
+      "expected_behavior_failures": [
+        "test_uppercase_extensions_have_matching_rows_and_counts"
+      ],
+      "passed": 5,
+      "skips": 0,
+      "stage": "04-deepened",
+      "tests_run": 6
+    },
+    {
+      "errors": 0,
+      "expected_behavior_failures": [],
+      "passed": 6,
+      "skips": 0,
+      "stage": "05-casefold",
+      "tests_run": 6
+    },
+    {
+      "errors": 0,
+      "expected_behavior_failures": [
+        "test_uppercase_extensions_have_matching_rows_and_counts"
+      ],
+      "passed": 0,
+      "skips": 0,
+      "stage": "disposable-case-sensitive-mutant",
+      "tests_run": 1
+    },
+    {
+      "errors": 0,
+      "expected_behavior_failures": [],
+      "passed": 6,
+      "skips": 0,
+      "stage": "unchanged-original-source-rerun",
+      "tests_run": 6
+    }
+  ],
+  "scope": "finite synthetic preview-only teaching cases, not installation or agent obedience",
+  "status": "verified"
+}

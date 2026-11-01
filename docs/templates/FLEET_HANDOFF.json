@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "phase": "end",
+  "task_id": "synthetic-example",
+  "owner": "example-worker",
+  "coordinator": "example-coordinator",
+  "repository": "example.invalid/synthetic-project",
+  "revision": "example-only-not-a-real-revision",
+  "ticket": "untracked: synthetic template demonstration",
+  "objective": "Verify a synthetic receipt without starting an external operation",
+  "instructions": ["AGENTS.md at the recorded revision"],
+  "scope": {
+    "authorized": ["Read the supplied synthetic receipt"],
+    "holds": ["No external operation, publication, or permission changes"]
+  },
+  "work_state": "complete",
+  "task_started_at": "2026-10-31T10:00:00Z",
+  "observed_at": "2026-10-31T10:20:00Z",
+  "handoff_due_at": "2026-11-01T10:00:00Z",
+  "completed": ["The synthetic receipt was read back"],
+  "untested": ["No live host or hook was tested"],
+  "evidence": [{"kind": "read", "ref": "synthetic-receipt", "result": "The expected synthetic value was present"}],
+  "admission": {"status": "admitted", "operation_id": "example-operation", "evidence": "synthetic confirmed read receipt"},
+  "pending_operations": [],
+  "blockers": [],
+  "retry": {
+    "decision": "none",
+    "reason": "No operation requires a retry",
+    "prior_outcome": "completed",
+    "window_started_at": null,
+    "window_expires_at": null,
+    "materially_new_evidence": null,
+    "attempt_for_evidence": 0
+  },
+  "next": {"owner": "example-coordinator", "kind": "none", "action": "Record completion", "success_condition": "Requested synthetic outcome is established", "check_at": null}
+}

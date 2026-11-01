@@ -1,0 +1,77 @@
+name: Practice organizer validation
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+permissions:
+  contents: read
+concurrency:
+  group: practice-organizer-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  windows-practice-organizer:
+    runs-on: windows-2022
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        primary: [pull-request, historical-absent]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ matrix.primary == 'historical-absent' && '58e2c4322828c429ef77d86d360e349a3d03938c' || github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          path: .ci-guard
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Regression — exercise the actual fixture guard
+        shell: pwsh
+        run: |
+          $guard = './.ci-guard/scripts/check_practice_organizer_fixture.ps1'
+          $fixtureRoot = Join-Path $env:RUNNER_TEMP ('organizer-guard-' + [guid]::NewGuid().ToString('N'))
+          $null = New-Item -ItemType Directory -Path $fixtureRoot -ErrorAction Stop
+          $source = Join-Path $fixtureRoot 'organizer.py'
+          $test = Join-Path $fixtureRoot 'test_organizer.py'
+          try {
+            [IO.File]::WriteAllText($source, '# Synthetic presence fixture; never executed.')
+            [IO.File]::WriteAllText($test, '# Synthetic presence fixture; never executed.')
+            foreach ($case in @(
+              @{ source = $source; test = $test; expected = 'true' },
+              @{ source = (Join-Path $fixtureRoot 'missing-source.py'); test = $test; expected = 'false' },
+              @{ source = $source; test = (Join-Path $fixtureRoot 'missing-test.py'); expected = 'false' },
+              @{ source = (Join-Path $fixtureRoot 'missing-source.py'); test = (Join-Path $fixtureRoot 'missing-test.py'); expected = 'false' }
+            )) {
+              $actual = & $guard -SourcePath $case.source -TestPath $case.test
+              if ($actual -ne $case.expected) {
+                throw "Fixture guard returned '$actual', expected '$($case.expected)'"
+              }
+            }
+          } finally {
+            [IO.File]::Delete($source)
+            [IO.File]::Delete($test)
+            [IO.Directory]::Delete($fixtureRoot)
+          }
+          Write-Host 'PASS: real guard returns correct results for all four combinations'
+      - name: Check whether practice organizer exists on this PR head
+        id: fixture
+        shell: pwsh
+        run: |
+          $present = & ./.ci-guard/scripts/check_practice_organizer_fixture.ps1 -SourcePath 'examples/chad-organizer/organizer.py' -TestPath 'examples/chad-organizer/test_organizer.py'
+          if ($present -notin @('true', 'false')) { throw 'Invalid fixture guard output' }
+          "present=$present" >> $env:GITHUB_OUTPUT
+          if ($present -eq 'false') { Write-Host 'Organizer absent from this PR head; no organizer tests can run.' }
+      - name: Verify historical primary is recorded as untested
+        if: matrix.primary == 'historical-absent'
+        shell: pwsh
+        run: |
+          if ('${{ steps.fixture.outputs.present }}' -ne 'false') {
+            throw 'Expected the historical primary checkout to lack Organizer fixtures'
+          }
+          Write-Host 'Historical primary verified absent; Organizer tests remain untested.'
+      - name: Test only disposable practice-folder fixtures
+        if: steps.fixture.outputs.present == 'true'
+        run: python -B -m unittest discover -s examples/chad-organizer -v

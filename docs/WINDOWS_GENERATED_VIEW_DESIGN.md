@@ -1,6 +1,6 @@
 # Windows generated-files-v1: proposed safety contract (draft)
 
-Status: **design-only, not an implementation or authorization to install**. Tracks #11; depends on #9 and merged #10. Existing native Windows source-operation refusal remains in force.
+Status: **design/prototype only, not a native installer or authorization to install**. Tracks #11; depends on #9 and merged #10. Existing native Windows source-operation refusal remains in force.
 
 ## Trust and identity boundaries
 
@@ -9,7 +9,7 @@ Status: **design-only, not an implementation or authorization to install**. Trac
 - A source verifier, a view generator, a native destination inspector, and a transaction/activation controller have distinct responsibilities. No observation or synthetic test alone grants installation authority.
 - Trusted Python startup and trusted operator-supplied destination are prerequisites; neither automatically establishes safe Windows filesystem behavior.
 
-## Fail-closed gates before any future implementation
+## Fail-closed gates before any future native installer implementation
 
 | Gate | Required proof | Unknown/denied response |
 | --- | --- | --- |
@@ -22,7 +22,7 @@ Status: **design-only, not an implementation or authorization to install**. Trac
 | Concurrency | Reviewed native handle/locking contract and adversarial race tests, not only before/after hashes | Refuse |
 | Activation | Separate human authorization, quiescence and invocation enforcement | Remain inactive |
 
-## Negative-case test matrix (planned, not executed)
+## Negative-case test matrix (partially exercised; acceptance remains open)
 
 1. Case-fold and Unicode-name collisions; trailing dots/spaces, reserved device names and alternate data stream syntax.
 2. Junction/reparse/symlink substitution at each ancestor and destination leaf; unknown tags and access-denied observations.
@@ -35,10 +35,12 @@ Status: **design-only, not an implementation or authorization to install**. Trac
 
 ## Evidence ladder
 
-- **Level 1:** specification and source inspection (this document).
-- **Level 2:** isolated synthetic/fault-injection tests (future PR revisions).
-- **Level 3:** actual Windows native observation and adversarial filesystem tests on an approved disposable fixture (future separately reviewed work).
+- **Level 1:** specification and source inspection (this document and the explicit non-authorizing prototypes).
+- **Level 2:** implemented name-preflight and in-memory transaction tests exercise bounded synthetic subsets. They do not establish the complete negative-case matrix or native recovery.
+- **Level 3:** narrow Windows temporary-fixture regular-file, metadata and symlink/reparse observations have run. Handle-relative confinement, ACL admission and the full native adversarial plan remain unqualified and require separately reviewed work.
 - **Level 4:** authorized staged installation and recovery qualification (future separate issue and approval).
+
+**Recorded checkpoint, not a later-head claim:** at `58e2c4322828c429ef77d86d360e349a3d03938c`, [run 41153903302](https://github.com/mshamblin5150-code/assimilation/actions/runs/41153903302) passed six name-preflight, eleven transaction-model and six disposable-fixture tests on Windows. Ubuntu's 198-test result included six Windows-only skips, not six passes. The separate [Organizer run 41153903308](https://github.com/mshamblin5150-code/assimilation/actions/runs/41153903308) failed before test discovery. The [completed security/spec review](https://github.com/mshamblin5150-code/assimilation/pull/12#pullrequestreview-5724870011) did not approve merge or installation. A refreshed composition needs its own checks; later workflow repairs do not retroactively repair that failed run.
 
 Do not confuse levels. This draft establishes **no** native ACL, junction, rollback, race, durability or installation proof. The earlier MSYS named-object ACCESS_DENIED remains unresolved; no bypass or transport retry is authorized.
 
@@ -46,7 +48,7 @@ Do not confuse levels. This draft establishes **no** native ACL, junction, rollb
 
 Independent security/spec review, precise source identity, explicit evidence of failed/blocked cases, exact-head Ubuntu and Windows CI, and explicit human merge approval are required. Do not change host PATH, ACLs, elevation, Developer Mode, dependencies, Git transport, or execute upstream tools. No patient data, secrets or private environment values in reports.
 
-## Native Windows disposable-fixture test plan (not yet executed)
+## Full native Windows adversarial fixture test plan (not yet executed)
 
 **Prerequisites:** separate review and approval for a dedicated temporary directory owned by the test runner; no operator home, installed tree, or user-selected destination. Use only harmless synthetic bytes. Do not change ACLs or privileges to make a test pass.
 

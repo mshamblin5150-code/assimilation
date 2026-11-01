@@ -1,0 +1,30 @@
+test_later_preview_does_not_change_an_earlier_plan (__main__.StageContract.test_later_preview_does_not_change_an_earlier_plan) ... FAIL
+
+======================================================================
+FAIL: test_later_preview_does_not_change_an_earlier_plan (__main__.StageContract.test_later_preview_does_not_change_an_earlier_plan)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<lab>/checks.py", line 75, in test_later_preview_does_not_change_an_earlier_plan
+    self.assertEqual(first, {"rows": [
+AssertionError: {'rows': [{'source': 'drawing.jpg', 'category': 'Images', 'dest[62 chars]: 1}} != {'rows': [{'source': 'garden.txt', 'category': 'Text', 'destina[124 chars]: 1}}
+  {'counts': {'Keep': 1, 'Text': 1},
+-  'rows': [{'category': 'Images',
+?                         ^^^^ ^
+
++  'rows': [{'category': 'Text',
+?                         ^ ^^
+
+-            'destination': 'Images/drawing.jpg',
++            'destination': 'Text/garden.txt',
+-            'source': 'drawing.jpg'}]}
+?                        ^^^^ - ^^^  ^^
+
++            'source': 'garden.txt'},
+?                       +++ ^  ^^^  ^
+
++           {'category': 'Keep', 'destination': None, 'source': 'unknown.bin'}]} : Earlier preview remains a stable plan
+
+----------------------------------------------------------------------
+Ran 1 test in 0.003s
+
+FAILED (failures=1)

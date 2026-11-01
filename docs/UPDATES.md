@@ -53,6 +53,19 @@ The approved guarded job requests only `contents: write` and `pull-requests: wri
 
 The repository setting **Allow GitHub Actions to create and approve pull requests** must permit creation, subject to organization policy. GitHub bundles approval in that setting's name; this workflow never calls approval or merge. Enabling that setting is a separately authorized administrative action. Code and offline tests do not establish its current value.
 
+On a failed API call, the publisher reports the HTTP status when available, the
+tree-entry count for tree creation, and a fixed `service hint` derived from a
+small recognized set of JSON error messages. It never prints raw service bodies
+or stderr. A hint is not an independent policy diagnosis. Invalid JSON (including
+nonstandard constants), duplicate keys, bodies over 8,192 characters or 16 container levels
+(counting the top-level object), and absent or unrecognized bodies produce
+`unclassified`. In particular, HTTP 403
+alone does not distinguish an access refusal from a rate limit. Preserve the
+failed run and inspect its saved artifact, deterministic branch, and matching
+PR before considering a rerun. Do not change permissions, substitute credentials,
+or repeat a denied write just to diagnose it. This diagnostic does not retry
+requests or change the draft-only publication boundary.
+
 Bot-created PR workflow runs may need a writer to approve execution. Verify the actual hosted run and checks. See [token permissions](https://docs.github.com/en/actions/tutorials/authenticate-with-github_token), [repository Actions settings](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository), and [workflow trigger behavior](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow).
 
 ## Prepare without publishing

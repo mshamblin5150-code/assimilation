@@ -1,0 +1,11 @@
+test_uppercase_extensions_have_matching_rows_and_counts (__main__.StageContract.test_uppercase_extensions_have_matching_rows_and_counts) ... ok
+test_later_preview_does_not_change_an_earlier_plan (__main__.StageContract.test_later_preview_does_not_change_an_earlier_plan) ... ok
+test_summary_counts_match_the_plan (__main__.StageContract.test_summary_counts_match_the_plan) ... ok
+test_jpg_has_an_image_destination (__main__.StageContract.test_jpg_has_an_image_destination) ... ok
+test_text_and_unknown_plan (__main__.StageContract.test_text_and_unknown_plan) ... ok
+test_preview_preserves_files_and_ignores_directories (__main__.StageContract.test_preview_preserves_files_and_ignores_directories) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.004s
+
+OK

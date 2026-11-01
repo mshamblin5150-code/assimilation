@@ -1,5 +1,7 @@
 # Assimilation
 
+**For Chad, Vox and every drone:** read [Matt's working method](docs/OPERATOR_METHOD.md) before asking design questions: grilling with ADRs, one decision at a time, clear options and costs, and decisions recorded as they land. [Vox's directive and a copyable chat for Chad](docs/VOX_HANDOFF.md) provide the reading order and handoff.
+
 ## If an explanation does not make sense, say “Wait, what?”
 
 You do not need engineering vocabulary to use this repository. Tell your agent: **“Wait, what? Use the `wait-what` skill to explain that again in plain language.”** Ask it to read [Matt Pocock’s original `wait-what` skill](upstream/matt-pocock/skills/productivity/wait-what/SKILL.md), give a little context, and use your project’s glossary when one exists. You can ask for another, simpler explanation whenever you need one.
@@ -32,9 +34,21 @@ Assimilation helps a person turn ordinary-language ideas into specified, reviewa
 
 > **Browse the actual skills:** [Matt Pocock — complete repository](upstream/matt-pocock/) · [P-Stack — complete subtree](upstream/pstack/) · [source index and authority boundary](upstream/README.md).
 >
-> This repository includes four local Assimilation skills, full upstream reference sources, their pinned lock/provenance, and an optional host installer. The initial visible baseline contains **38 Matt skill files** (20 engineering, 7 productivity, 4 miscellaneous, 7 in-progress) and **61 P-Stack skill files** (including 3 dormant Benny skills). Browsable source is not automatic host activation.
+> This repository includes five local Assimilation skills, full upstream reference sources, their pinned lock/provenance, and an optional host installer. The initial visible baseline contains **38 Matt skill files** (20 engineering, 7 productivity, 4 miscellaneous, 7 in-progress) and **61 P-Stack skill files** (including 3 dormant Benny skills). Browsable source is not automatic host activation.
 
 ## For Chad: five-minute orientation
+
+**Starting your own project from nothing?** [Choose a folder, initialize Git, install upstream skills and build through the complete workflow](docs/CHAD-BLANK-PROJECT.md). Choose **per-repository or personal/global** skills, then follow [the matching monthly maintenance steps](docs/CHAD-SKILLS-MAINTENANCE.md).
+
+**Checking a polished AI report?** [Practice evidence-grounded adversarial prose review](docs/CHAD-ADVERSARIAL-REVIEW.md) with a separate source packet, deliberately faulty draft and clean control.
+
+**Keeping an active project easy to change?** [Practice periodic architecture surveys with a TDD safety net](docs/CHAD-ARCHITECTURE-UPKEEP.md), using a separate preview-only lab with deliberately tangled code.
+
+**Ready to take a ticket through implementation?** [Follow one issue from triage to a reviewed PR and main](docs/CHAD-ISSUE-TO-MAIN.md), with a disposable worktree rehearsal and safe cleanup gates.
+
+**Continuing a long task?** [Practice context checkpoints and a fresh-task handoff](docs/CHAD-CONTEXT-HANDOFF.md), then learn how to transfer coordinator ownership without restarting the team.
+
+**Learn by building:** [Start the practice-folder organizer tutorial](docs/CHAD-ORGANIZER.md). Choose your own skill name, preview synthetic files, approve one exact plan, and practice undo. Continue into Writing for Agents, TDD, implementation, P-Stack and a read-only public Clinical Skills study. The example needs no third-party packages; actual moves require Windows and an already available Python 3.12+. It does not install skills or authorize work on personal files.
 
 1. **Give the agent a concrete goal and [Start here](START_HERE.md).** It should inspect its actual capabilities and project, select and read original skills, then perform a bounded task. [Operating instructions](AGENTS.md) preserve the authority boundaries.
 2. **Using ChatGPT without coding tools?** Follow [the ChatGPT-only start](docs/CHATGPT.md). You can use the thinking and documentation practices without paying for a particular plan; access to tools and projects may vary.

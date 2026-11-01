@@ -1,5 +1,8 @@
 # Bounded mission: <title>
 
+Use [Fleet handoff](../FLEET_HANDOFF.md) at start, resume, stop, and handoff.
+Reuse the private task record; the JSON structural check is optional.
+
 - Operator and owner:
 - Assigned coordinator / child:
 - Repository revision:
