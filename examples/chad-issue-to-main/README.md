@@ -156,6 +156,12 @@ command. This integrates only the disposable local branch. It is **not** a test
 of GitHub PR permissions, required reviews, branch protection, hosted CI or the
 real main branch. Use lesson step 7 only for separately authorized live work.
 
+If one parent needs several PRs, continue with the
+[three-slice parent-ticket exercise](THREE-SLICE-EXAMPLE.md). Rehearse non-closing
+partial descriptions, the parent-open readback after each slice, and the final
+acceptance/authority gate using local drafts only. A simulated open/closed state
+is not a GitHub observation, and this worksheet authorizes no live ticket change.
+
 ## Cleanup gate
 
 Keep the rehearsal by default. Only with authority to remove that exact owned
