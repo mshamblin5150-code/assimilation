@@ -42,11 +42,12 @@ not returned. A valid result is exactly one `git version X.Y...` ASCII record,
 optional LF/CRLF, empty stderr and exit zero. No invalid output is echoed.
 
 All three admission/verification flags remain false in every mode. A version
-observation does not qualify source operations or an installer. Issue #9 gains
-explicit diagnostic outcomes; it remains open for independent review, full
-repository/hosted regressions, separately authorized exact native probing and
-operator acceptance. This private candidate has not performed any real Git
-probe, publication or merge. No installation or automatic repair is offered.
+observation does not qualify source operations or an installer. Verification
+requires independent review, applicable repository/hosted regressions,
+separately authorized exact native probing and operator acceptance. A recorded
+observation applies only to its named executable/runtime; it does not qualify a
+different installation or the full installer. No installation or automatic
+repair is offered.
 
 This is a read-only prerequisite report for issue #9, separate from PR #8's
 hardening and [issue-writing training](ISSUES.md). It does not install skills,
