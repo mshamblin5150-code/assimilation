@@ -1,8 +1,25 @@
 # ADR 0010: explicitly selected Git prerequisite check
 
-- Status: Accepted design and agent brief; implementation and native verification pending
+- Status: Accepted design; implementation and one authorized native observation delivered; operator acceptance pending
 - Date: 2026-10-30
 - Owner: Matt Shamblin
+
+## Delivery checkpoint — 2026-11-02
+
+The sections below preserve the 2026-10-30 design and interview record.
+This checkpoint records the subsequent delivery status.
+
+[PR #28](https://github.com/mshamblin5150-code/assimilation/pull/28) delivered the
+optional selected-executable diagnostic.
+[PR #30](https://github.com/mshamblin5150-code/assimilation/pull/30) merged the
+guide's evidence correction. The
+[approved evidence summary](https://github.com/mshamblin5150-code/assimilation/issues/9#issuecomment-6565673597)
+records one separately authorized native Windows observation and its limits.
+That comment's then-pending PR #30 condition is now resolved.
+
+One authorized observation is not a native fault matrix, source-operation
+qualification or installer acceptance. Issue #9 remains open for explicit
+operator acceptance. This checkpoint grants no new execution authority.
 
 ## Context
 
