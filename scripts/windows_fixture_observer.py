@@ -34,7 +34,10 @@ def observe_regular_chain(root, relative_parts):
             info = current.lstat()
         except OSError as exc:
             raise Refused("unobservable-path") from exc
-        if getattr(info, "st_file_attributes", 0) & stat.FILE_ATTRIBUTE_REPARSE_POINT:
+        attributes = getattr(info, "st_file_attributes", None)
+        if attributes is None:
+            raise Refused("unobservable-path")
+        if attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT:
             raise Refused("reparse-point")
         if index < len(relative_parts):
             if not stat.S_ISDIR(info.st_mode):
