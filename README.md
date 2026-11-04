@@ -74,6 +74,8 @@ The philosophy: no challenge is dismissed merely as “too big.” Break it down
 
 ## Where to look
 
+- [Harness engineering](docs/HARNESS_ENGINEERING.md) — bounded agent loops, evidence and a [practical lesson for Chad](docs/CHAD-HARNESS-ENGINEERING.md).
+
 - [Windows prerequisite observations](docs/WINDOWS_ONBOARDING.md) - read-only runtime report; installation remains unqualified.
 
 - [Writing actionable issues](docs/ISSUES.md) — duplicate search, safe drafts, acceptance and handoff.
