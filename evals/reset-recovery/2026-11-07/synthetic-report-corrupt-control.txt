@@ -1,0 +1,3 @@
+rynthetic recovery fixture
+mission: alpha
+result: complete

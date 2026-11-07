@@ -1,0 +1,3 @@
+synthetic recovery fixture
+mission: alpha
+result: complete

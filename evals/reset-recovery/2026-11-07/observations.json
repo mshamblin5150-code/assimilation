@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "completed_at": "2026-11-07T13:52:37.558564+00:00",
+  "provenance": "Sanitized projection of controlled experiment receipts and fresh-context evaluation; raw private Page and worker identifiers omitted. Fresh-context launch mode was configured by the experiment coordinator; evaluator action counts and no-contact claims are self-reported, not complete raw tool telemetry.",
+  "observations": [
+    {
+      "scenario": "fresh_context",
+      "decision": "PASS within supplied-locator scope",
+      "reason": "Recovered mission, coordinator, worker, holds, artifact and timing from Page, not expected-result files. Discovery from an installed startup instruction was not tested."
+    },
+    {
+      "scenario": "active_worker",
+      "decision": "PASS; preserve ownership",
+      "observation_time_upper_bounds": [
+        "2026-11-07T13:51:03Z",
+        "2026-11-07T13:51:40Z"
+      ],
+      "tool": "supported scoped worker-status read",
+      "reason": "Two scoped observations confirm running. No send, followup, interrupt, replacement or duplicate launch was performed; synthetic-coordinator remains accountable.",
+      "observed_status": "running",
+      "owner": "synthetic-worker-alpha"
+    },
+    {
+      "scenario": "workspace_restore",
+      "decision": "PASS for retained artifact",
+      "observed_at": "2026-11-07T13:51:22.909090+00:00",
+      "empty_directory_assertion_passed": true,
+      "byte_size": 59,
+      "sha256": "e43fd91d137a96948795b1bfbbf3b2a2956f7dd2754432688902a3cd19884eaa",
+      "size_match": true,
+      "hash_match": true,
+      "source": "UTF-8 content parsed directly from embedded Page JSON",
+      "reason": "New tempfile directory was asserted empty; artifact was written then read and hashed. No existing local fixture/report was used."
+    },
+    {
+      "scenario": "missing_artifact",
+      "decision": "UNRESTORABLE from available evidence",
+      "reason": "unretained-source.bin has neither source bytes nor expected digest. Do not manufacture it or infer success."
+    },
+    {
+      "scenario": "response_unavailable",
+      "decision": "PASS; synthetic-op-alpha reconciled committed; no resubmit",
+      "observed_at": "2026-11-07T13:51:33.877Z",
+      "tool": "mcp__codex_apps__chatgpt_space_read_page",
+      "current_page_sequence": 3,
+      "reason": "Exact current receipt read independently of initial checkpoint says committed. This is synthetic receipt evidence, not verification of a real external sink.",
+      "observed_receipt": "SYNTHETIC_OPERATION_ALPHA status=committed evidence_version=1",
+      "observed_hash": "11374ceb71308974707ba3974383588b1564df4cc180ee8b3704b0fc8a40566f"
+    },
+    {
+      "scenario": "unknown_admission",
+      "decision": "PASS; unresolved and held",
+      "reason": "Prior submission is recorded but receipt absent and admission UNKNOWN. Not failed, not never-run, not safe to retry; preserve operation and owner until supported evidence resolves it."
+    },
+    {
+      "scenario": "denial_hold",
+      "decision": "PASS; denied without execution remains held",
+      "reason": "No materially new relevant evidence. Retry count stays zero. Reset and overdue interval do not clear denial. This classifies a recorded denial only; no actual denial was triggered."
+    },
+    {
+      "scenario": "original_deadline",
+      "decision": "PASS; preserve overdue deadline and report current handoff",
+      "observed_at": "2026-11-07T13:51:40Z",
+      "clock_raw": "It is 2026-11-07 13:51:40 UTC.",
+      "original_series_start": "2026-11-06T10:00:00Z",
+      "original_handoff_deadline": "2026-11-07T10:00:00Z",
+      "overdue_seconds": 13900,
+      "reason": "Deadline was 3h51m40s overdue at clock observation. No reset to a fresh 24-hour window, no cancellation of running work, no renewed approval. Parent progress message already reported overdue status."
+    },
+    {
+      "scenario": "positive_acceptance",
+      "decision": "PASS for bounded alpha sub-result",
+      "reason": "Both specified positive acceptance requirements are satisfied. Literal result: complete in file alone would not have sufficed."
+    },
+    {
+      "scenario": "negative_acceptance",
+      "decision": "REJECT complete claim",
+      "reason": "Required source bytes and matching hash are absent; reported_status complete does not establish acceptance."
+    },
+    {
+      "scenario": "whole_mission",
+      "decision": "NOT VERIFIED COMPLETE",
+      "reason": "Alpha report sub-result is verified, but active ownership remains, UNKNOWN operation unresolved, denial held and missing artifact unverified. Do not promote bounded acceptance to whole-mission completion or clear holds."
+    },
+    {
+      "scenario": "corruption_control",
+      "decision": "PASS; corrupted copy rejected",
+      "observed_at": "2026-11-07T13:52:37.558564+00:00",
+      "mutation": "XOR first byte with 1 on disposable copy only",
+      "byte_size": 59,
+      "sha256": "3f1d903c03cce35700af9ac71c73e693a732161a54ed0c04c8cd0d7020567458",
+      "expected_sha256": "e43fd91d137a96948795b1bfbbf3b2a2956f7dd2754432688902a3cd19884eaa",
+      "hash_match": false,
+      "valid_original_unchanged": true,
+      "reason": "Same-size one-byte corruption does not satisfy recorded digest; valid original remains intact."
+    },
+    {
+      "scenario": "concurrent_checkpoint",
+      "decision": "PASS at actual Page guard boundary",
+      "snapshot": "Checkpoint: writer_a=1; writer_b=0.",
+      "snapshot_hash": "13155c1fead30a0fb681ac35aa12dd72d772b8ca2865825b408f9a2ee611ff74",
+      "intervening_state": "Checkpoint: writer_a=2; writer_b=0.",
+      "intervening_hash": "e820c52b37d294a13302c1d1e6da1d97a77ff66a44822cac1704847ec46947ca",
+      "rejection": {
+        "code": "edit_conflict",
+        "commit_status": "not_committed",
+        "status": "rejected",
+        "rejection_reason": "patch_hash_mismatch",
+        "through_sequence": 3
+      },
+      "recovery_action": "reread_and_rebuild",
+      "final_state": "Checkpoint: writer_a=2; writer_b=1.",
+      "final_hash": "a346530a2dc5110ab09b65e27629e75eb315b6dcd758cf51e9cefd2079a621d8",
+      "final_sequence": 4,
+      "scope": "Two independently retained snapshots with controlled interleaving; not a load or race-stress test."
+    }
+  ],
+  "post_observation_cleanup": {
+    "worker": "synthetic-worker-alpha",
+    "outcome": "Original single 180-second wait completed normally with successful exit",
+    "interruption_or_replacement": false
+  }
+}
