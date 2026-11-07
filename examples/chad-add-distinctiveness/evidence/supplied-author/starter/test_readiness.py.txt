@@ -1,0 +1,50 @@
+"""Behavior-focused tests. Requirements, not the implementation, define results."""
+
+import unittest
+from readiness import Policy, assess
+
+
+class ReadinessBehaviorTests(unittest.TestCase):
+    def test_ready_immediately_has_no_scheduled_wait(self):
+        result = assess(["READY", "BUSY"])
+        self.assertEqual((result.outcome, result.checks, result.scheduled_delays_seconds),
+                         ("ready", 1, ()))
+
+    def test_busy_offline_ready_stops_at_third_check(self):
+        result = assess(["BUSY", "OFFLINE", "READY", "BUSY"])
+        self.assertEqual((result.outcome, result.checks, result.scheduled_delays_seconds),
+                         ("ready", 3, (2, 2)))
+
+    def test_two_stage_boundary_and_check_budget(self):
+        result = assess(["BUSY"] * 10)
+        self.assertEqual((result.outcome, result.checks, result.scheduled_delays_seconds),
+                         ("exhausted", 5, (2, 2, 10, 10)))
+
+    def test_short_evidence_is_incomplete_not_exhausted(self):
+        result = assess(["BUSY", "BUSY"])
+        self.assertEqual((result.outcome, result.checks, result.scheduled_delays_seconds),
+                         ("incomplete", 2, (2,)))
+
+    def test_no_evidence_is_not_false_success(self):
+        result = assess([])
+        self.assertEqual((result.outcome, result.checks, result.last_status),
+                         ("incomplete", 0, None))
+
+    def test_unknown_status_is_not_silently_accepted(self):
+        with self.assertRaises(ValueError):
+            assess(["BUSY", "UNEXPECTED"])
+
+    def test_bad_policy_refused(self):
+        with self.assertRaises(ValueError):
+            Policy(max_checks=0)
+
+    def test_custom_policy_changes_schedule_without_changing_contract(self):
+        result = assess(["BUSY", "BUSY", "BUSY", "READY"],
+                        Policy(max_checks=4, fast_delay_seconds=1,
+                               slow_delay_seconds=7, switch_after_check=1))
+        self.assertEqual((result.outcome, result.checks, result.scheduled_delays_seconds),
+                         ("ready", 4, (1, 7, 7)))
+
+
+if __name__ == "__main__":
+    unittest.main()

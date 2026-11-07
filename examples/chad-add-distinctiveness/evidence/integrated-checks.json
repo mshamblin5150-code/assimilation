@@ -1,0 +1,28 @@
+[
+  {
+    "name": "root-suite",
+    "command": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-v"
+    ],
+    "exit": 0,
+    "tail": "st_unknown_named_duplicate_or_malformed_chain_always_refuses) ... ok\ntest_zero_and_sparse_allocation_do_not_grant_native_qualification (test_windows_streams.StreamBufferTests.test_zero_and_sparse_allocation_do_not_grant_native_qualification) ... ok\n\n----------------------------------------------------------------------\nRan 310 tests in 76.421s\n\nOK\n"
+  },
+  {
+    "name": "snapshots",
+    "command": [
+      "python3",
+      "-B",
+      "scripts/snapshot_sources.py",
+      "verify"
+    ],
+    "exit": 0,
+    "tail": "{\"status\": \"verified\", \"sources\": {\"matt\": \"59db609eb1e18aaf59b63284d0e52255aff0c63c\", \"pstack\": \"c742dd61706fbacc1b95f1a20b7b988cf096ce6c\"}}\n"
+  }
+]

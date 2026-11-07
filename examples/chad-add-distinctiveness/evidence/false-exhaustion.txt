@@ -1,0 +1,50 @@
+test_bad_policy_refused (test_readiness.ReadinessBehaviorTests.test_bad_policy_refused) ... ok
+test_budget_does_not_consume_the_next_observation (test_readiness.ReadinessBehaviorTests.test_budget_does_not_consume_the_next_observation) ... ok
+test_busy_offline_ready_stops_at_third_check (test_readiness.ReadinessBehaviorTests.test_busy_offline_ready_stops_at_third_check) ... ok
+test_custom_policy_changes_schedule_without_changing_contract (test_readiness.ReadinessBehaviorTests.test_custom_policy_changes_schedule_without_changing_contract) ... ok
+test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) ... ok
+test_exact_budget_ready_wins_over_exhaustion (test_readiness.ReadinessBehaviorTests.test_exact_budget_ready_wins_over_exhaustion) ... ok
+test_invalid_status_values_are_errors (test_readiness.ReadinessBehaviorTests.test_invalid_status_values_are_errors) ... ok
+test_no_evidence_is_not_false_success (test_readiness.ReadinessBehaviorTests.test_no_evidence_is_not_false_success) ... FAIL
+test_ready_consumes_no_later_observation (test_readiness.ReadinessBehaviorTests.test_ready_consumes_no_later_observation) ... ok
+test_ready_immediately_has_no_scheduled_wait (test_readiness.ReadinessBehaviorTests.test_ready_immediately_has_no_scheduled_wait) ... ok
+test_short_evidence_is_incomplete_not_exhausted (test_readiness.ReadinessBehaviorTests.test_short_evidence_is_incomplete_not_exhausted) ... FAIL
+test_single_check_budget_has_no_final_delay (test_readiness.ReadinessBehaviorTests.test_single_check_budget_has_no_final_delay) ... ok
+test_text_is_not_a_status_sequence (test_readiness.ReadinessBehaviorTests.test_text_is_not_a_status_sequence) ... ok
+test_two_stage_boundary_and_check_budget (test_readiness.ReadinessBehaviorTests.test_two_stage_boundary_and_check_budget) ... ok
+test_unknown_status_is_not_silently_accepted (test_readiness.ReadinessBehaviorTests.test_unknown_status_is_not_silently_accepted) ... ok
+
+======================================================================
+FAIL: test_no_evidence_is_not_false_success (test_readiness.ReadinessBehaviorTests.test_no_evidence_is_not_false_success)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<mutation>/test_readiness.py", line 31, in test_no_evidence_is_not_false_success
+    self.assertEqual((result.outcome, result.checks, result.last_status),
+AssertionError: Tuples differ: ('exhausted', 0, None) != ('incomplete', 0, None)
+
+First differing element 0:
+'exhausted'
+'incomplete'
+
+- ('exhausted', 0, None)
++ ('incomplete', 0, None)
+
+======================================================================
+FAIL: test_short_evidence_is_incomplete_not_exhausted (test_readiness.ReadinessBehaviorTests.test_short_evidence_is_incomplete_not_exhausted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<mutation>/test_readiness.py", line 26, in test_short_evidence_is_incomplete_not_exhausted
+    self.assertEqual((result.outcome, result.checks, result.scheduled_delays_seconds),
+AssertionError: Tuples differ: ('exhausted', 2, (2,)) != ('incomplete', 2, (2,))
+
+First differing element 0:
+'exhausted'
+'incomplete'
+
+- ('exhausted', 2, (2,))
++ ('incomplete', 2, (2,))
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.001s
+
+FAILED (failures=2)

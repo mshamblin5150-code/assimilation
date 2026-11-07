@@ -1,0 +1,477 @@
+test_bad_policy_refused (test_readiness.ReadinessBehaviorTests.test_bad_policy_refused) ... FAIL
+test_budget_does_not_consume_the_next_observation (test_readiness.ReadinessBehaviorTests.test_budget_does_not_consume_the_next_observation) ... ERROR
+test_busy_offline_ready_stops_at_third_check (test_readiness.ReadinessBehaviorTests.test_busy_offline_ready_stops_at_third_check) ... ERROR
+test_custom_policy_changes_schedule_without_changing_contract (test_readiness.ReadinessBehaviorTests.test_custom_policy_changes_schedule_without_changing_contract) ... ERROR
+test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) ...
+  test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='max_checks', value=0) ... FAIL
+  test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='max_checks', value=-1) ... FAIL
+  test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='max_checks', value=True) ... FAIL
+  test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='max_checks', value=1.5) ... FAIL
+  test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='max_checks', value='2') ... FAIL
+  test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='max_checks', value=None) ... FAIL
+  test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='fast_delay_seconds', value=0) ... FAIL
+  test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='fast_delay_seconds', value=-1) ... FAIL
+  test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='fast_delay_seconds', value=True) ... FAIL
+  test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='fast_delay_seconds', value=1.5) ... FAIL
+  test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='fast_delay_seconds', value='2') ... FAIL
+  test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='fast_delay_seconds', value=None) ... FAIL
+  test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='slow_delay_seconds', value=0) ... FAIL
+  test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='slow_delay_seconds', value=-1) ... FAIL
+  test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='slow_delay_seconds', value=True) ... FAIL
+  test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='slow_delay_seconds', value=1.5) ... FAIL
+  test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='slow_delay_seconds', value='2') ... FAIL
+  test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='slow_delay_seconds', value=None) ... FAIL
+  test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='switch_after_check', value=0) ... FAIL
+  test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='switch_after_check', value=-1) ... FAIL
+  test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='switch_after_check', value=True) ... FAIL
+  test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='switch_after_check', value=1.5) ... FAIL
+  test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='switch_after_check', value='2') ... FAIL
+  test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='switch_after_check', value=None) ... FAIL
+test_exact_budget_ready_wins_over_exhaustion (test_readiness.ReadinessBehaviorTests.test_exact_budget_ready_wins_over_exhaustion) ... ERROR
+test_invalid_status_values_are_errors (test_readiness.ReadinessBehaviorTests.test_invalid_status_values_are_errors) ...
+  test_invalid_status_values_are_errors (test_readiness.ReadinessBehaviorTests.test_invalid_status_values_are_errors) (value='ready') ... ERROR
+  test_invalid_status_values_are_errors (test_readiness.ReadinessBehaviorTests.test_invalid_status_values_are_errors) (value='') ... ERROR
+  test_invalid_status_values_are_errors (test_readiness.ReadinessBehaviorTests.test_invalid_status_values_are_errors) (value=None) ... ERROR
+  test_invalid_status_values_are_errors (test_readiness.ReadinessBehaviorTests.test_invalid_status_values_are_errors) (value=2) ... ERROR
+  test_invalid_status_values_are_errors (test_readiness.ReadinessBehaviorTests.test_invalid_status_values_are_errors) (value=[]) ... ERROR
+  test_invalid_status_values_are_errors (test_readiness.ReadinessBehaviorTests.test_invalid_status_values_are_errors) (value={}) ... ERROR
+test_no_evidence_is_not_false_success (test_readiness.ReadinessBehaviorTests.test_no_evidence_is_not_false_success) ... ERROR
+test_ready_consumes_no_later_observation (test_readiness.ReadinessBehaviorTests.test_ready_consumes_no_later_observation) ... ERROR
+test_ready_immediately_has_no_scheduled_wait (test_readiness.ReadinessBehaviorTests.test_ready_immediately_has_no_scheduled_wait) ... ERROR
+test_short_evidence_is_incomplete_not_exhausted (test_readiness.ReadinessBehaviorTests.test_short_evidence_is_incomplete_not_exhausted) ... ERROR
+test_single_check_budget_has_no_final_delay (test_readiness.ReadinessBehaviorTests.test_single_check_budget_has_no_final_delay) ... ERROR
+test_text_is_not_a_status_sequence (test_readiness.ReadinessBehaviorTests.test_text_is_not_a_status_sequence) ...
+  test_text_is_not_a_status_sequence (test_readiness.ReadinessBehaviorTests.test_text_is_not_a_status_sequence) (value='READY') ... ERROR
+  test_text_is_not_a_status_sequence (test_readiness.ReadinessBehaviorTests.test_text_is_not_a_status_sequence) (value=b'READY') ... ERROR
+test_two_stage_boundary_and_check_budget (test_readiness.ReadinessBehaviorTests.test_two_stage_boundary_and_check_budget) ... ERROR
+test_unknown_status_is_not_silently_accepted (test_readiness.ReadinessBehaviorTests.test_unknown_status_is_not_silently_accepted) ... ERROR
+
+======================================================================
+ERROR: test_budget_does_not_consume_the_next_observation (test_readiness.ReadinessBehaviorTests.test_budget_does_not_consume_the_next_observation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 64, in test_budget_does_not_consume_the_next_observation
+    result = assess(observations, Policy(max_checks=5))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<checkout>/examples/chad-add-distinctiveness/starter/readiness.py", line 35, in assess
+    raise NotImplementedError("implement after reading the behavioral contract")
+NotImplementedError: implement after reading the behavioral contract
+
+======================================================================
+ERROR: test_busy_offline_ready_stops_at_third_check (test_readiness.ReadinessBehaviorTests.test_busy_offline_ready_stops_at_third_check)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 15, in test_busy_offline_ready_stops_at_third_check
+    result = assess(["BUSY", "OFFLINE", "READY", "BUSY"])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<checkout>/examples/chad-add-distinctiveness/starter/readiness.py", line 35, in assess
+    raise NotImplementedError("implement after reading the behavioral contract")
+NotImplementedError: implement after reading the behavioral contract
+
+======================================================================
+ERROR: test_custom_policy_changes_schedule_without_changing_contract (test_readiness.ReadinessBehaviorTests.test_custom_policy_changes_schedule_without_changing_contract)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 43, in test_custom_policy_changes_schedule_without_changing_contract
+    result = assess(["BUSY", "BUSY", "BUSY", "READY"],
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<checkout>/examples/chad-add-distinctiveness/starter/readiness.py", line 35, in assess
+    raise NotImplementedError("implement after reading the behavioral contract")
+NotImplementedError: implement after reading the behavioral contract
+
+======================================================================
+ERROR: test_exact_budget_ready_wins_over_exhaustion (test_readiness.ReadinessBehaviorTests.test_exact_budget_ready_wins_over_exhaustion)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 89, in test_exact_budget_ready_wins_over_exhaustion
+    result = assess(("BUSY", "BUSY", "READY"), Policy(max_checks=3))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<checkout>/examples/chad-add-distinctiveness/starter/readiness.py", line 35, in assess
+    raise NotImplementedError("implement after reading the behavioral contract")
+NotImplementedError: implement after reading the behavioral contract
+
+======================================================================
+ERROR: test_invalid_status_values_are_errors (test_readiness.ReadinessBehaviorTests.test_invalid_status_values_are_errors) (value='ready')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 102, in test_invalid_status_values_are_errors
+    assess([value])
+  File "<checkout>/examples/chad-add-distinctiveness/starter/readiness.py", line 35, in assess
+    raise NotImplementedError("implement after reading the behavioral contract")
+NotImplementedError: implement after reading the behavioral contract
+
+======================================================================
+ERROR: test_invalid_status_values_are_errors (test_readiness.ReadinessBehaviorTests.test_invalid_status_values_are_errors) (value='')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 102, in test_invalid_status_values_are_errors
+    assess([value])
+  File "<checkout>/examples/chad-add-distinctiveness/starter/readiness.py", line 35, in assess
+    raise NotImplementedError("implement after reading the behavioral contract")
+NotImplementedError: implement after reading the behavioral contract
+
+======================================================================
+ERROR: test_invalid_status_values_are_errors (test_readiness.ReadinessBehaviorTests.test_invalid_status_values_are_errors) (value=None)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 102, in test_invalid_status_values_are_errors
+    assess([value])
+  File "<checkout>/examples/chad-add-distinctiveness/starter/readiness.py", line 35, in assess
+    raise NotImplementedError("implement after reading the behavioral contract")
+NotImplementedError: implement after reading the behavioral contract
+
+======================================================================
+ERROR: test_invalid_status_values_are_errors (test_readiness.ReadinessBehaviorTests.test_invalid_status_values_are_errors) (value=2)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 102, in test_invalid_status_values_are_errors
+    assess([value])
+  File "<checkout>/examples/chad-add-distinctiveness/starter/readiness.py", line 35, in assess
+    raise NotImplementedError("implement after reading the behavioral contract")
+NotImplementedError: implement after reading the behavioral contract
+
+======================================================================
+ERROR: test_invalid_status_values_are_errors (test_readiness.ReadinessBehaviorTests.test_invalid_status_values_are_errors) (value=[])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 102, in test_invalid_status_values_are_errors
+    assess([value])
+  File "<checkout>/examples/chad-add-distinctiveness/starter/readiness.py", line 35, in assess
+    raise NotImplementedError("implement after reading the behavioral contract")
+NotImplementedError: implement after reading the behavioral contract
+
+======================================================================
+ERROR: test_invalid_status_values_are_errors (test_readiness.ReadinessBehaviorTests.test_invalid_status_values_are_errors) (value={})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 102, in test_invalid_status_values_are_errors
+    assess([value])
+  File "<checkout>/examples/chad-add-distinctiveness/starter/readiness.py", line 35, in assess
+    raise NotImplementedError("implement after reading the behavioral contract")
+NotImplementedError: implement after reading the behavioral contract
+
+======================================================================
+ERROR: test_no_evidence_is_not_false_success (test_readiness.ReadinessBehaviorTests.test_no_evidence_is_not_false_success)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 30, in test_no_evidence_is_not_false_success
+    result = assess([])
+             ^^^^^^^^^^
+  File "<checkout>/examples/chad-add-distinctiveness/starter/readiness.py", line 35, in assess
+    raise NotImplementedError("implement after reading the behavioral contract")
+NotImplementedError: implement after reading the behavioral contract
+
+======================================================================
+ERROR: test_ready_consumes_no_later_observation (test_readiness.ReadinessBehaviorTests.test_ready_consumes_no_later_observation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 79, in test_ready_consumes_no_later_observation
+    result = assess(EarlyReady())
+             ^^^^^^^^^^^^^^^^^^^^
+  File "<checkout>/examples/chad-add-distinctiveness/starter/readiness.py", line 35, in assess
+    raise NotImplementedError("implement after reading the behavioral contract")
+NotImplementedError: implement after reading the behavioral contract
+
+======================================================================
+ERROR: test_ready_immediately_has_no_scheduled_wait (test_readiness.ReadinessBehaviorTests.test_ready_immediately_has_no_scheduled_wait)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 10, in test_ready_immediately_has_no_scheduled_wait
+    result = assess(["READY", "BUSY"])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<checkout>/examples/chad-add-distinctiveness/starter/readiness.py", line 35, in assess
+    raise NotImplementedError("implement after reading the behavioral contract")
+NotImplementedError: implement after reading the behavioral contract
+
+======================================================================
+ERROR: test_short_evidence_is_incomplete_not_exhausted (test_readiness.ReadinessBehaviorTests.test_short_evidence_is_incomplete_not_exhausted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 25, in test_short_evidence_is_incomplete_not_exhausted
+    result = assess(["BUSY", "BUSY"])
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<checkout>/examples/chad-add-distinctiveness/starter/readiness.py", line 35, in assess
+    raise NotImplementedError("implement after reading the behavioral contract")
+NotImplementedError: implement after reading the behavioral contract
+
+======================================================================
+ERROR: test_single_check_budget_has_no_final_delay (test_readiness.ReadinessBehaviorTests.test_single_check_budget_has_no_final_delay)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 84, in test_single_check_budget_has_no_final_delay
+    result = assess(["OFFLINE", "UNEXPECTED"], Policy(max_checks=1))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<checkout>/examples/chad-add-distinctiveness/starter/readiness.py", line 35, in assess
+    raise NotImplementedError("implement after reading the behavioral contract")
+NotImplementedError: implement after reading the behavioral contract
+
+======================================================================
+ERROR: test_text_is_not_a_status_sequence (test_readiness.ReadinessBehaviorTests.test_text_is_not_a_status_sequence) (value='READY')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 107, in test_text_is_not_a_status_sequence
+    assess(value)
+  File "<checkout>/examples/chad-add-distinctiveness/starter/readiness.py", line 35, in assess
+    raise NotImplementedError("implement after reading the behavioral contract")
+NotImplementedError: implement after reading the behavioral contract
+
+======================================================================
+ERROR: test_text_is_not_a_status_sequence (test_readiness.ReadinessBehaviorTests.test_text_is_not_a_status_sequence) (value=b'READY')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 107, in test_text_is_not_a_status_sequence
+    assess(value)
+  File "<checkout>/examples/chad-add-distinctiveness/starter/readiness.py", line 35, in assess
+    raise NotImplementedError("implement after reading the behavioral contract")
+NotImplementedError: implement after reading the behavioral contract
+
+======================================================================
+ERROR: test_two_stage_boundary_and_check_budget (test_readiness.ReadinessBehaviorTests.test_two_stage_boundary_and_check_budget)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 20, in test_two_stage_boundary_and_check_budget
+    result = assess(["BUSY"] * 10)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "<checkout>/examples/chad-add-distinctiveness/starter/readiness.py", line 35, in assess
+    raise NotImplementedError("implement after reading the behavioral contract")
+NotImplementedError: implement after reading the behavioral contract
+
+======================================================================
+ERROR: test_unknown_status_is_not_silently_accepted (test_readiness.ReadinessBehaviorTests.test_unknown_status_is_not_silently_accepted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 36, in test_unknown_status_is_not_silently_accepted
+    assess(["BUSY", "UNEXPECTED"])
+  File "<checkout>/examples/chad-add-distinctiveness/starter/readiness.py", line 35, in assess
+    raise NotImplementedError("implement after reading the behavioral contract")
+NotImplementedError: implement after reading the behavioral contract
+
+======================================================================
+FAIL: test_bad_policy_refused (test_readiness.ReadinessBehaviorTests.test_bad_policy_refused)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 39, in test_bad_policy_refused
+    with self.assertRaises(ValueError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='max_checks', value=0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 96, in test_each_policy_field_refuses_nonpositive_or_noninteger_values
+    with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='max_checks', value=-1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 96, in test_each_policy_field_refuses_nonpositive_or_noninteger_values
+    with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='max_checks', value=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 96, in test_each_policy_field_refuses_nonpositive_or_noninteger_values
+    with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='max_checks', value=1.5)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 96, in test_each_policy_field_refuses_nonpositive_or_noninteger_values
+    with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='max_checks', value='2')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 96, in test_each_policy_field_refuses_nonpositive_or_noninteger_values
+    with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='max_checks', value=None)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 96, in test_each_policy_field_refuses_nonpositive_or_noninteger_values
+    with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='fast_delay_seconds', value=0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 96, in test_each_policy_field_refuses_nonpositive_or_noninteger_values
+    with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='fast_delay_seconds', value=-1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 96, in test_each_policy_field_refuses_nonpositive_or_noninteger_values
+    with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='fast_delay_seconds', value=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 96, in test_each_policy_field_refuses_nonpositive_or_noninteger_values
+    with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='fast_delay_seconds', value=1.5)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 96, in test_each_policy_field_refuses_nonpositive_or_noninteger_values
+    with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='fast_delay_seconds', value='2')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 96, in test_each_policy_field_refuses_nonpositive_or_noninteger_values
+    with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='fast_delay_seconds', value=None)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 96, in test_each_policy_field_refuses_nonpositive_or_noninteger_values
+    with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='slow_delay_seconds', value=0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 96, in test_each_policy_field_refuses_nonpositive_or_noninteger_values
+    with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='slow_delay_seconds', value=-1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 96, in test_each_policy_field_refuses_nonpositive_or_noninteger_values
+    with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='slow_delay_seconds', value=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 96, in test_each_policy_field_refuses_nonpositive_or_noninteger_values
+    with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='slow_delay_seconds', value=1.5)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 96, in test_each_policy_field_refuses_nonpositive_or_noninteger_values
+    with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='slow_delay_seconds', value='2')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 96, in test_each_policy_field_refuses_nonpositive_or_noninteger_values
+    with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='slow_delay_seconds', value=None)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 96, in test_each_policy_field_refuses_nonpositive_or_noninteger_values
+    with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='switch_after_check', value=0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 96, in test_each_policy_field_refuses_nonpositive_or_noninteger_values
+    with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='switch_after_check', value=-1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 96, in test_each_policy_field_refuses_nonpositive_or_noninteger_values
+    with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='switch_after_check', value=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 96, in test_each_policy_field_refuses_nonpositive_or_noninteger_values
+    with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='switch_after_check', value=1.5)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 96, in test_each_policy_field_refuses_nonpositive_or_noninteger_values
+    with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='switch_after_check', value='2')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 96, in test_each_policy_field_refuses_nonpositive_or_noninteger_values
+    with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_each_policy_field_refuses_nonpositive_or_noninteger_values (test_readiness.ReadinessBehaviorTests.test_each_policy_field_refuses_nonpositive_or_noninteger_values) (field='switch_after_check', value=None)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<checkout>/examples/chad-add-distinctiveness/starter/test_readiness.py", line 96, in test_each_policy_field_refuses_nonpositive_or_noninteger_values
+    with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.004s
+
+FAILED (failures=25, errors=19)

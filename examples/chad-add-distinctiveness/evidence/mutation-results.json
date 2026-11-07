@@ -1,0 +1,56 @@
+[
+  {
+    "variant": "wrong-threshold",
+    "exit": 1,
+    "mutation": [
+      "checked <= policy.switch_after_check",
+      "checked < policy.switch_after_check"
+    ],
+    "tests_sha256": "150a706d41e0b3cb767fcc807416f9ca9156fcfbd84bb0a3d1a6b1d7da800895"
+  },
+  {
+    "variant": "no-early-stop",
+    "exit": 1,
+    "mutation": [
+      "if status == \"READY\":",
+      "if False:"
+    ],
+    "tests_sha256": "150a706d41e0b3cb767fcc807416f9ca9156fcfbd84bb0a3d1a6b1d7da800895"
+  },
+  {
+    "variant": "budget-overread",
+    "exit": 1,
+    "mutation": [
+      "for index in range(min(len(observations), policy.max_checks)):\n        status = observations[index]",
+      "for status in observations:\n        if checked == policy.max_checks:\n            break"
+    ],
+    "tests_sha256": "150a706d41e0b3cb767fcc807416f9ca9156fcfbd84bb0a3d1a6b1d7da800895"
+  },
+  {
+    "variant": "accepts-invalid-status",
+    "exit": 1,
+    "mutation": [
+      "if not isinstance(status, str) or status not in VALID_STATUSES:",
+      "if False:"
+    ],
+    "tests_sha256": "150a706d41e0b3cb767fcc807416f9ca9156fcfbd84bb0a3d1a6b1d7da800895"
+  },
+  {
+    "variant": "false-exhaustion",
+    "exit": 1,
+    "mutation": [
+      "\"exhausted\" if checked == policy.max_checks else \"incomplete\"",
+      "\"exhausted\""
+    ],
+    "tests_sha256": "150a706d41e0b3cb767fcc807416f9ca9156fcfbd84bb0a3d1a6b1d7da800895"
+  },
+  {
+    "variant": "extra-final-delay",
+    "exit": 1,
+    "mutation": [
+      "return Assessment(outcome, checked, tuple(delays), last_status)",
+      "return Assessment(outcome, checked, tuple(delays + [10]), last_status)"
+    ],
+    "tests_sha256": "150a706d41e0b3cb767fcc807416f9ca9156fcfbd84bb0a3d1a6b1d7da800895"
+  }
+]
