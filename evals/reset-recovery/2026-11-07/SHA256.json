@@ -1,0 +1,9 @@
+{
+  "PROTOCOL.md": "ae9cee06a312833a5829833fe47eb8cfeca27aa1bdb50dd457f01d334bd2f907",
+  "RESULTS.md": "ce2d555e5da0dbb5016a3a3c32b9b109b6a6a80daeaf3190b2bc87806f0c2351",
+  "fixture.json": "59d05a17b49b6af5b2250e9cfb094dac8319992aa6e71633c2d7f0cf48d6e231",
+  "observations.json": "17276e9825a62bba2269df7fdf9bc07054b99882df66d4525fb55e94d8764f62",
+  "synthetic-report-corrupt-control.txt": "3f1d903c03cce35700af9ac71c73e693a732161a54ed0c04c8cd0d7020567458",
+  "synthetic-report.txt": "e43fd91d137a96948795b1bfbbf3b2a2956f7dd2754432688902a3cd19884eaa",
+  "verify_bundle.py": "6766c7f3c28f04418715fc85ad1d276a8b00fb5814f5ea364a59be03f84a6877"
+}
