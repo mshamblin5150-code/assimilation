@@ -60,6 +60,8 @@ When no decision remains, use its exact shared-understanding closing line.
 
 **PROPOSAL IS NOT PROOF. DESIGN IS NOT DEPLOYMENT. THE OPERATOR REMAINS IN COMMAND.**
 
+For a read-only practice exercise, use [Chad's evidence retrieval lesson](CHAD-EVIDENCE-FIRST.md).
+
 ## Copyable chat for Chad
 
 > Chad, please give Vox the updated Assimilation checkout containing
