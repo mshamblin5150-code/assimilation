@@ -7,6 +7,9 @@ DAVID's retired drone ceremonies. Reuse the task's existing private run record.
 The decision and enforcement limits are recorded in
 [ADR 0011](adr/0011-fleet-handoff-state-and-structural-check.md).
 
+**Reset recovery:** after context or workspace loss, an interrupted connection,
+or an overdue handoff, follow [the recovery guide](FLEET_RESET_RECOVERY.md).
+
 ## Start or resume
 
 1. Read the actual project instructions and relevant skills at the current
