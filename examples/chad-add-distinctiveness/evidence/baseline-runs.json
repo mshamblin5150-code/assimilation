@@ -1,0 +1,36 @@
+[
+  {
+    "name": "starter-red",
+    "command": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "examples/chad-add-distinctiveness/starter",
+      "-p",
+      "test_readiness.py",
+      "-v"
+    ],
+    "exit": 1,
+    "tail": "^^^^^^^^^^^^^^^^\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 8 tests in 0.001s\n\nFAILED (failures=1, errors=7)\n"
+  },
+  {
+    "name": "original-instructor-green",
+    "command": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "examples/chad-add-distinctiveness/instructor",
+      "-p",
+      "test_readiness.py",
+      "-v"
+    ],
+    "exit": 0,
+    "tail": "iness.ReadinessBehaviorTests.test_unknown_status_is_not_silently_accepted) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.000s\n\nOK\n"
+  }
+]

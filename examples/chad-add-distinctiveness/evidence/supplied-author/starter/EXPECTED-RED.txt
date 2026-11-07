@@ -1,0 +1,95 @@
+test_bad_policy_refused (test_readiness.ReadinessBehaviorTests.test_bad_policy_refused) ... FAIL
+test_busy_offline_ready_stops_at_third_check (test_readiness.ReadinessBehaviorTests.test_busy_offline_ready_stops_at_third_check) ... ERROR
+test_custom_policy_changes_schedule_without_changing_contract (test_readiness.ReadinessBehaviorTests.test_custom_policy_changes_schedule_without_changing_contract) ... ERROR
+test_no_evidence_is_not_false_success (test_readiness.ReadinessBehaviorTests.test_no_evidence_is_not_false_success) ... ERROR
+test_ready_immediately_has_no_scheduled_wait (test_readiness.ReadinessBehaviorTests.test_ready_immediately_has_no_scheduled_wait) ... ERROR
+test_short_evidence_is_incomplete_not_exhausted (test_readiness.ReadinessBehaviorTests.test_short_evidence_is_incomplete_not_exhausted) ... ERROR
+test_two_stage_boundary_and_check_budget (test_readiness.ReadinessBehaviorTests.test_two_stage_boundary_and_check_budget) ... ERROR
+test_unknown_status_is_not_silently_accepted (test_readiness.ReadinessBehaviorTests.test_unknown_status_is_not_silently_accepted) ... ERROR
+
+======================================================================
+ERROR: test_busy_offline_ready_stops_at_third_check (test_readiness.ReadinessBehaviorTests.test_busy_offline_ready_stops_at_third_check)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/assimilation_distinctiveness_handoff/examples/chad-add-distinctiveness/starter/test_readiness.py", line 14, in test_busy_offline_ready_stops_at_third_check
+    result = assess(["BUSY", "OFFLINE", "READY", "BUSY"])
+  File "/mnt/data/assimilation_distinctiveness_handoff/examples/chad-add-distinctiveness/starter/readiness.py", line 35, in assess
+    raise NotImplementedError("implement after reading the behavioral contract")
+NotImplementedError: implement after reading the behavioral contract
+
+======================================================================
+ERROR: test_custom_policy_changes_schedule_without_changing_contract (test_readiness.ReadinessBehaviorTests.test_custom_policy_changes_schedule_without_changing_contract)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/assimilation_distinctiveness_handoff/examples/chad-add-distinctiveness/starter/test_readiness.py", line 42, in test_custom_policy_changes_schedule_without_changing_contract
+    result = assess(["BUSY", "BUSY", "BUSY", "READY"],
+                    Policy(max_checks=4, fast_delay_seconds=1,
+                           slow_delay_seconds=7, switch_after_check=1))
+  File "/mnt/data/assimilation_distinctiveness_handoff/examples/chad-add-distinctiveness/starter/readiness.py", line 35, in assess
+    raise NotImplementedError("implement after reading the behavioral contract")
+NotImplementedError: implement after reading the behavioral contract
+
+======================================================================
+ERROR: test_no_evidence_is_not_false_success (test_readiness.ReadinessBehaviorTests.test_no_evidence_is_not_false_success)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/assimilation_distinctiveness_handoff/examples/chad-add-distinctiveness/starter/test_readiness.py", line 29, in test_no_evidence_is_not_false_success
+    result = assess([])
+  File "/mnt/data/assimilation_distinctiveness_handoff/examples/chad-add-distinctiveness/starter/readiness.py", line 35, in assess
+    raise NotImplementedError("implement after reading the behavioral contract")
+NotImplementedError: implement after reading the behavioral contract
+
+======================================================================
+ERROR: test_ready_immediately_has_no_scheduled_wait (test_readiness.ReadinessBehaviorTests.test_ready_immediately_has_no_scheduled_wait)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/assimilation_distinctiveness_handoff/examples/chad-add-distinctiveness/starter/test_readiness.py", line 9, in test_ready_immediately_has_no_scheduled_wait
+    result = assess(["READY", "BUSY"])
+  File "/mnt/data/assimilation_distinctiveness_handoff/examples/chad-add-distinctiveness/starter/readiness.py", line 35, in assess
+    raise NotImplementedError("implement after reading the behavioral contract")
+NotImplementedError: implement after reading the behavioral contract
+
+======================================================================
+ERROR: test_short_evidence_is_incomplete_not_exhausted (test_readiness.ReadinessBehaviorTests.test_short_evidence_is_incomplete_not_exhausted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/assimilation_distinctiveness_handoff/examples/chad-add-distinctiveness/starter/test_readiness.py", line 24, in test_short_evidence_is_incomplete_not_exhausted
+    result = assess(["BUSY", "BUSY"])
+  File "/mnt/data/assimilation_distinctiveness_handoff/examples/chad-add-distinctiveness/starter/readiness.py", line 35, in assess
+    raise NotImplementedError("implement after reading the behavioral contract")
+NotImplementedError: implement after reading the behavioral contract
+
+======================================================================
+ERROR: test_two_stage_boundary_and_check_budget (test_readiness.ReadinessBehaviorTests.test_two_stage_boundary_and_check_budget)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/assimilation_distinctiveness_handoff/examples/chad-add-distinctiveness/starter/test_readiness.py", line 19, in test_two_stage_boundary_and_check_budget
+    result = assess(["BUSY"] * 10)
+  File "/mnt/data/assimilation_distinctiveness_handoff/examples/chad-add-distinctiveness/starter/readiness.py", line 35, in assess
+    raise NotImplementedError("implement after reading the behavioral contract")
+NotImplementedError: implement after reading the behavioral contract
+
+======================================================================
+ERROR: test_unknown_status_is_not_silently_accepted (test_readiness.ReadinessBehaviorTests.test_unknown_status_is_not_silently_accepted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/assimilation_distinctiveness_handoff/examples/chad-add-distinctiveness/starter/test_readiness.py", line 35, in test_unknown_status_is_not_silently_accepted
+    assess(["BUSY", "UNEXPECTED"])
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/assimilation_distinctiveness_handoff/examples/chad-add-distinctiveness/starter/readiness.py", line 35, in assess
+    raise NotImplementedError("implement after reading the behavioral contract")
+NotImplementedError: implement after reading the behavioral contract
+
+======================================================================
+FAIL: test_bad_policy_refused (test_readiness.ReadinessBehaviorTests.test_bad_policy_refused)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/assimilation_distinctiveness_handoff/examples/chad-add-distinctiveness/starter/test_readiness.py", line 38, in test_bad_policy_refused
+    with self.assertRaises(ValueError):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.002s
+
+FAILED (failures=1, errors=7)

@@ -1,0 +1,13 @@
+test_bad_policy_refused (test_readiness.ReadinessBehaviorTests.test_bad_policy_refused) ... ok
+test_busy_offline_ready_stops_at_third_check (test_readiness.ReadinessBehaviorTests.test_busy_offline_ready_stops_at_third_check) ... ok
+test_custom_policy_changes_schedule_without_changing_contract (test_readiness.ReadinessBehaviorTests.test_custom_policy_changes_schedule_without_changing_contract) ... ok
+test_no_evidence_is_not_false_success (test_readiness.ReadinessBehaviorTests.test_no_evidence_is_not_false_success) ... ok
+test_ready_immediately_has_no_scheduled_wait (test_readiness.ReadinessBehaviorTests.test_ready_immediately_has_no_scheduled_wait) ... ok
+test_short_evidence_is_incomplete_not_exhausted (test_readiness.ReadinessBehaviorTests.test_short_evidence_is_incomplete_not_exhausted) ... ok
+test_two_stage_boundary_and_check_budget (test_readiness.ReadinessBehaviorTests.test_two_stage_boundary_and_check_budget) ... ok
+test_unknown_status_is_not_silently_accepted (test_readiness.ReadinessBehaviorTests.test_unknown_status_is_not_silently_accepted) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.000s
+
+OK

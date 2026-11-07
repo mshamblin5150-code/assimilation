@@ -169,3 +169,8 @@ whether the rule you described holds.
 Open the [instructor key and build instructions](../examples/chad-reverse-engineering/instructor/README.md)
 after your run. The [author's results](../examples/chad-reverse-engineering/RESULTS.md)
 record the checks performed on the supplied fixtures.
+
+## Continue from discovery to independent design
+
+Next, use [Add Its Distinctiveness to Our Own](CHAD-ADD-ITS-DISTINCTIVENESS-TO-OUR-OWN.md)
+to evaluate a discovered principle and build a tested, offline readiness assessor.

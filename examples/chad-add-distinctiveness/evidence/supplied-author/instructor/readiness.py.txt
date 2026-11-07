@@ -1,0 +1,67 @@
+"""Instructor reference: independently designed offline readiness assessment.
+
+This uses a general two-stage retry idea observed in a synthetic training APK.
+It does not reuse any decompiled source, contact hardware, or sleep.
+"""
+
+from dataclasses import dataclass
+from typing import Literal, Sequence
+
+Outcome = Literal["ready", "exhausted", "incomplete"]
+VALID_STATUSES = frozenset(("READY", "BUSY", "OFFLINE"))
+
+
+@dataclass(frozen=True)
+class Policy:
+    max_checks: int = 5
+    fast_delay_seconds: int = 2
+    slow_delay_seconds: int = 10
+    switch_after_check: int = 2
+
+    def __post_init__(self) -> None:
+        for name in ("max_checks", "fast_delay_seconds", "slow_delay_seconds", "switch_after_check"):
+            value = getattr(self, name)
+            if type(value) is not int or value < 1:
+                raise ValueError(f"{name} must be a positive integer")
+
+
+@dataclass(frozen=True)
+class Assessment:
+    outcome: Outcome
+    checks: int
+    scheduled_delays_seconds: tuple[int, ...]
+    last_status: str | None
+
+
+def assess(observations: Sequence[str], policy: Policy = Policy()) -> Assessment:
+    """Evaluate at most `max_checks` synthetic snapshots.
+
+    A delay is *planned* only between two checks that actually exist. The
+    delay after prior check n is fast for n <= switch_after_check, otherwise
+    slow. READY ends evaluation immediately. Exhausted means the bounded
+    check budget was consumed without READY; incomplete means observations
+    stopped earlier. No wall-clock waiting or external calls occur.
+    """
+    if isinstance(observations, (str, bytes)):
+        raise TypeError("observations must be a sequence of statuses")
+
+    delays: list[int] = []
+    checked = 0
+    last_status: str | None = None
+
+    for status in observations:
+        if checked == policy.max_checks:
+            break
+        if status not in VALID_STATUSES:
+            raise ValueError(f"unknown status: {status!r}")
+        if checked:
+            delay = (policy.fast_delay_seconds if checked <= policy.switch_after_check
+                     else policy.slow_delay_seconds)
+            delays.append(delay)
+        checked += 1
+        last_status = status
+        if status == "READY":
+            return Assessment("ready", checked, tuple(delays), last_status)
+
+    outcome: Outcome = "exhausted" if checked == policy.max_checks else "incomplete"
+    return Assessment(outcome, checked, tuple(delays), last_status)
