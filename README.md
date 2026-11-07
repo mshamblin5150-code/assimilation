@@ -38,6 +38,8 @@ Assimilation helps a person turn ordinary-language ideas into specified, reviewa
 
 ## For Chad: five-minute orientation
 
+**Ready to investigate a compiled program?** [Assimilation Living Up to Its Name](docs/CHAD-REVERSE-ENGINEERING.md) walks through the tool setup and a Windows lab with reproducible evidence.
+
 **Starting your own project from nothing?** [Choose a folder, initialize Git, install upstream skills and build through the complete workflow](docs/CHAD-BLANK-PROJECT.md). Choose **per-repository or personal/global** skills, then follow [the matching monthly maintenance steps](docs/CHAD-SKILLS-MAINTENANCE.md).
 
 **Checking a polished AI report?** [Practice evidence-grounded adversarial prose review](docs/CHAD-ADVERSARIAL-REVIEW.md) with a separate source packet, deliberately faulty draft and clean control.
