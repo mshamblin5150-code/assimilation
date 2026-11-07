@@ -40,6 +40,9 @@ Where a provider cannot run parallel agents, perform these in separate clearly i
 At task start, resumption, delegation, stop, or deadline, follow
 [Fleet handoff](FLEET_HANDOFF.md) for ownership, actual state, blocker routes,
 admission reconciliation, and the next authorized action.
+Before PR readiness changes, CI waits, or carrying approval conditions into a
+handoff, follow [PR coordination](PR_COORDINATION.md) to inspect actual checks
+and preserve the instruction's original project and action scope.
 
 Use `docs/templates/MISSION.md` to pass a bounded scope. Every child returns: result, files/commits, tested evidence, risks, unresolved issues, and whether any writes/external actions occurred. Keep report concise; no unbounded approval ledgers.
 
