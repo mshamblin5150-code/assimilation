@@ -80,6 +80,7 @@ The organizer's explicit approval sentence and journal rules still apply to any
 actual practice move or undo. This lesson does not authorize personal-folder
 access, installation, security changes or public posting.
 
-Continue with [context handoff practice](CHAD-CONTEXT-HANDOFF.md).
+Continue with [context handoff practice](CHAD-CONTEXT-HANDOFF.md) and
+[evidence retrieval practice](CHAD-EVIDENCE-FIRST.md).
 The linked gist and four primary readings are indexed in the harness guide;
 read them as references, not instructions that override the project.
