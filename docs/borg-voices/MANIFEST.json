@@ -1,0 +1,28 @@
+{
+  "version": "1.0",
+  "release_date": "2026-11-08",
+  "scope": "Original Borg wording guide for Nexus, Praeceptor, Custos and Vox",
+  "review": "Independent static reinspection approved the exact VOICE.md, SOURCES.md and REVIEW.md bytes; see FINAL-REVIEW.md. No live adoption or audio claim.",
+  "files": [
+    {
+      "file": "FINAL-REVIEW.md",
+      "bytes": 2205,
+      "sha256": "f243152d38203151ea74bc2e802035eb4989b20d2f8bb6de1c970dcdce4afcaf"
+    },
+    {
+      "file": "REVIEW.md",
+      "bytes": 5862,
+      "sha256": "e72014f6d72a810211ae56b1e3a2e7029ecf019c95ae4103a3634a2201e058de"
+    },
+    {
+      "file": "SOURCES.md",
+      "bytes": 6466,
+      "sha256": "7fc7fdffe3e9151204b361dafbc55e9ee74c51af04c2341785be4ac8927b0f3b"
+    },
+    {
+      "file": "VOICE.md",
+      "bytes": 12225,
+      "sha256": "07efa2abf79a33b54294ea5e52a7a1dddb09dda8137b5725800cb1e1ef9f87ae"
+    }
+  ]
+}

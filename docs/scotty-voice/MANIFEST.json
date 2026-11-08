@@ -1,0 +1,78 @@
+{
+  "archive_recipe": {
+    "compression": "ZIP_STORED",
+    "create_system": 3,
+    "external_attr": 2175008768,
+    "order": [
+      "MANIFEST.json",
+      "VOICE.md",
+      "audit-method.py",
+      "films-sources.json",
+      "films.md",
+      "provenance-and-limitations.md",
+      "research.md",
+      "review.md",
+      "source-inventory.csv",
+      "source-inventory.json"
+    ],
+    "timestamp": [
+      2026,
+      11,
+      8,
+      0,
+      0,
+      0
+    ],
+    "utf8_payloads": true
+  },
+  "description": "Broad James Doohan textual reconstruction with independent adversarial review. Not the recovered original research; not exhaustive across all media or audiovisual performances.",
+  "files": [
+    {
+      "path": "VOICE.md",
+      "sha256": "cbd2e2ea4f70eddaa56a1c2fdb5e71ed2005e13451f53e6434fd35be99bbe3ab",
+      "size_bytes": 9140
+    },
+    {
+      "path": "audit-method.py",
+      "sha256": "db79323c796366ffa79eac9ee248070de55b0f0f9a1b73403be5fcbabbd0294b",
+      "size_bytes": 1754
+    },
+    {
+      "path": "films-sources.json",
+      "sha256": "18e506498b03eedc326b2436c5a29ad41ca59cd64e241dd78591035b0a546452",
+      "size_bytes": 9296
+    },
+    {
+      "path": "films.md",
+      "sha256": "f18b9f2b91b2227cc8bf40e5c40d0a83e253eb57fbb0b6b4bcdb160b232dff1c",
+      "size_bytes": 12086
+    },
+    {
+      "path": "provenance-and-limitations.md",
+      "sha256": "c1cf3eaa2aa70b9a4c6726733e0a0c30f9a3844e9551e6917f9ee7c51a8a74b7",
+      "size_bytes": 4248
+    },
+    {
+      "path": "research.md",
+      "sha256": "38fb25dcd9cb0496a171a4a8624615f7d68cb928c5f9b8a3fd7c43783306a59f",
+      "size_bytes": 20383
+    },
+    {
+      "path": "review.md",
+      "sha256": "290ad1a945dc40852dfd47b4e31e8e80b29402e5ffe9e1a7c4775f4e8e5edef9",
+      "size_bytes": 12598
+    },
+    {
+      "path": "source-inventory.csv",
+      "sha256": "7d0f9fc63bbc6b667ec7924b2842996573af8bd580eb22f0ed286bd30c027732",
+      "size_bytes": 53534
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256": "b6b9018ff1b41d390195724cd1d98b28b6b75395c5378cc5929bffb308dba776",
+      "size_bytes": 93430
+    }
+  ],
+  "format": "scott-voice-reviewed-reconstruction-v1",
+  "reconstructed_on": "2026-11-08"
+}
