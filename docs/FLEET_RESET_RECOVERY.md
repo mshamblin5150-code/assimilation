@@ -8,6 +8,9 @@ A reset is a recovery event, not a new authorization or proof that work stopped.
 The goal is to recover enough verified state to continue the next useful,
 authorized action without duplicating work or making the operator repeat facts.
 This document installs no hook, scheduler, supervisor, or automatic recovery.
+Before PR readiness changes, CI waits, or investigating a disputed action, use
+[PR coordination](PR_COORDINATION.md) for actual check producers, scoped authority
+and evidence limits.
 
 ## Preserve before a reset
 
