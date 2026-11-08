@@ -1,0 +1,29 @@
+{
+  "version": "OMEGA-1",
+  "files": {
+    "ACCEPTANCE.md": {
+      "bytes": 9417,
+      "sha256": "25a086a9e4ef3729275e1062c00d94379061e6c28cd4afa966787ccc1ba1106a"
+    },
+    "ADMISSION.md": {
+      "bytes": 1327,
+      "sha256": "6835acd8f6e258a6b42b5ee604745a795c8b331ab3927506d1508e3d4537ae0a"
+    },
+    "ARTIFACT.md": {
+      "bytes": 1148,
+      "sha256": "3eb82f6bb53e35a03d92c410bdcfcf5a287e3a0bc3ac91268e7b26283d2c4b49"
+    },
+    "ASSIGNMENT.md": {
+      "bytes": 646,
+      "sha256": "c979d1b211a8c700fa946d54690ee0bd19591078cbe2326ed071dd1e66f800d3"
+    },
+    "LICENSE.txt": {
+      "bytes": 1091,
+      "sha256": "5654c1e7d595d58c7bdfa3bf62c5ee58c34c0b55f05a77bdfc6685838f46fd43"
+    },
+    "omega-legacy.pyz": {
+      "bytes": 2203,
+      "sha256": "3053cb414880912442c7f8d5722f315c129ca1f1ab93ce5751c86b5745db37ca"
+    }
+  }
+}
