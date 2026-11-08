@@ -1,0 +1,259 @@
+[
+  {
+    "n": 1,
+    "url": "http://www.chakoteya.net/movies/movie1.html",
+    "sha256": "95337d75c8d1f4b240cf058fd972e9853b0960303c9549471181e05bb8a004b7",
+    "bytes": 58060,
+    "scott_turns": 31,
+    "id": "F1",
+    "title": "The Motion Picture",
+    "accessed": "2026-11-08",
+    "actor": "James Doohan",
+    "source_quality": "Fan transcript; movie pages credited to Tony Morgan at index; not authenticated studio script",
+    "status": "Complete page obtained; every individual Scott-labeled entry reviewed with nearby context; selected contextual expansions",
+    "screen_verified": false,
+    "source_cut": "Uncertified",
+    "locators": [
+      "Orbital Office Complex and Travel Pod",
+      "Enterprise engineering before warp and after wormhole",
+      "Engineering self-destruct preparation"
+    ],
+    "claims": [
+      "readiness objections",
+      "limits and causal explanation",
+      "respectful resistance"
+    ],
+    "quotation_words_in_deliverable": 0
+  },
+  {
+    "n": 2,
+    "url": "http://www.chakoteya.net/movies/movie2.html",
+    "sha256": "a5052d15ca82faa8a340e01af9b8f61ae100c6eebe86f004eec76ed59a7ba482",
+    "bytes": 69495,
+    "scott_turns": 21,
+    "id": "F2",
+    "title": "The Wrath of Khan",
+    "accessed": "2026-11-08",
+    "actor": "James Doohan",
+    "source_quality": "Fan transcript; movie pages credited to Tony Morgan at index; not authenticated studio script",
+    "status": "Complete page obtained; every individual Scott-labeled entry reviewed with nearby context; selected contextual expansions",
+    "screen_verified": false,
+    "source_cut": "Uncertified",
+    "locators": [
+      "Enterprise inspection",
+      "Batteries and phaser power after attack",
+      "Preston sickbay",
+      "Engineering radiation chamber"
+    ],
+    "claims": [
+      "bounded capacity",
+      "crew protection and grief",
+      "simulation and cut caveats"
+    ],
+    "quotation_words_in_deliverable": 0
+  },
+  {
+    "n": 3,
+    "url": "http://www.chakoteya.net/movies/movie3.html",
+    "sha256": "14c8169f46d53c6e539cb68e7ddac4a30bac82e1a91f112b1c5727ef3e42efbc",
+    "bytes": 56004,
+    "scott_turns": 29,
+    "id": "F3",
+    "title": "The Search for Spock",
+    "accessed": "2026-11-08",
+    "actor": "James Doohan",
+    "source_quality": "Fan transcript; movie pages credited to Tony Morgan at index; not authenticated studio script",
+    "status": "Complete page obtained; every individual Scott-labeled entry reviewed with nearby context; selected contextual expansions",
+    "screen_verified": false,
+    "source_cut": "Uncertified",
+    "locators": [
+      "Opening refit estimate",
+      "Excelsior reassignment and sabotage",
+      "Enterprise escape",
+      "Automation failure under combat"
+    ],
+    "claims": [
+      "estimate padding",
+      "mischievous loyalty",
+      "automation scope failure"
+    ],
+    "quotation_words_in_deliverable": 0
+  },
+  {
+    "n": 4,
+    "url": "http://www.chakoteya.net/movies/movie4.html",
+    "sha256": "47e42dcd02f560a0a8e270fa12313d0656ecc5de6ee26fbe1b52a9099cdea52c",
+    "bytes": 79664,
+    "scott_turns": 56,
+    "id": "F4",
+    "title": "The Voyage Home",
+    "accessed": "2026-11-08",
+    "actor": "James Doohan",
+    "source_quality": "Fan transcript; movie pages credited to Tony Morgan at index; not authenticated studio script",
+    "status": "Complete page obtained; every individual Scott-labeled entry reviewed with nearby context; selected contextual expansions",
+    "screen_verified": false,
+    "source_cut": "Uncertified",
+    "locators": [
+      "Klingon departure preparations",
+      "Decrystallization diagnosis",
+      "Plexicorp office",
+      "Whale transport",
+      "Flooded cargo bay"
+    ],
+    "claims": [
+      "conditional estimate",
+      "social range",
+      "partial failure and delight"
+    ],
+    "quotation_words_in_deliverable": 0
+  },
+  {
+    "n": 5,
+    "url": "http://www.chakoteya.net/movies/movie5.html",
+    "sha256": "be26d15631a374ab4dfb8e5738bae00709a6c28b3f87c52e05bff5015169fd47",
+    "bytes": 57713,
+    "scott_turns": 38,
+    "id": "F5",
+    "title": "The Final Frontier",
+    "accessed": "2026-11-08",
+    "actor": "James Doohan",
+    "source_quality": "Fan transcript; movie pages credited to Tony Morgan at index; not authenticated studio script",
+    "status": "Complete page obtained; every individual Scott-labeled entry reviewed with nearby context; selected contextual expansions",
+    "screen_verified": false,
+    "source_cut": "Uncertified",
+    "locators": [
+      "Opening shakedown report and dinner",
+      "Shuttle return repair estimate",
+      "Brig rescue and turboshaft directions",
+      "Partial transporter recovery"
+    ],
+    "claims": [
+      "attachment and warmth",
+      "missed deadline",
+      "fallible confidence"
+    ],
+    "quotation_words_in_deliverable": 0
+  },
+  {
+    "n": 6,
+    "url": "http://www.chakoteya.net/movies/movie6.html",
+    "sha256": "3b7dee5110126728e0a21b55417aeffcdc9f13c9737eeb252badd794efb1abf5",
+    "bytes": 71208,
+    "scott_turns": 36,
+    "id": "F6",
+    "title": "The Undiscovered Country",
+    "accessed": "2026-11-08",
+    "actor": "James Doohan",
+    "source_quality": "Fan transcript; movie pages credited to Tony Morgan at index; not authenticated studio script",
+    "status": "Complete page obtained; every individual Scott-labeled entry reviewed with nearby context; selected contextual expansions",
+    "screen_verified": false,
+    "source_cut": "Uncertified",
+    "locators": [
+      "Torpedo inventory inquiry",
+      "Warp-drive delay pretext",
+      "Uniform discovery",
+      "Battle damage reports"
+    ],
+    "claims": [
+      "evidence correction",
+      "prejudice counterexample",
+      "deliberate deception"
+    ],
+    "quotation_words_in_deliverable": 0
+  },
+  {
+    "n": 7,
+    "url": "http://www.chakoteya.net/movies/movie7.html",
+    "sha256": "3cef375d3ed883f0b65d161f8d61b230cce985ca9e52bfa100248a2c6eb5b722",
+    "bytes": 68952,
+    "scott_turns": 22,
+    "id": "F7",
+    "title": "Generations",
+    "accessed": "2026-11-08",
+    "actor": "James Doohan",
+    "source_quality": "Fan transcript; movie pages credited to Tony Morgan at index; not authenticated studio script",
+    "status": "Complete page obtained; every individual Scott-labeled entry reviewed with nearby context; selected contextual expansions",
+    "screen_verified": false,
+    "source_cut": "Uncertified",
+    "locators": [
+      "Enterprise-B departure banter",
+      "Refugee transport",
+      "Gravimetric escape proposal",
+      "Deck fifteen aftermath"
+    ],
+    "claims": [
+      "ordinary teasing",
+      "partial rescue numbers",
+      "theory versus certainty"
+    ],
+    "quotation_words_in_deliverable": 0
+  },
+  {
+    "n": 8,
+    "url": "http://www.chakoteya.net/NextGen/230.htm",
+    "sha256": "cf2afab3a2be53ef8a43a382b2e994b08f2fa6fb078ffa472beabbffc8779bbb",
+    "bytes": 40713,
+    "scott_turns": 108,
+    "id": "R1",
+    "title": "Relics",
+    "accessed": "2026-11-08",
+    "actor": "James Doohan",
+    "source_quality": "Third-party TNG fan transcript at Chakoteya; not authenticated studio script; movie-index attribution does not establish authorship of this page",
+    "status": "Complete page obtained; every individual Scott-labeled entry reviewed with nearby context; selected contextual expansions",
+    "screen_verified": false,
+    "source_cut": "Uncertified",
+    "locators": [
+      "Transporter rescue and Franklin",
+      "Enterprise-D engineering correction and argument",
+      "Holodeck with Picard",
+      "Jenolen repair and rescue",
+      "Farewell"
+    ],
+    "claims": [
+      "loss and displacement",
+      "accepting correction then defensive conflict",
+      "collaborative reasoning",
+      "estimate padding and safety-bypass caveats"
+    ],
+    "quotation_words_in_deliverable": 0
+  },
+  {
+    "id": "Q1",
+    "title": "The Wit and Wisdom of Montgomery Scotty Scott",
+    "url": "https://www.startrek.com/news/wit-wisdom-of-montgomery-scotty-scott",
+    "accessed": "2026-11-08",
+    "source_quality": "Official franchise editorial; selected dialogue quotations, not full transcript",
+    "status": "Read",
+    "claims": [
+      "Corroborates film III plumbing image, IV language-versus-repair humor, V loyalty boast and Relics captain-management advice"
+    ],
+    "screen_verified": false
+  },
+  {
+    "id": "Q2",
+    "title": "TNG Relics debuted 23 years ago",
+    "url": "https://www.startrek.com/news/tngs-relics-debuted-23-years-ago-today-laddie",
+    "accessed": "2026-11-08",
+    "source_quality": "Official franchise editorial",
+    "status": "Read",
+    "claims": [
+      "Doohan return, episode context and generational argument"
+    ],
+    "screen_verified": false
+  },
+  {
+    "id": "Q3",
+    "title": "AFI Catalog: The Wrath of Khan",
+    "url": "https://catalog.afi.com/Film/67066-STAR-TREK-II--THE-WRATH-OF-KHAN?cxt=filmography",
+    "accessed": "2026-11-08",
+    "source_quality": "High-trust film reference; production history citing contemporary reporting",
+    "status": "Relevant history read",
+    "claims": [
+      "Nephew-identification scenes removed in editing"
+    ],
+    "locators": [
+      "HISTORY paragraph about Jan 1982 scoring and 129-minute runtime, web lines 96\u201397"
+    ],
+    "screen_verified": false
+  }
+]

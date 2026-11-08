@@ -36,6 +36,10 @@ Assimilation helps a person turn ordinary-language ideas into specified, reviewa
 >
 > This repository includes five local Assimilation skills, full upstream reference sources, their pinned lock/provenance, and an optional host installer. The initial visible baseline contains **38 Matt skill files** (20 engineering, 7 productivity, 4 miscellaneous, 7 in-progress) and **61 P-Stack skill files** (including 3 dormant Benny skills). Browsable source is not automatic host activation.
 
+## Reviewed communication guides
+
+[Scott’s operational voice](docs/scotty-voice/VOICE.md) is a broad Doohan textual reconstruction with [coverage limits](docs/scotty-voice/provenance-and-limitations.md) and [independent review](docs/scotty-voice/review.md). [Borg communication voices](docs/borg-voices/VOICE.md) gives Nexus, Praeceptor, Custos and Vox distinct roles from a targeted source study, with [sources](docs/borg-voices/SOURCES.md) and [final review](docs/borg-voices/FINAL-REVIEW.md). Scott and Number One remain separate. These are wording references, not audio configuration; publication alone establishes no role’s adoption.
+
 ## For Chad: five-minute orientation
 
 **Ready to investigate a compiled program?** [Assimilation Living Up to Its Name](docs/CHAD-REVERSE-ENGINEERING.md) walks through the tool setup and a Windows lab with reproducible evidence.

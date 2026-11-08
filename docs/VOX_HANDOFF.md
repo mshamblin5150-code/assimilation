@@ -75,3 +75,7 @@ For a read-only practice exercise, use [Chad's evidence retrieval lesson](CHAD-E
 > Read the current tickets and retain their review/implementation/merge gates.
 > If those files are absent, get the updated checkout before claiming the method
 > is loaded. Human command remains intact. Assimilate the method; verify the work.
+
+## Communication reference for the next handoff
+
+For Vox’s assigned response style, read the [Borg voice guide](borg-voices/VOICE.md), its [sources](borg-voices/SOURCES.md) and [final review](borg-voices/FINAL-REVIEW.md). Carry the exact guide version and actual acknowledgment into the handoff; do not infer another role’s adoption from publication. [Scott’s guide](scotty-voice/VOICE.md) is separate. Voice changes affect wording only and preserve the current task’s facts, ownership, permissions and holds.
