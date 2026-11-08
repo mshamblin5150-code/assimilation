@@ -40,7 +40,7 @@ Carry denials and uncertain outcomes into the handoff. Reconcile an uncertain op
 
 ## Denied or disputed action evidence
 
-For an investigation, reuse the existing private lane record. Retain only supported evidence:
+For an investigation, reuse the existing private lane record and the [operation receipt outline and visibility limits](FLEET_RESET_RECOVERY.md#operation-receipts-and-visibility). Retain only supported evidence:
 
 - The attempted repository, PR/action and head or artifact, with the actual tool result and known execution status. Attribute a worker's report when the raw result is unavailable.
 - The original scoped instruction or approval locator and material disclosures, including retained failures, absent hosted checks and requirement-visibility gaps.
@@ -69,7 +69,7 @@ Two independent adversarial reviews examined the diagnosis and handoff. They did
 
 The correction adds documentation only. It changes no workflow, check producer, protection setting, permission, hook, task custody or approval rule. Existing [controlled reset-recovery evidence](../evals/reset-recovery/2026-11-07/) remains separate; this text does not rerun those experiments or establish automatic recovery.
 
-This update incorporates the general guidance in private runbook revision 12, dated November 8, 2026 (01:02 UTC). It is a sanitized publication, not a full export or a second operational record. The private runbook remains the source for incident details and adoption receipts. Public content excludes private source links, repository identifiers, task/message identifiers, transcripts, approval payloads, account metadata and personal data.
+This update incorporates the general guidance in private runbook revision 14, dated November 8, 2026 (23:06 UTC). It is a sanitized publication, not a full export or a second operational record. The private runbook remains the source for incident details and adoption receipts. Public content excludes private source links, repository identifiers, task/message identifiers, transcripts, approval payloads, account metadata and personal data.
 
 ## Adoption at a natural boundary
 
