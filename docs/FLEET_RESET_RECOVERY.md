@@ -8,6 +8,9 @@ A reset is a recovery event, not a new authorization or proof that work stopped.
 The goal is to recover enough verified state to continue the next useful,
 authorized action without duplicating work or making the operator repeat facts.
 This document installs no hook, scheduler, supervisor, or automatic recovery.
+Before PR readiness changes, CI waits, or investigating a disputed action, use
+[PR coordination](PR_COORDINATION.md) for actual check producers, scoped authority
+and evidence limits.
 
 ## Preserve before a reset
 
@@ -27,11 +30,52 @@ credentials, private transcripts, clinical data, or unapproved unpublished work.
 A Drive backup inherits its destination's access settings; verify those settings
 before placing private material there. Saving a copy does not grant wider access.
 
+### Operation receipts and visibility
+
 Before a consequential operation, record its target, authorization basis, and
 how its outcome can be checked. Preserve the operation ID when one exists. After
 it returns, record the observed result and receipt. If a response is lost, retain
 an unknown outcome until reconciled. An operation ID helps reconciliation; it is
 not an exactly-once guarantee.
+
+Capture the safe result when it returns, rather than reconstructing it from a
+later summary. Reuse the existing private lane record with one receipt per
+attempt. Add only missing fields from this outline; it is a manual reference,
+not an installed logger, new checker schema, execution gate, or permission:
+
+- **Binding:** existing owner, action, bounded target, candidate revision or
+  artifact hash, and original authority references with their scope.
+- **Identifiers and time:** returned call, request, session or service identifiers
+  when exposed; source start/completion times when exposed; and the recorder's
+  observation time with timezone. Keep recorder labels separate from service IDs.
+- **Outcome and provenance:** state, safe result excerpt, surfaced reason, exit
+  status or receipt, and whether evidence is a direct result, preserved result,
+  attributed worker report, or independent readback.
+- **Reconciliation:** observed effect, supporting evidence reference, later
+  approval or retry receipt, remaining uncertainty, next owner and supported
+  observation. Preserve each attempt instead of overwriting a denial.
+
+Distinguish planned, submitted with outcome unknown, running, awaiting approval,
+denied, succeeded and failed, attaching evidence for the recorded state. Admission
+proves receipt, not execution. Approval does not establish that execution started
+or succeeded. Denial alone does not certify
+nonexecution; retain the tool's execution statement or the worker attribution.
+Timeouts, transport loss and missing receipts remain unresolved until reconciled.
+The [canonical retry limits](FLEET_HANDOFF.md#retry-and-admission) still apply.
+
+Record unexposed values as unknown (or null), with the reason; do not invent IDs
+or timestamps. Keep credentials and sensitive payloads out of receipts. Label
+redacted excerpts and omissions instead of calling them complete unchanged
+results. A file hash verifies preserved bytes, not an authentic execution trace.
+
+Use only views actually exposed by existing authorized tools or exports.
+Documentation of a capability does not establish its availability. Readback
+corroborates external state at observation time, not earlier reviewer inputs or
+a complete execution history. Missing detail calls for the next supported
+observation or an explicit visibility limit, not internal-storage access, a
+worker resume, fork, or restart, broader access, or renewed approval merely to
+fill a field.
+Preserve the original owner, deadline and holds while recording these limits.
 
 Read back a durable save before calling it preserved. Check identity and contents,
 not merely that the upload command returned. Preserve the previous verified copy

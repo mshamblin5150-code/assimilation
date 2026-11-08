@@ -58,9 +58,9 @@ record what remains rather than relabeling it complete.
 - Check uncertain outcomes through supported records before repeating. Missing
   messages or an old completed turn alone do not prove a new request never ran.
 - A genuine safety or access denial stops that route. A retry needs materially
-  new, relevant evidence and a known non-executed outcome, and is made only once
-  per such evidence. Carry the original denial and new basis into the handoff.
-  Time elapsed alone is not new evidence. An uncertain denied operation must
+  new, relevant evidence, authority for the exact action, and a known non-executed
+  outcome, and is made only once per such evidence. Carry the original denial and
+  new basis into the handoff. Time elapsed alone is not new evidence. An uncertain denied operation must
   first be reconciled. Respect stricter tool-specific retry restrictions.
 - Evaluate only alternatives already within authority. Another account, host,
   proxy, executor, endpoint, or permission change is not a way around a denial.
