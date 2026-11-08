@@ -42,6 +42,8 @@ Assimilation helps a person turn ordinary-language ideas into specified, reviewa
 
 Then use [Add Its Distinctiveness to Our Own](docs/CHAD-ADD-ITS-DISTINCTIVENESS-TO-OUR-OWN.md) to extract a useful principle, adapt it independently, and verify an offline readiness assessor.
 
+The final examination is [Harnessing the Omega Particle](docs/CHAD-HARNESSING-THE-OMEGA-PARTICLE.md). Its OMEGA-1 learner materials are public; an examination attempt starts only after admission, contract receipt and host calibration.
+
 **Starting your own project from nothing?** [Choose a folder, initialize Git, install upstream skills and build through the complete workflow](docs/CHAD-BLANK-PROJECT.md). Choose **per-repository or personal/global** skills, then follow [the matching monthly maintenance steps](docs/CHAD-SKILLS-MAINTENANCE.md).
 
 **Checking a polished AI report?** [Practice evidence-grounded adversarial prose review](docs/CHAD-ADVERSARIAL-REVIEW.md) with a separate source packet, deliberately faulty draft and clean control.

@@ -145,3 +145,7 @@ They preserve a real extra-read failure in the original instructor implementatio
 its regression test, the repair, and deliberate wrong implementations rejected
 by the tests. They do not claim Chad has completed the lesson or a fresh Windows
 run has passed. Keep your own record separate.
+
+## Final examination
+
+When ready for independent assessment, continue to [Harnessing the Omega Particle](CHAD-HARNESSING-THE-OMEGA-PARTICLE.md). Public learner materials do not start an examination attempt; complete its admission intake, contract receipt and host calibration first.
