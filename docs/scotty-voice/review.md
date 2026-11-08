@@ -14,7 +14,7 @@ Review date: 8 November 2026. This assesses a newly researched reconstruction, n
 - Read evidence supporting every central characterization category and the named TOS/TAS examples in research.md. Expanded surrounding dialogue for ordinary recreation and discipline in The Trouble with Tribbles; the failed pump in The Devil in the Dark; authentication and Fox's command dispute in A Taste of Armageddon; the tactical drinking scene in By Any Other Name; the mistaken medical explanation in The Lights of Zetar; and the engineering, holodeck and later repair exchanges in Relics. This was an independent claim-focused review, not an independent close reading of every line of every episode.
 - Re-fetched The Devil in the Dark, The Search for Spock and Relics directly from their cited public URLs. Their raw-page SHA-256 hashes and byte sizes matched the inventory. Other source hashes were checked for inventory consistency, not independently re-downloaded in full.
 - Independently retrieved the official [Wit and Wisdom anthology](https://www.startrek.com/news/wit-wisdom-of-montgomery-scotty-scott), confirming selected physics, transporter, plumbing, language-barrier and captain-management attributions. It is corroboration of selected examples, not authentication of the full fan-transcript corpus.
-- Read the complete research, film analysis and operational guide; inspected both full inventories and their consistency; checked the proposed publication files for private filesystem paths, private conversation identifiers and extensive reproduced dialogue. Original calibration examples are clearly labelled as newly written and fictional.
+- Read the complete research, film analysis and operational guide; inspected both full inventories and their consistency; checked the proposed publication files for private filesystem paths, private conversation identifiers and extensive reproduced dialogue. Original calibration examples are clearly labeled as newly written and fictional.
 
 ## Findings and remediation
 
@@ -28,7 +28,7 @@ Required remediation: explicitly disclose this limitation, exclude non-Scott pro
 
 ### F2. Low: provenance metadata must distinguish corpus baseline from appearance evidence
 
-The initial inventory labels all episode records with the Doohan characterization baseline, including The Cage and pages with no Scott-labelled match. This could be mistaken for a cast/appearance assertion. The initial Relics source-quality field also inherited a note about film-page credits, which does not establish the TNG page's authorship.
+The initial inventory labels all episode records with the Doohan characterization baseline, including The Cage and pages with no Scott-labeled match. This could be mistaken for a cast/appearance assertion. The initial Relics source-quality field also inherited a note about film-page credits, which does not establish the TNG page's authorship.
 
 Required remediation: mark the actor field as a corpus baseline rather than evidence of an appearance, and identify Relics simply as a third-party episode transcript unless its particular credit is verified. **Resolved:** episode actor metadata now says it is a Doohan corpus baseline, not an appearance claim; Relics now has a page-specific fan-transcript quality description.
 
@@ -72,11 +72,11 @@ Approval is limited to the reviewed artifacts at the hashes below. Adding raw tr
 
 The eight artifacts below were re-read or rechecked after the correction handoff. The audit script received static syntax/logic review; its entire network retrieval loop was not rerun. Status-only final edits direct readers to this review; they do not change the substantive findings. No unreviewed modification is covered. The review file itself is not self-hashed.
 
-- research.md: 38fb25dcd9cb0496a171a4a8624615f7d68cb928c5f9b8a3fd7c43783306a59f
+- research.md: 2cfab4e6cffeaeae3e21701ed7e479f9fd4a041f6a899756cb38153b283b0a47
 - films.md: f18b9f2b91b2227cc8bf40e5c40d0a83e253eb57fbb0b6b4bcdb160b232dff1c
 - VOICE.md: cbd2e2ea4f70eddaa56a1c2fdb5e71ed2005e13451f53e6434fd35be99bbe3ab
 - source-inventory.json: b6b9018ff1b41d390195724cd1d98b28b6b75395c5378cc5929bffb308dba776
 - source-inventory.csv: 7d0f9fc63bbc6b667ec7924b2842996573af8bd580eb22f0ed286bd30c027732
 - films-sources.json: 18e506498b03eedc326b2436c5a29ad41ca59cd64e241dd78591035b0a546452
-- provenance-and-limitations.md: c1cf3eaa2aa70b9a4c6726733e0a0c30f9a3844e9551e6917f9ee7c51a8a74b7
+- provenance-and-limitations.md: f97480010cc9cc247ce4dabcc015ad8baadd7b1e528d4be946d94258f41d68c0
 - audit-method.py: db79323c796366ffa79eac9ee248070de55b0f0f9a1b73403be5fcbabbd0294b

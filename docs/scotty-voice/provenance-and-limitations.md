@@ -13,9 +13,9 @@ This package was newly reconstructed on 8 November 2026. It is not the recovered
 
 ## Coverage ledger
 
-TOS: 80 complete pages retrieved: 79 broadcast installments plus The Cage. All 1,379 standard Scott-labelled candidate blocks were read; five malformed-label candidates were separately found and read. Sixty-five pages had at least one standard match. The Menagerie part 2 was explicitly included.
+TOS: 80 complete pages retrieved: 79 broadcast installments plus The Cage. All 1,379 standard Scott-labeled candidate blocks were read; five malformed-label candidates were separately found and read. Sixty-five pages had at least one standard match. The Menagerie part 2 was explicitly included.
 
-TAS: 22 complete pages retrieved. All 256 standard Scott-labelled candidate blocks were read; 20 pages had at least one match.
+TAS: 22 complete pages retrieved. All 256 standard Scott-labeled candidate blocks were read; 20 pages had at least one match.
 
 Films I–VI, Generations and Relics: eight complete pages retrieved. All 341 individual Scott-label entries were examined with adjacent dialogue and selected expanded contexts. This method's units are not guaranteed equivalent to the TOS/TAS parser's blocks. Repeated/playback dialogue and simulation appear; Generations has an additional joint label not counted among individual entries. Do not turn these figures into a unique canonical utterance total.
 

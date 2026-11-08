@@ -7,9 +7,11 @@
       "MANIFEST.json",
       "VOICE.md",
       "audit-method.py",
+      "delta-review.md",
       "films-sources.json",
       "films.md",
       "provenance-and-limitations.md",
+      "release-notes.md",
       "research.md",
       "review.md",
       "source-inventory.csv",
@@ -25,7 +27,8 @@
     ],
     "utf8_payloads": true
   },
-  "description": "Broad James Doohan textual reconstruction with independent adversarial review. Not the recovered original research; not exhaustive across all media or audiovisual performances.",
+  "baseline_archive_sha256": "af565c57e4c563ded941e192b42c7adfa9d4f1e41f1948e3aa6c4e34d4d18b82",
+  "description": "Spelling-only integration derivative of reviewed v1. Eight prose spelling corrections and two artifact-hash updates; unchanged voice and corpus. See release-notes.md and delta-review.md. Not recovered original work or all-media audiovisual exhaustive.",
   "files": [
     {
       "path": "VOICE.md",
@@ -36,6 +39,11 @@
       "path": "audit-method.py",
       "sha256": "db79323c796366ffa79eac9ee248070de55b0f0f9a1b73403be5fcbabbd0294b",
       "size_bytes": 1754
+    },
+    {
+      "path": "delta-review.md",
+      "sha256": "a681d9e7e91e1c9b1b844789e1fe5a649d5be76175bcd0b3bd4c64d4c1c420c2",
+      "size_bytes": 3728
     },
     {
       "path": "films-sources.json",
@@ -49,18 +57,23 @@
     },
     {
       "path": "provenance-and-limitations.md",
-      "sha256": "c1cf3eaa2aa70b9a4c6726733e0a0c30f9a3844e9551e6917f9ee7c51a8a74b7",
-      "size_bytes": 4248
+      "sha256": "f97480010cc9cc247ce4dabcc015ad8baadd7b1e528d4be946d94258f41d68c0",
+      "size_bytes": 4246
+    },
+    {
+      "path": "release-notes.md",
+      "sha256": "9bf60b11527c99ef3d01b966b92e44579892d7464b3fc81b58a2eec2c850f7b5",
+      "size_bytes": 2102
     },
     {
       "path": "research.md",
-      "sha256": "38fb25dcd9cb0496a171a4a8624615f7d68cb928c5f9b8a3fd7c43783306a59f",
-      "size_bytes": 20383
+      "sha256": "2cfab4e6cffeaeae3e21701ed7e479f9fd4a041f6a899756cb38153b283b0a47",
+      "size_bytes": 20379
     },
     {
       "path": "review.md",
-      "sha256": "290ad1a945dc40852dfd47b4e31e8e80b29402e5ffe9e1a7c4775f4e8e5edef9",
-      "size_bytes": 12598
+      "sha256": "33775034db883f7293820fb947c1a2af43912ac1e06adf44b107c768a5083998",
+      "size_bytes": 12596
     },
     {
       "path": "source-inventory.csv",
@@ -73,6 +86,6 @@
       "size_bytes": 93430
     }
   ],
-  "format": "scott-voice-reviewed-reconstruction-v1",
+  "format": "scott-voice-reviewed-reconstruction-r2",
   "reconstructed_on": "2026-11-08"
 }
