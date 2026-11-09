@@ -65,6 +65,45 @@ A November 8, 2026 investigation retained a worker-reported readiness denial and
 
 Two independent adversarial reviews examined the diagnosis and handoff. They did not reproduce the approval system or recover its raw denied/accepted inputs. The evidence supports recording the scoped approval and execution alongside the denial, not claiming that broader or stronger wording guarantees acceptance, that the original authority was insufficient, or that a transmission failure occurred. Readiness and merge remain separate actions.
 
+## Worked comparison of separate interruptions
+
+A November 9, 2026 comparison distinguished three events that should not be
+collapsed into one approval problem:
+
+- An interim coordinator instruction explicitly prohibited publication. The
+  worker stopped before attempting it. The restriction was later released and
+  publication and merge were verified. This explains that stop, not unrelated
+  automatic denials.
+- Another worker intended and attempted draft publication, then reported an
+  automatic rejection and asked for clarification. That sequence is not a
+  voluntary request for fresh consent before acting. Missing original-grant and
+  destination references in its immediate handoff were useful to repair, but
+  were not established as the rejection's cause.
+- A merge attempt was reported denied over an unproven check condition. A
+  subsequent instruction forwarding authorization was separately rejected before
+  admission. A coordinator attributed a later successful forwarding attempt to
+  new requirements evidence; repository readback verified the eventual merge.
+  The forwarding report was not an original request envelope or reviewer-input
+  record, and the final state did not explain the earlier decisions.
+
+Apply the existing procedure by carrying original authority and question
+context, the established destination and covered actions, current candidate,
+actual requirements, and any phase restriction or release separately. A hash
+identifies bytes; a grant establishes authority; an execution receipt establishes
+an observed outcome. These are different kinds of evidence.
+
+In the reviewed example, the draft was published for final-byte source review
+before merge. That sequence does not establish a universal pre-upload review
+requirement. Newly available original authority evidence
+can be materially new; repeating an assertion is not. Any retry still follows
+the canonical limits.
+
+A later worker reported saving and reading back the correction, then reported a
+separate readiness denial. That report does not independently verify the saved
+record or establish that the correction resolves approval review. The comparison
+establishes no single hidden cause, wording remedy, new approval gate or changed
+hold.
+
 ## Verification and publication limits
 
 The correction adds documentation only. It changes no workflow, check producer, protection setting, permission, hook, task custody or approval rule. Existing [controlled reset-recovery evidence](../evals/reset-recovery/2026-11-07/) remains separate; this text does not rerun those experiments or establish automatic recovery.
