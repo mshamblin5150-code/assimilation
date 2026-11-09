@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Explicit, passive receipt ingestion. Never execute, approve, retry or subscribe.
+"""Tribble Sniffer: explicit, passive receipt ingestion. Never execute, approve, retry or subscribe.
 
 Call ingest with caller-selected, already exposed JSON metadata. No result text,
 payload, rule, URL or raw identifier is retained. Reference/identifier fingerprints
@@ -308,7 +308,7 @@ class _Parser(argparse.ArgumentParser):
 
 
 def main():
-    parser = _Parser(description="Passive caller-fed receipt batch from JSON stdin; dry-run by default. No live watcher.")
+    parser = _Parser(description="Tribble Sniffer: passive caller-fed receipt batch from JSON stdin; dry-run by default. No live watcher.")
     parser.add_argument("--private-output", help="New artifact path in an existing owner-only POSIX directory; never overwritten")
     args = parser.parse_args()
     try:

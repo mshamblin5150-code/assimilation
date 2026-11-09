@@ -1,4 +1,4 @@
-# ADR 0013: explicit passive operation receipts and bounded triage
+# ADR 0013: Tribble Sniffer — explicit passive operation receipts and bounded triage
 
 - Status: Accepted direction for bounded implementation; publication and live adoption are separate
 - Date: 2026-11-09
@@ -15,7 +15,7 @@ structural handoff checker, not receipt ingestion, redaction or triage.
 
 ## Decision
 
-Implement one small standard-library aid, [operation_receipts.py](../../scripts/operation_receipts.py),
+Implement **Tribble Sniffer**, a small standard-library aid, [operation_receipts.py](../../scripts/operation_receipts.py),
 explicitly invoked by a caller at an existing worker result boundary. The accepted
 scope is caller-supplied exposed metadata and synthetic validation. Nothing is
 intercepted, subscribed to, polled or automatically installed. No action-review
