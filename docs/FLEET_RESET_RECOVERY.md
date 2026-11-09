@@ -82,6 +82,35 @@ not merely that the upload command returned. Preserve the previous verified copy
 until the new one is verified. For guarded updates, a revision conflict calls for
 reconciliation rather than overwriting another writer's changes.
 
+### Carry applicable authority through continuation
+
+In the existing private handoff, retain the original user-grant locator and actual
+scope, the specific action, candidate and destination it covers, and the admitted
+instruction separately. Distinguish implementation, publication, readiness and
+merge; authority for one does not by itself establish authority for the others.
+
+Reuse applicable existing authority without asking again solely because of a new
+turn, elapsed time, a covered routine slice or a qualification-only continuation.
+This does not extend expired or time-limited authority. Establish genuine scope
+changes, withdrawals, unmet requirements and required confirmations from their
+actual sources. A missing reference calls for supported evidence recovery or an
+explicit uncertainty, not an invented absence of permission.
+
+Consult current saved rules through their supported authoritative source. Keep
+their contents out of the runbook, and keep assistant summaries distinct from
+original user-grant provenance.
+
+Successful earlier operations neither prove a denial-free period nor explain
+hidden reviewer decisions or grant authority themselves. Preserve exact exposed
+outcomes and their evidence limits. An actual denial remains subject to the
+existing retry rules; repeating already-used authority is not materially new
+evidence. Continue independent authorized work and report the precise remaining
+blocker.
+
+These practices add no wording cure, execution gate, logger, permission expansion,
+bypass or automatic enforcement. Existing custody, original deadlines, uncertainty
+safeguards and substantive holds remain controlling.
+
 ### Learn from observed operational denials
 
 When a worker or coordinator observes an operational approval or access denial,
