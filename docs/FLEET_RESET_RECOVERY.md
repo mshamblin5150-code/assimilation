@@ -82,6 +82,38 @@ not merely that the upload command returned. Preserve the previous verified copy
 until the new one is verified. For guarded updates, a revision conflict calls for
 reconciliation rather than overwriting another writer's changes.
 
+### Learn from observed operational denials
+
+When a worker or coordinator observes an operational approval or access denial,
+preserve the receipt in the existing private lane record and reconcile uncertain
+execution. As an ongoing response, the coordinator initiates a bounded read-only
+comparison of the action, candidate, destination, original grants, admitted
+instructions, and exposed result, with focused independent challenge. Record an
+evidence-supported procedural correction or an explicit no-change finding with
+its evidence. Continue unrelated authorized work; this review does not block it.
+
+Link repeated reports of the same known incident instead of duplicating
+investigations. Keep different actions, attempts, and materially different
+evidence separate; leave unknown incident identities unresolved. Expected
+negative-control refusals remain qualification evidence. Record argument-binding
+failures separately from approval denials. Repeated denial alone requires neither
+another amendment nor a broader approval request.
+
+Retain full available source-reference identifiers and mark unresolved shorthand.
+Scope each readback claim to its actual query. Distinguish original returned
+results, preserved recorder-authored wrappers, coordinator summaries, attributed
+actor reports, and independent service observations. Missing original operation
+identifiers, event times, and reviewer inputs remain unknown. Capture weaknesses
+do not establish a denial's cause, and this procedure does not claim to fix
+approval review.
+
+This response uses ordinary supported coordination when a denial is actually
+observed. It installs no detector, universal logging, monitoring infrastructure,
+or automatic enforcement; creates no execution gate; and grants no denied-action
+retry, bypass, broader data collection, polling, or permission change. Existing
+custody, original deadlines, grants, denials, uncertainty safeguards, and all
+holds remain controlling.
+
 ## Recover in order
 
 1. **Locate.** Read the current project instructions, this guide, and the latest
