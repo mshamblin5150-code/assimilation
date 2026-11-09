@@ -118,6 +118,35 @@ after a reset; use the canonical handoff rule's evidence and retry requirements.
 If a real decision is missing, ask for that precise decision and continue useful
 independent work. Preserve any applicable no-wake or local-interaction hold.
 
+## Recover an engineering partnership
+
+The user sets direction and decides substantive changes outside existing
+authorization. An engineering design partner may work alongside the code owner
+without taking code custody. Keep one production-code owner, a separate design
+partner, and independent evidence review.
+
+Before sending work, the coordinator reconciles supported task state, current
+source and candidate identity, ownership and write fences, original task
+lifetimes, grants, denials, and uncertain operations against existing private
+records and project instructions. A reset renews none of them. Resolve uncertain
+admission through supported observation before replaying a request.
+
+Carry source-grounded counterexamples and tradeoff findings through the
+coordinator at the code owner's next natural task boundary, subject to current
+user direction. Preserve frozen work; keep implementation with its owner rather
+than interrupting or launching competing work. The code owner evaluates findings
+against the current candidate. The design partner challenges mechanisms and
+tradeoffs within its assigned scope. Independent review records evidence and
+disposition without expanding authority or replacing runtime qualification.
+
+Record actual reading and application during legitimate work in the existing
+private lane record: source/candidate identity, the decision, and its observable
+result or remaining uncertainty. Saved guidance, delivery, and receipt-only
+acknowledgment establish neither application nor automatic enforcement or
+installed supervision. Recovery preserves all existing substantive holds,
+pending or uncertain operations, and their original owners and deadlines. This
+guidance grants no execution or merge authority.
+
 ## What the recovery receipt must establish
 
 Reuse the existing handoff format. Add only missing recovery facts:
