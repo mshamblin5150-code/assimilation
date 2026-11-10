@@ -1,0 +1,23 @@
+# Permanent developer tools; script repository, not a distributable package.
+[dependency-groups]
+dev = ["ruff>=0.14,<1", "mypy>=1.18,<2"]
+
+[tool.ruff]
+target-version = "py310"
+include = ["scripts/*.py", "tests/*.py", "evals/*/*.py"]
+force-exclude = true
+extend-exclude = ["**/fixture/**", "**/recorded/**", "upstream", "vendor", "candidate-*", "pr8-*", "windows-onboarding-*"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]
+
+[tool.mypy]
+python_version = "3.10"
+files = ["scripts", "tests"]
+explicit_package_bases = true
+mypy_path = "scripts:tests"
+check_untyped_defs = true
+warn_unused_ignores = true
+show_error_codes = true
+
+
