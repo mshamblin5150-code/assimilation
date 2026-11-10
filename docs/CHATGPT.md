@@ -10,3 +10,15 @@ For **full engineering workflows**, a capable local or cloud coding agent can re
 **Suggested first prompt:**
 
 > Follow this repository’s `START_HERE.md` for my task: [outcome]. My project or supplied files are [location], and the authorized scope is [scope]. Select and read the relevant original skills, perform the task with tools actually available, and return the result, evidence and a handoff. If a necessary tool or file is unavailable, name the specific limitation and continue useful independent work. Preserve my authority over consequential actions.
+
+## Dated capability observation: Voice subagent dispatch (November 9, 2026)
+
+In one ChatGPT conversation conducted through Voice, the assistant inspected the available tools and **did not find a direct, callable mechanism to launch an independent research or engineering subagent from that conversation**. The same conversation successfully read Assimilation's `START_HERE.md`, `AGENTS.md`, `docs/FLEET_HANDOFF.md` and `docs/OPERATOR_METHOD.md` through GitHub access, and verified the then-current `main` commit `62e466ca03565fa132323d81580beab6fe634356`.
+
+A written handoff was manually transferred between conversations and used to recover the repository's operating context. **No subagent was launched, no autonomous inter-chat transfer or task ownership transfer was established, and no new handoff/swarm evaluation was executed.**
+
+**Evidence boundary:** successful repository reads and the inspected tool inventory were directly observed; the absence of a direct dispatch tool is **session-specific**, not proof of a universal limitation across ChatGPT Voice, Codex, Work or other hosts. Because no supported dispatch interface was found in this session, there is no attempted-dispatch failure or successful delegated-run receipt to report. Tool availability may vary with the runtime and configuration.
+
+**Operational response:** before assigning a child drone, verify that the current host exposes a functioning delegation mechanism. Where it does not, work serially or transfer an appropriately redacted, verifiable [fleet handoff](FLEET_HANDOFF.md) to a separately authorized agent-capable environment. Label a manual transfer as manual; do not report a swarm or independent review without separate agent execution evidence. See the [swarm operating model](SWARMS.md).
+
+**Next test, not yet performed in this session:** run the existing [interrupted-handoff and swarm evaluation](../evals/interrupted-handoff/README.md) in an environment with demonstrated independent agent dispatch, retaining task identities, assignments, operation receipts, artifact hashes, and independent grading.
