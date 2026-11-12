@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "status": "source-inspection-only; not an executable environment lock; acoustic HOLD",
+  "observed_utc": "2026-11-12T11:42:48Z",
+  "decision_owner": "Matt Shamblin",
+  "baseline_repository": "mshamblin5150-code/assimilation",
+  "baseline_commit": "e80776087e9b83e2b7ae4b9d47c3f8c932711f0e",
+  "speechbrain": {
+    "repository": "speechbrain/speechbrain",
+    "revision": "c0241278f93ef02cd5191f03caf4e5f8e1292bf6",
+    "release": "v1.1.2",
+    "source_blobs": {
+      "speechbrain/inference/interfaces.py": "2b61d58fc07f7cf8c1c795de4593fdba5df460d6",
+      "speechbrain/inference/speaker.py": "10bc087a5967470bc5ea86c202d3393f5baf532d",
+      "speechbrain/inference/classifiers.py": "3c8428c31dfd0e9923790549c5ba68f90a87f2ca",
+      "speechbrain/utils/parameter_transfer.py": "89d232cfe7566a3570c7bece06a8b350e1f418f0",
+      "speechbrain/utils/fetching.py": "ed346ae4296f67981ee75db2284020dcc039c143",
+      "speechbrain/utils/checkpoints.py": "33891dd77f2acb988145ca8d90fbf586d2e59e3c",
+      "speechbrain/processing/features.py": "1d1992d08a4507a06dd3b3a2990e5257c9f94ad4",
+      "speechbrain/dataio/encoder.py": "6412e9a51f1ed1a603c0a87f3268c428351af6f8",
+      "speechbrain/dataio/audio_io.py": "515c691a15426bc0f97b76b99f61ecabd3030f46",
+      "pyproject.toml": "11d21c8ff98028100a89a37f2113487ebf62d122"
+    },
+    "python_declared": ">=3.8.1",
+    "direct_dependency_declarations": [
+      "hyperpyyaml>=0.0.1",
+      "joblib>=0.14.1",
+      "numpy>=1.17.0",
+      "packaging",
+      "requests>=2.20.0",
+      "scipy>=1.4.1",
+      "sentencepiece>=0.1.91",
+      "soundfile>=0.12.1",
+      "torch>=2.7.1",
+      "torchaudio>=2.7.1",
+      "tqdm>=4.42.0",
+      "huggingface_hub>=0.8.0"
+    ],
+    "build_dependency_declarations": [
+      "setuptools>=61.0",
+      "wheel"
+    ],
+    "resolved_environment": null,
+    "package_artifact_hashes": null,
+    "transitive_dependency_lock": null
+  },
+  "model": {
+    "repository": "speechbrain/spkrec-ecapa-voxceleb",
+    "revision": "0f99f2d0ebe89ac095bcc5903c4dd8f72b367286",
+    "license_label": "Apache-2.0; model-card claim, not full dataset/third-party clearance",
+    "files": [
+      {
+        "path": "hyperparams.yaml",
+        "role": "constructor-bearing configuration",
+        "expected_sha256": null,
+        "locally_verified": false
+      },
+      {
+        "path": "embedding_model.ckpt",
+        "role": "pretrainer embedding_model",
+        "expected_sha256": "0575cb64845e6b9a10db9bcb74d5ac32b326b8dc90352671d345e2ee3d0126a2",
+        "expected_size_bytes": 83316686,
+        "hash_evidence": "upstream Git LFS pointer",
+        "locally_verified": false
+      },
+      {
+        "path": "classifier.ckpt",
+        "role": "pretrainer classifier (default config loads it)",
+        "expected_sha256": "fd9e3634fe68bd0a427c95e354c0c677374f62b3f434e45b78599950d860d535",
+        "expected_size_bytes": 5534328,
+        "hash_evidence": "upstream Git LFS pointer",
+        "locally_verified": false
+      },
+      {
+        "path": "mean_var_norm_emb.ckpt",
+        "role": "pretrainer embedding normalization",
+        "expected_sha256": null,
+        "locally_verified": false
+      },
+      {
+        "path": "label_encoder.txt",
+        "role": "pretrainer categorical labels",
+        "expected_sha256": null,
+        "locally_verified": false
+      }
+    ],
+    "excluded_example_audio": [
+      "example1.wav",
+      "example2.flac"
+    ],
+    "reviewed_local_config_sha256": null
+  },
+  "synthetic_generator": {
+    "candidate": "eSpeak NG 1.52.0; provenance audit candidate only",
+    "revision": "4870adfa25b1a32b4361592f1be8a40337c58d6c",
+    "clearance": "HOLD; selected phoneme/waveform provenance unresolved",
+    "binary_and_data_hashes": null
+  },
+  "runtime_observations": [],
+  "authorizes_execution": false
+}
