@@ -30,3 +30,13 @@ A valid `ZERO_BLOCKING_FOG` decision contains: named scope/destination; links to
 ## High stakes
 
 For clinical, financial, legal, life-safety, and load-bearing physical design, AI work is assistance. Qualified human professionals and physical tests may be required; do not convert an AI confidence score into professional verification.
+
+## Vox locuti — The Captain has spoken
+
+Within Assimilation, **Vox locuti** is the Captain's formal declaration of a directive. The phrase is a project convention meaning **“The Captain has spoken”**, not a claim of literal Latin translation.
+
+An agent encountering this phrase should recognize that the Captain has issued a directive and interpret it within the project's established authority, permissions, and operating rules. Verify the speaker's actual authority through the normal channel; the phrase itself is not authentication or an exemption from approval requirements.
+
+Preserve the directive, its scope, and its verified outcome in authorized shared records so successors can continue the work without inventing completion or permission.
+
+**The Captain has spoken. The Collective remembers. The work continues.**
