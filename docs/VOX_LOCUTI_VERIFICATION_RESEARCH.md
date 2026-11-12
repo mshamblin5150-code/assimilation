@@ -1,6 +1,18 @@
 # Issue 52 — Vox locuti verification research plan
 
-**Status:** Research design proposed; independent checkpoint-1 security review **not yet received**. No voice enrollment, model installation, audio collection, runtime integration, or verification benchmark has occurred. This document is not a claim of security certification.
+## Status reconciliation — November 12, 2026
+
+The proposal below preserves its initial authoring snapshot at `df718a03bc9e97c134eaab510e5f6fd193f11108`. Its “not yet received” and “not yet observed” statements describe that earlier stage. Later research is recorded in the [consolidated report](https://github.com/mshamblin5150-code/assimilation/blob/23cc15f0b590f37eb35754547aa4f6b82df7cc32/docs/issue-52/REPORT.md) and [independent security review](https://github.com/mshamblin5150-code/assimilation/blob/23cc15f0b590f37eb35754547aa4f6b82df7cc32/docs/issue-52/02-security-checkpoint.md).
+
+Four fresh-context doctrine text cases were completed with the limitations in that report. Independent Checkpoint 1 review was received and returned **HOLD for acoustic implementation**. The separate **PASS covers preparation/publication of the model-free simulator plan only**; no simulator execution, acoustic experiment, human enrollment, live authentication, gateway deployment or permission change is approved by that review. Model inference and voice metrics remain unmeasured.
+
+Operator refinement [D-52-09](https://github.com/mshamblin5150-code/assimilation/issues/52#issuecomment-6811462314) permits consideration of future encrypted private Drive staging with keys outside Drive, while keeping processing and temporary working files local. It does not authorize collection, upload, folder creation or sharing changes. The initial local-only plan below must be read with that later refinement.
+
+Current research continuation is to resolve the five acoustic blockers in the linked review: complete artifact/dependency hashes and loader review; immutable local resolution; exact synthetic generator provenance/terms; frozen trials and failure accounting; and concrete retention, cleanup and host-isolation evidence. Issue #52 remains open. This status note preserves the earlier evidence rather than replacing it with later results.
+
+## Original proposal — authoring snapshot
+
+**Original authoring status:** Research design proposed; independent checkpoint-1 security review **not yet received**. No voice enrollment, model installation, audio collection, runtime integration, or verification benchmark has occurred. This document is not a claim of security certification.
 
 **Decision owner:** Assimilation operator. **Canonical tracker:** [Issue #52](https://github.com/mshamblin5150-code/assimilation/issues/52). Preserve all eight recorded operator decisions and the authoritative agent brief. Do not modify another person's environment or any ongoing evaluation.
 
@@ -70,7 +82,7 @@ Initial research uses synthetic data only and local-only processing. Define a co
 - **Checkpoint 2:** after separately authorized synthetic implementation and evidence, independent reviewer assesses actual outcomes, false matches, spoof cases, deletion evidence and authentication isolation. Human enrollment remains prohibited until this checkpoint and separately granted explicit authorization.
 - Stop on any unexpected private-data exposure, unclear ownership, permission denial, model/license uncertainty that prevents safe use, or attempt to treat biometric similarity as a credential.
 
-## Current evidence and handoff
+## Original evidence and handoff — authoring snapshot
 
 - Doctrine exists on current `main`; its phrase definition was merged in PR #51. That establishes publication, **not** that Beldin has read it.
 - Operator's eight decisions and confirmed agent brief are recorded on Issue #52.
