@@ -1,6 +1,6 @@
 # Permanent developer tools; script repository, not a distributable package.
 [dependency-groups]
-dev = ["ruff>=0.14,<1", "mypy>=1.18,<2"]
+dev = ["ruff>=0.17,<1", "mypy>=2.4,<3"]
 
 [tool.ruff]
 target-version = "py310"
