@@ -48,6 +48,10 @@ unresolved contracts; this consent specification does not establish them.
 
 ## Fail-closed gates before any future native installer implementation
 
+For review of the data boundary, see the [proposed generated-view and approval
+plan wire contract](WINDOWS_GENERATED_VIEW_SCHEMA.md). It defines a limited
+create-only proposal format, not a production plan or native authorization.
+
 | Gate | Required proof | Unknown/denied response |
 | --- | --- | --- |
 | Source | Exact canonical commit/tree/blob/link/mode proof independent of worktree bytes | Refuse; no installation |
