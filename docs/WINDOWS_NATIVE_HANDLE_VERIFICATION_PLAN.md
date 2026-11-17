@@ -33,3 +33,41 @@ Before a native implementation, obtain an independent review of the following Wi
 - Exact-head Windows and Ubuntu CI logs; tests on isolated disposable fixtures only.
 - Demonstrated fail-closed behavior with negative cases, not only happy-path observations.
 - Separate explicit approval for implementation and later installation. PR remains draft/unmerged until independent review and human merge authorization.
+
+## Existing source and remaining contracts
+
+This source inspection uses PR #12 head
+`07aa4b5e60990d9d623b54634553af3d60986783`. It does not record a new test
+run or native qualification. The existing observers and synthetic models do not
+implement the installation contract above.
+
+| Existing source | What it does | What remains unproved |
+| --- | --- | --- |
+| [`WindowsOpener.retained_file`](../scripts/windows_opener.py) | Holds one opener's operation lock during a query, requires owned file and ancestor objects, and checks file metadata and reader context before and after the query. | The lock does not exclude another opener, process, or external handle closure. Retained ancestor objects do not prove namespace confinement. |
+| [`observe_file_streams`](../scripts/windows_stream_query.py) | Makes one bounded `FileStreamInfo` query through the supplied reader and compares endpoint metadata and context. | Equal snapshots do not exclude changes between observations, authenticate payload bytes, or establish a native writer-exclusion contract. |
+| [`parse_proposal`](../scripts/windows_view_proposal.py) | Checks the create-only declaration and returns canonical bytes with matching view and plan digests. | A declared digest does not verify staged bytes. The parser requires destination and recovery bindings to remain `unqualified`. |
+| [`SimulatedTransaction`](../scripts/windows_view_transaction_model.py) | Compares caller-supplied digest and identity tokens through in-memory transitions. | It has no durable journal, authenticated recovery owner, interruption recovery, or native write operation. |
+
+[`test_windows_opener.py`](../tests/test_windows_opener.py) uses recorded API
+completions. Its cases cover public lifecycle reentry, retained ancestry, observed
+changes, and cleanup failures. Those cases do not instantiate a native opener.
+They must not be reported as cross-process exclusion or native share-mode tests.
+
+The next design work has three distinct contracts:
+
+- Native acquisition and exclusion must name the actual access rights, share
+  modes, handle-relative opening rules, and supported filesystem behavior.
+  The contract must explain what prevents a competing writer or ancestor
+  substitution throughout the operation, rather than relying on endpoint equality.
+- Staged-byte custody must bind the reviewed proposal to verified source bytes,
+  retained staging objects, and the destination immediately before an effect.
+  A proposal digest alone supplies none of those bindings.
+- Recovery must define an authenticated owner, durable journal transitions,
+  replay refusal, and the treatment of missing or tampered artifacts. The
+  in-memory model's `aborted` state does not describe crash recovery.
+
+These contracts remain proposals for the issue's decision owner, Chad, with
+independent security review. No choice of locking, journal format, or native
+adapter is accepted here. The recorded local exact-plan consent requirement
+still applies. Native adversarial execution, installer activation, and merge
+remain subject to the existing gates.
