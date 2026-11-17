@@ -9,6 +9,43 @@ Status: **design/prototype only, not a native installer or authorization to inst
 - A source verifier, a view generator, a native destination inspector, and a transaction/activation controller have distinct responsibilities. No observation or synthetic test alone grants installation authority.
 - Trusted Python startup and trusted operator-supplied destination are prerequisites; neither automatically establishes safe Windows filesystem behavior.
 
+## Local approval contract
+
+The [recorded issue 11 decision](https://github.com/mshamblin5150-code/assimilation/issues/11#issuecomment-6607225033)
+selects interactive, first-party local approval for each exact installation plan.
+[ADR 0014](adr/0014-local-exact-plan-installation-consent.md) records that choice,
+its provenance, and the unresolved implementation questions. This section defines
+required behavior, not implemented or qualified consent machinery.
+
+Before approval, the local application presents the source commit and lock,
+verified payload manifest and digests, destination root, and each planned create,
+replacement, and deletion. It also presents managed or unmanaged conflicts,
+activation effects, and recovery limits.
+
+Approval applies to one immutable plan and one attempt. A changed source,
+manifest, destination identity, or planned effect invalidates approval. A refusal,
+cancellation, or missing approval permits no installation or activation. A new
+attempt requires a new local approval; a previous token or journal entry cannot
+supply it.
+
+Only the operator's interactive first-party local session may solicit approval.
+OS login, process launch, unattended flags, environment variables, tokens, remote
+messages, GitHub comments, or agent-driven clicks do not establish consent.
+The design still needs a reviewed account/session binding and UI trust model.
+The implementation must not claim that merely showing a dialog excludes spoofed
+UI or automation.
+
+Agents can prepare plans and evidence but cannot supply installation consent.
+Repository review and merge remain separate from local installation consent.
+Neither a merged prototype nor successful CI enables the existing refused Windows
+source operations.
+
+Acceptance for a future consent implementation includes rejection of cancellation,
+missing approval, replay, changed plans, changed identities, and unattended or
+remote approval. Those are required cases, not tests already implemented here.
+Native confinement, authenticated recovery, and writer exclusion remain separate
+unresolved contracts; this consent specification does not establish them.
+
 ## Fail-closed gates before any future native installer implementation
 
 | Gate | Required proof | Unknown/denied response |
@@ -61,3 +98,4 @@ Independent security/spec review, precise source identity, explicit evidence of 
 7. Teardown: delete only objects whose identities remain proven test-owned; otherwise quarantine and report. Never follow unexpected reparse links during cleanup.
 
 **Exit criteria:** record exact commit, runner image, native APIs used, fixture boundaries, instrumentation, failures and limits. A synthetic state-machine pass is not evidence for any of the native claims above. This plan is not an installer implementation or permission to run native adversarial tests.
+
