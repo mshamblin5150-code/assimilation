@@ -56,6 +56,8 @@ jobs:
         run: python -B -m unittest discover -s tests -p test_windows_onboarding.py -v
       - name: Check Windows generated-view name preflight (synthetic only)
         run: python -B -m unittest discover -s tests -p test_windows_view_names.py -v
+      - name: Check Windows proposal parser (synthetic only)
+        run: python -B -m unittest discover -s tests -p test_windows_view_proposal.py -v
       - name: Check Windows staging transaction model (synthetic only)
         run: python -B -m unittest discover -s tests -p test_windows_view_transaction_model.py -v
       - name: Observe isolated native Windows disposable fixture (no installer)

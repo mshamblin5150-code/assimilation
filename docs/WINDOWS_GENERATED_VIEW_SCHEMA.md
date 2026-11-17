@@ -123,7 +123,8 @@ single attempt to the final production plan bytes, never this proposal format.
 
 ## Rejection examples for the later pure parser seam
 
-These are test requirements, not executed tests or native safety evidence.
+The synthetic parser suite exercises a subset of these rejection requirements. Its results
+establish only the proposed data boundary, not native safety.
 
 | Mutation to a valid create-only proposal | Required result |
 | --- | --- |
@@ -141,3 +142,24 @@ A valid parse must yield only validated proposal data. It must never invoke
 filesystem, network, process, consent, journal, locking or installation APIs.
 Native confinement, authentic recovery, competing writers, UI trust and replay
 require different qualified seams; passing this parser cannot satisfy them.
+
+## Synthetic prototype
+
+`scripts/windows_view_proposal.py` exposes `parse_proposal(view_json, plan_json)`.
+Both inputs are bytes. It returns an immutable `Proposal` containing canonical
+view and plan bytes plus their SHA-256 digests, or raises `ValueError`. The parser
+does not open paths, contact services, start processes, or solicit approval.
+The output remains non-authorizing proposal data even when every check passes.
+
+Run its bounded suite with:
+
+```
+python -B -m unittest discover -s tests -p test_windows_view_proposal.py -v
+```
+
+The first implementation used incremental failing checks for fields, names,
+bindings and malformed strings. A test initially used literal escape text in
+place of invalid bytes and a surrogate; that fixture was corrected before its
+passing result. Additional coverage checks existing encoding and input limits.
+Hosted Linux discovery includes this suite, and the Windows workflow selects it
+explicitly. A configured workflow is not an observed pass at a later head.

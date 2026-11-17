@@ -36,14 +36,17 @@ This draft does not cover the full intended installer payload or upgrades.
 Executable files, links, generated wrappers, replacements and deletions remain
 out of scope for initial parsing. Review must decide whether those restrictions
 make the first slice useful and confirm the proposed resource/digest encoding.
-No caller or installer is migrated. Rollback is removal of proposal documents.
+No caller or installer is migrated. Rollback removes the proposal documents,
+bounded parser and tests, and its explicit Windows workflow selection.
 
 ## Verification and references
 
 The source, name and transaction prototypes and
 [issue 11's local-only decision](https://github.com/mshamblin5150-code/assimilation/issues/11#issuecomment-6607225033)
-were read. The contract lists worked rejection requirements, not test
-passes. New parser tests await an agreed public seam; no native test, installer,
-consent mechanism or security-setting change ran for this documentation slice.
-Independent review of these documents is required before publication. Whole-PR
-acceptance, exact-head hosted checks and native qualification remain distinct.
+were read. The initial documentation slice had no parser implementation.
+The later synthetic prototype tests the agreed pure parse-and-validate boundary
+through `parse_proposal`, with no filesystem or network effects. Agreement on
+that test boundary does not accept this schema for production. No native
+qualification, installer, consent mechanism or security-setting change ran.
+Independent reviews cover each published slice. Whole-PR acceptance, exact-head
+hosted checks and native qualification remain distinct.
