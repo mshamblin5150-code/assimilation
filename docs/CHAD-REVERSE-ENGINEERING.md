@@ -11,6 +11,9 @@ to install tools under your account. Work in a copy of the
 synthetic APK is ready to inspect with JADX. You can do that exercise without
 Android Studio, the Android SDK, a phone, or an emulator.
 
+After the lab, see [what to do when REA cannot see the program](#when-rea-cannot-see-the-program):
+a worked case, with the fix built for REA.
+
 ## 1. Give your agent the method
 
 Ask your agent to read [START_HERE](../START_HERE.md) and the original skill
@@ -169,6 +172,26 @@ whether the rule you described holds.
 Open the [instructor key and build instructions](../examples/chad-reverse-engineering/instructor/README.md)
 after your run. The [author's results](../examples/chad-reverse-engineering/RESULTS.md)
 record the checks performed on the supplied fixtures.
+
+## When REA cannot see the program
+
+Some Windows programs draw their own interface. Their dialogs are pixels, not
+controls, so UI Automation and REA find nothing to observe.
+[Teaching REA to see what it cannot](rea-harness-lesson/README.md) is the
+complete record of closing that gap on a real image editor:
+
+- **The fix for REA.** [`rea_windows_ui`](rea-harness-lesson/code/scripts/adobe_observed_truth/rea_windows_ui/)
+  is a local MCP server with REA's own tool names, schemas and Evidence. It
+  gives REA native UI observation on Windows. Read
+  [how it was built](rea-harness-lesson/01-story.md#phase-6-drive-it-the-way-rea-wants-to-be-driven).
+- **The harness.** [The harness code](rea-harness-lesson/code/scripts/adobe_observed_truth/)
+  drives every control of a self-drawn dialog from its pixels. It records each
+  action as Evidence REA accepts, and links each control to the decompiled code
+  that handles it. Its tests run on their own.
+  [The technical guide](rea-harness-lesson/04-guide.md) explains the seams.
+- **How the agent was driven.** [The operator log](rea-harness-lesson/02-operator-log.md)
+  has every instruction and correction, in order. [The rules](rea-harness-lesson/03-rules.md)
+  give the rule each live incident became, and how to steer an agent like this.
 
 ## Continue from discovery to independent design
 
