@@ -44,6 +44,8 @@ Assimilation helps a person turn ordinary-language ideas into specified, reviewa
 
 **Ready to investigate a compiled program?** [Assimilation Living Up to Its Name](docs/CHAD-REVERSE-ENGINEERING.md) walks through the tool setup and a Windows lab with reproducible evidence.
 
+**Want to see REA taken past what it can natively observe?** [Teaching REA to see what it cannot](docs/rea-harness-lesson/README.md) is a worked case: an observed-truth harness that drives self-drawn Windows dialogs from their pixels, the Windows UI bridge built so REA has native parity there, and every operator instruction and correction that steered the agent.
+
 Then use [Add Its Distinctiveness to Our Own](docs/CHAD-ADD-ITS-DISTINCTIVENESS-TO-OUR-OWN.md) to extract a useful principle, adapt it independently, and verify an offline readiness assessor.
 
 The final examination is [Harnessing the Omega Particle](docs/CHAD-HARNESSING-THE-OMEGA-PARTICLE.md). Its OMEGA-1 learner materials are public; an examination attempt starts only after admission, contract receipt and host calibration.

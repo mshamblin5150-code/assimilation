@@ -1,0 +1,813 @@
+{
+  "artifacts": [
+    {
+      "digest": {
+        "sha256": "87c04a197d3110a770dfb953a5a54393883e4d4c57f7468ba776ff86289951cc"
+      },
+      "format": "pe",
+      "architecture": "x86_64"
+    },
+    {
+      "digest": {
+        "sha256": "f27b1ac75df7c1a4b01cd5d7a7783c4b59f8ee66aa1687fbb7201bf27190e694"
+      },
+      "format": "pe",
+      "architecture": "x86_64"
+    }
+  ],
+  "providers": [
+    {
+      "id": "adobe-observed-truth",
+      "name": "Adobe observed-truth harness",
+      "version": "0.2.0"
+    }
+  ],
+  "environments": [
+    {
+      "id": "windows-10.0.26100",
+      "platform": "win32",
+      "architecture": "x86_64",
+      "isolation": "none"
+    }
+  ],
+  "scenarios": [
+    {
+      "evidence_id": "ev_0dec1ad9a87fe32e194ebc1db8c867cc0cbeb014ff17165f4ec8b34ea41aa6f9",
+      "operation": "observe_history_depth",
+      "authority": "controlled-replay"
+    },
+    {
+      "evidence_id": "ev_479a89612b610a94b92d620c5573650bcd436a75a0efb882c0538869a4e2dc8a",
+      "operation": "observe_illustrator_readback",
+      "authority": "controlled-replay"
+    },
+    {
+      "evidence_id": "ev_5524a07804df444f26cd45be84f5c3e9584ddc686d103713ef4c1fa5d584b935",
+      "operation": "observe_undo_menu_layout",
+      "authority": "controlled-replay"
+    },
+    {
+      "evidence_id": "ev_7c2652527ff168f9bcb45bbd323dd7a86be4f0afc891b4e82bd6cd5c8a8f1715",
+      "operation": "observe_view_state",
+      "authority": "controlled-replay"
+    }
+  ],
+  "captures": [],
+  "unknowns": [],
+  "records": [
+    {
+      "evidence_id": "ev_0dec1ad9a87fe32e194ebc1db8c867cc0cbeb014ff17165f4ec8b34ea41aa6f9",
+      "subject": {
+        "name": "Photoshop.exe",
+        "digest": {
+          "sha256": "87c04a197d3110a770dfb953a5a54393883e4d4c57f7468ba776ff86289951cc"
+        },
+        "local_path": "C:\\Program Files\\Adobe\\Adobe Photoshop 2026\\Photoshop.exe",
+        "format": "pe",
+        "architecture": "x86_64"
+      },
+      "provider": {
+        "id": "adobe-observed-truth",
+        "name": "Adobe observed-truth harness",
+        "version": "0.2.0"
+      },
+      "analysis_profile": null,
+      "predicate_type": "adobe-observed-truth.windows-ui-scenario",
+      "operation": "observe_history_depth",
+      "parameters": {
+        "behaviour_id": "history_default_depth",
+        "operations": {
+          "select_all": 1,
+          "fill": 60
+        },
+        "photoshop": {
+          "version": "27.11.0",
+          "build": "27.11 (20260929.r.26 8c16e56)"
+        }
+      },
+      "raw_result": null,
+      "normalized_result": {
+        "history_preferences": {
+          "maximumStates": 50,
+          "snapshotInitial": true,
+          "nonLinear": false
+        },
+        "history_states_retained": 50,
+        "snapshots_retained": 1,
+        "oldest_retained_state": "Fill",
+        "newest_retained_state": "Fill"
+      },
+      "confidence": "observed",
+      "authority": "controlled-replay",
+      "environment": {
+        "id": "windows-10.0.26100",
+        "platform": "win32",
+        "architecture": "x86_64",
+        "isolation": "none"
+      },
+      "limitations": [
+        "Effective limit under this user's current preferences; the factory default is not observed.",
+        "History operations were issued by script, not by UI input."
+      ],
+      "relationship_coverage": null,
+      "locations": [],
+      "evidence_links": []
+    },
+    {
+      "evidence_id": "ev_479a89612b610a94b92d620c5573650bcd436a75a0efb882c0538869a4e2dc8a",
+      "subject": {
+        "name": "Illustrator.exe",
+        "digest": {
+          "sha256": "f27b1ac75df7c1a4b01cd5d7a7783c4b59f8ee66aa1687fbb7201bf27190e694"
+        },
+        "local_path": "C:\\Program Files\\Adobe\\Adobe Illustrator 2026\\Support Files\\Contents\\Windows\\Illustrator.exe",
+        "format": "pe",
+        "architecture": "x86_64"
+      },
+      "provider": {
+        "id": "adobe-observed-truth",
+        "name": "Adobe observed-truth harness",
+        "version": "0.2.0"
+      },
+      "analysis_profile": null,
+      "predicate_type": "adobe-observed-truth.windows-ui-scenario",
+      "operation": "observe_illustrator_readback",
+      "parameters": {
+        "behaviour_id": "illustrator_adapter_readback",
+        "fixture_relative_to_artboard_top_left_mpt": {
+          "anchors": [
+            [
+              100000,
+              -200000
+            ],
+            [
+              200000,
+              -100000
+            ],
+            [
+              300000,
+              -200000
+            ]
+          ],
+          "smooth_anchor_1_handles": [
+            [
+              150000,
+              -100000
+            ],
+            [
+              250000,
+              -100000
+            ]
+          ]
+        },
+        "script_selected_anchor_indices": [
+          0,
+          2
+        ],
+        "illustrator": {
+          "version": "30.8.2",
+          "build": "7R"
+        }
+      },
+      "raw_result": null,
+      "normalized_result": {
+        "document_name": "observed-truth-readback-check",
+        "geometry": {
+          "coordinate_system": "CoordinateSystem.DOCUMENTCOORDINATESYSTEM",
+          "width_mpt": 400000,
+          "height_mpt": 300000,
+          "artboard_rects_mpt": [
+            [
+              0,
+              300000,
+              400000,
+              0
+            ]
+          ],
+          "active_artboard_index": 0
+        },
+        "view": {
+          "zoom_ppm": 2430000,
+          "center_mpt": [
+            199905,
+            150091
+          ],
+          "bounds_mpt": [
+            -11000,
+            404000,
+            410811,
+            -103819
+          ],
+          "screen_mode": "ScreenMode.MULTIWINDOW"
+        },
+        "canvas": {
+          "rect_px": [
+            -1353,
+            753,
+            -328,
+            1987
+          ],
+          "device_pixels_per_point_milli": 1000,
+          "height_residual_px": 0
+        },
+        "fixture_as_created": {
+          "name": "observed-truth-fixture",
+          "closed": false,
+          "selected": false,
+          "points": [
+            {
+              "anchor": [
+                100000,
+                100000
+              ],
+              "left_direction": [
+                100000,
+                100000
+              ],
+              "right_direction": [
+                100000,
+                100000
+              ],
+              "point_type": "PointType.CORNER",
+              "selected": "PathPointSelection.NOSELECTION"
+            },
+            {
+              "anchor": [
+                200000,
+                200000
+              ],
+              "left_direction": [
+                150000,
+                200000
+              ],
+              "right_direction": [
+                250000,
+                200000
+              ],
+              "point_type": "PointType.SMOOTH",
+              "selected": "PathPointSelection.NOSELECTION"
+            },
+            {
+              "anchor": [
+                300000,
+                100000
+              ],
+              "left_direction": [
+                300000,
+                100000
+              ],
+              "right_direction": [
+                300000,
+                100000
+              ],
+              "point_type": "PointType.CORNER",
+              "selected": "PathPointSelection.NOSELECTION"
+            }
+          ]
+        },
+        "selection_after_create": [],
+        "after_script_selection": {
+          "path": {
+            "name": "observed-truth-fixture",
+            "closed": false,
+            "selected": true,
+            "points": [
+              {
+                "anchor": [
+                  100000,
+                  100000
+                ],
+                "left_direction": [
+                  100000,
+                  100000
+                ],
+                "right_direction": [
+                  100000,
+                  100000
+                ],
+                "point_type": "PointType.CORNER",
+                "selected": "PathPointSelection.ANCHORPOINT"
+              },
+              {
+                "anchor": [
+                  200000,
+                  200000
+                ],
+                "left_direction": [
+                  150000,
+                  200000
+                ],
+                "right_direction": [
+                  250000,
+                  200000
+                ],
+                "point_type": "PointType.SMOOTH",
+                "selected": "PathPointSelection.LEFTRIGHTPOINT"
+              },
+              {
+                "anchor": [
+                  300000,
+                  100000
+                ],
+                "left_direction": [
+                  300000,
+                  100000
+                ],
+                "right_direction": [
+                  300000,
+                  100000
+                ],
+                "point_type": "PointType.CORNER",
+                "selected": "PathPointSelection.ANCHORPOINT"
+              }
+            ]
+          },
+          "selected_anchor_indices": [
+            0,
+            2
+          ],
+          "selection": [
+            {
+              "typename": "PathItem",
+              "name": "observed-truth-fixture"
+            }
+          ]
+        }
+      },
+      "confidence": "observed",
+      "authority": "controlled-replay",
+      "environment": {
+        "id": "windows-10.0.26100",
+        "platform": "win32",
+        "architecture": "x86_64",
+        "isolation": "none"
+      },
+      "limitations": [
+        "All edits and selections were made by script; no UI input was used.",
+        "The canvas rectangle comes from window topology; only its consistency with the view's reported bounds is checked, not where clicks land."
+      ],
+      "relationship_coverage": null,
+      "locations": [],
+      "evidence_links": []
+    },
+    {
+      "evidence_id": "ev_5524a07804df444f26cd45be84f5c3e9584ddc686d103713ef4c1fa5d584b935",
+      "subject": {
+        "name": "Photoshop.exe",
+        "digest": {
+          "sha256": "87c04a197d3110a770dfb953a5a54393883e4d4c57f7468ba776ff86289951cc"
+        },
+        "local_path": "C:\\Program Files\\Adobe\\Adobe Photoshop 2026\\Photoshop.exe",
+        "format": "pe",
+        "architecture": "x86_64"
+      },
+      "provider": {
+        "id": "adobe-observed-truth",
+        "name": "Adobe observed-truth harness",
+        "version": "0.2.0"
+      },
+      "analysis_profile": null,
+      "predicate_type": "adobe-observed-truth.windows-ui-scenario",
+      "operation": "observe_undo_menu_layout",
+      "parameters": {
+        "behaviour_id": "undo_redo_shortcut_mapping",
+        "menu_commands": [
+          101,
+          132,
+          133,
+          1961,
+          1962,
+          1105
+        ],
+        "steps": [
+          "no_document",
+          "after_select_all_and_two_fills",
+          "after_one_step_back"
+        ],
+        "photoshop": {
+          "version": "27.11.0",
+          "build": "27.11 (20260929.r.26 8c16e56)"
+        }
+      },
+      "raw_result": null,
+      "normalized_result": {
+        "no_document": [
+          {
+            "name": "Undo",
+            "title": "Und&o",
+            "command": 101,
+            "visible": true,
+            "enabled": false,
+            "checked": false
+          },
+          {
+            "name": "Redo",
+            "title": "Red&o",
+            "command": 132,
+            "visible": true,
+            "enabled": false,
+            "checked": false
+          },
+          {
+            "name": "Toggle Last State",
+            "title": "Toggle Last State",
+            "command": 133,
+            "visible": true,
+            "enabled": false,
+            "checked": false
+          },
+          {
+            "name": "Step Forward",
+            "title": "Step For&ward",
+            "command": 1962,
+            "visible": false,
+            "enabled": false,
+            "checked": false
+          },
+          {
+            "name": "Step Backward",
+            "title": "Step Bac&kward",
+            "command": 1961,
+            "visible": false,
+            "enabled": false,
+            "checked": false
+          },
+          {
+            "name": "Proof Colors",
+            "title": "Proof Co&lors",
+            "command": 1105,
+            "visible": true,
+            "enabled": false,
+            "checked": false
+          }
+        ],
+        "after_edit": [
+          {
+            "name": "",
+            "title": "Und&o Fill",
+            "command": 101,
+            "visible": true,
+            "enabled": true,
+            "checked": false
+          },
+          {
+            "name": "Redo",
+            "title": "Red&o",
+            "command": 132,
+            "visible": true,
+            "enabled": false,
+            "checked": false
+          },
+          {
+            "name": "Toggle Last State",
+            "title": "Toggle Last State",
+            "command": 133,
+            "visible": true,
+            "enabled": true,
+            "checked": false
+          },
+          {
+            "name": "Step Forward",
+            "title": "Step For&ward",
+            "command": 1962,
+            "visible": false,
+            "enabled": false,
+            "checked": false
+          },
+          {
+            "name": "Step Backward",
+            "title": "Step Bac&kward",
+            "command": 1961,
+            "visible": false,
+            "enabled": false,
+            "checked": false
+          },
+          {
+            "name": "Proof Colors",
+            "title": "Proof Co&lors",
+            "command": 1105,
+            "visible": true,
+            "enabled": true,
+            "checked": false
+          }
+        ],
+        "after_step_back": [
+          {
+            "name": "",
+            "title": "Und&o State Change",
+            "command": 101,
+            "visible": true,
+            "enabled": true,
+            "checked": false
+          },
+          {
+            "name": "Redo",
+            "title": "Red&o",
+            "command": 132,
+            "visible": true,
+            "enabled": false,
+            "checked": false
+          },
+          {
+            "name": "Toggle Last State",
+            "title": "Toggle Last State",
+            "command": 133,
+            "visible": true,
+            "enabled": true,
+            "checked": false
+          },
+          {
+            "name": "Step Forward",
+            "title": "Step For&ward",
+            "command": 1962,
+            "visible": false,
+            "enabled": false,
+            "checked": false
+          },
+          {
+            "name": "Step Backward",
+            "title": "Step Bac&kward",
+            "command": 1961,
+            "visible": false,
+            "enabled": false,
+            "checked": false
+          },
+          {
+            "name": "Proof Colors",
+            "title": "Proof Co&lors",
+            "command": 1105,
+            "visible": true,
+            "enabled": true,
+            "checked": false
+          }
+        ],
+        "active_state_after_step_back": "Fill"
+      },
+      "confidence": "observed",
+      "authority": "controlled-replay",
+      "environment": {
+        "id": "windows-10.0.26100",
+        "platform": "win32",
+        "architecture": "x86_64",
+        "isolation": "none"
+      },
+      "limitations": [
+        "Which undo mode is active is inferred from the menu layout (Toggle Last State visible vs Step Forward/Backward visible); no key was pressed.",
+        "menuBarInfo reports no key bindings, so this does not show what Ctrl+Y does.",
+        "The step back was made by setting the active history state by script."
+      ],
+      "relationship_coverage": null,
+      "locations": [],
+      "evidence_links": []
+    },
+    {
+      "evidence_id": "ev_7c2652527ff168f9bcb45bbd323dd7a86be4f0afc891b4e82bd6cd5c8a8f1715",
+      "subject": {
+        "name": "Photoshop.exe",
+        "digest": {
+          "sha256": "87c04a197d3110a770dfb953a5a54393883e4d4c57f7468ba776ff86289951cc"
+        },
+        "local_path": "C:\\Program Files\\Adobe\\Adobe Photoshop 2026\\Photoshop.exe",
+        "format": "pe",
+        "architecture": "x86_64"
+      },
+      "provider": {
+        "id": "adobe-observed-truth",
+        "name": "Adobe observed-truth harness",
+        "version": "0.2.0"
+      },
+      "analysis_profile": null,
+      "predicate_type": "adobe-observed-truth.windows-ui-scenario",
+      "operation": "observe_view_state",
+      "parameters": {
+        "behaviour_id": "canvas_view_state_readback",
+        "document_px": [
+          400,
+          300
+        ],
+        "zoom_percent_set_by_script": [
+          "100",
+          "50",
+          "200",
+          "66.67"
+        ],
+        "photoshop": {
+          "version": "27.11.0",
+          "build": "27.11 (20260929.r.26 8c16e56)"
+        }
+      },
+      "raw_result": null,
+      "normalized_result": {
+        "levels": [
+          {
+            "requested_zoom_percent": "100",
+            "view": {
+              "zoom": "1.0",
+              "document_px": [
+                400,
+                300
+              ],
+              "view_bounds": [
+                133,
+                164,
+                1965,
+                1278
+              ],
+              "view_to_document": [
+                "1.25",
+                "0.0",
+                "0.0",
+                "1.25",
+                "-705.75",
+                "-397.5"
+              ],
+              "monitor_dpi": 120,
+              "rulers_visible": false
+            },
+            "canvas_edges_mapped": {
+              "left": 839,
+              "top": 562,
+              "right": 1239,
+              "bottom": 862
+            },
+            "canvas_edges_rendered": {
+              "left": 839,
+              "top": 561,
+              "right": 1239,
+              "bottom": 861
+            },
+            "largest_edge_difference_px": 1,
+            "capture": {
+              "path": "captures/view-state-100.png",
+              "sha256": "38e9db09f70fb867e3ee32e217c60d8df65995a742b4dc5ef26cd9601fd47310"
+            }
+          },
+          {
+            "requested_zoom_percent": "50",
+            "view": {
+              "zoom": "0.5",
+              "document_px": [
+                400,
+                300
+              ],
+              "view_bounds": [
+                133,
+                164,
+                1965,
+                1278
+              ],
+              "view_to_document": [
+                "2.5",
+                "0.0",
+                "0.0",
+                "2.5",
+                "-1611.75",
+                "-944.5"
+              ],
+              "monitor_dpi": 120,
+              "rulers_visible": false
+            },
+            "canvas_edges_mapped": {
+              "left": 939,
+              "top": 636,
+              "right": 1139,
+              "bottom": 786
+            },
+            "canvas_edges_rendered": {
+              "left": 939,
+              "top": 636,
+              "right": 1139,
+              "bottom": 786
+            },
+            "largest_edge_difference_px": 0,
+            "capture": {
+              "path": "captures/view-state-50.png",
+              "sha256": "83b3e3b1646b38765cf8d257e36becd36539a5c8d76408a0c4e7ef68c0fed4e3"
+            }
+          },
+          {
+            "requested_zoom_percent": "200",
+            "view": {
+              "zoom": "2.0",
+              "document_px": [
+                400,
+                300
+              ],
+              "view_bounds": [
+                133,
+                164,
+                1965,
+                1278
+              ],
+              "view_to_document": [
+                "0.625",
+                "0.0",
+                "0.0",
+                "0.625",
+                "-252.75",
+                "-124.0"
+              ],
+              "monitor_dpi": 120,
+              "rulers_visible": false
+            },
+            "canvas_edges_mapped": {
+              "left": 639,
+              "top": 412,
+              "right": 1439,
+              "bottom": 1012
+            },
+            "canvas_edges_rendered": {
+              "left": 638,
+              "top": 412,
+              "right": 1438,
+              "bottom": 1012
+            },
+            "largest_edge_difference_px": 1,
+            "capture": {
+              "path": "captures/view-state-200.png",
+              "sha256": "421ed132c2db600950d436c347da82c6259cd89b16522a2f04e653506a45b523"
+            }
+          },
+          {
+            "requested_zoom_percent": "66.67",
+            "view": {
+              "zoom": "0.6667",
+              "document_px": [
+                400,
+                300
+              ],
+              "view_bounds": [
+                133,
+                164,
+                1965,
+                1278
+              ],
+              "view_to_document": [
+                "1.87265917602996",
+                "0.0",
+                "0.0",
+                "1.86567164179104",
+                "-1157.05337078652",
+                "-666.917910447761"
+              ],
+              "monitor_dpi": 120,
+              "rulers_visible": false
+            },
+            "canvas_edges_mapped": {
+              "left": 905,
+              "top": 611,
+              "right": 1172,
+              "bottom": 812
+            },
+            "canvas_edges_rendered": {
+              "left": 905,
+              "top": 611,
+              "right": 1172,
+              "bottom": 812
+            },
+            "largest_edge_difference_px": 0,
+            "capture": {
+              "path": "captures/view-state-66_67.png",
+              "sha256": "3a618883bbc3fa44b71550ceb5cfd666de19cbf606e9445cbdf0ac84774f924a"
+            }
+          }
+        ],
+        "history_states_before_zoom": 2,
+        "history_states_after_zoom": 2
+      },
+      "confidence": "observed",
+      "authority": "controlled-replay",
+      "environment": {
+        "id": "windows-10.0.26100",
+        "platform": "win32",
+        "architecture": "x86_64",
+        "isolation": "none"
+      },
+      "limitations": [
+        "Zoom was set by script about the view centre, not by UI input.",
+        "Rendered edges come from PrintWindow pixels: where Photoshop draws the canvas, not which document point a mouse event hits; canvas_mapping_check measures that.",
+        "Rotation, screen modes other than the current one, and floating windows were not exercised."
+      ],
+      "relationship_coverage": null,
+      "locations": [
+        {
+          "kind": "artifact-path",
+          "path": "captures/view-state-100.png"
+        },
+        {
+          "kind": "artifact-path",
+          "path": "captures/view-state-200.png"
+        },
+        {
+          "kind": "artifact-path",
+          "path": "captures/view-state-50.png"
+        },
+        {
+          "kind": "artifact-path",
+          "path": "captures/view-state-66_67.png"
+        }
+      ],
+      "evidence_links": []
+    }
+  ]
+}

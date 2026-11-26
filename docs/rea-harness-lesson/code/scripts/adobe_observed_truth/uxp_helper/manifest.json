@@ -1,0 +1,22 @@
+{
+  "manifestVersion": 5,
+  "id": "observedtruth.helper",
+  "name": "Adobe observed-truth helper",
+  "version": "0.1.4",
+  "main": "index.html",
+  "host": { "app": "PS", "minVersion": "24.0.0", "data": { "loadEvent": "startup" } },
+  "entrypoints": [
+    {
+      "type": "panel",
+      "id": "helperPanel",
+      "label": { "default": "Observed-truth helper" },
+      "minimumSize": { "width": 200, "height": 60 },
+      "maximumSize": { "width": 600, "height": 200 },
+      "preferredDockedSize": { "width": 230, "height": 60 },
+      "preferredFloatingSize": { "width": 230, "height": 60 }
+    }
+  ],
+  "requiredPermissions": {
+    "network": { "domains": ["http://127.0.0.1:47615", "http://localhost:47615"] }
+  }
+}

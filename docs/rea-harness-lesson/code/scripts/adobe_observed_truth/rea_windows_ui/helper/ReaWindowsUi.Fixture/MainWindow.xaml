@@ -1,0 +1,11 @@
+﻿<Window x:Class="ReaWindowsUi.Fixture.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="REA Windows UI fixture" Height="240" Width="360">
+    <!-- A known accessibility tree for the live parity proof: one control per scenario action. -->
+    <StackPanel Margin="16">
+        <Button x:Name="PressButton" Content="Press me" AutomationProperties.Name="Press me" Click="OnPress" Margin="0,0,0,12" />
+        <Slider x:Name="AmountSlider" Minimum="0" Maximum="10" Value="5" SmallChange="1" AutomationProperties.Name="Amount" Margin="0,0,0,12" />
+        <TextBox x:Name="NameBox" AutomationProperties.Name="Name" />
+    </StackPanel>
+</Window>

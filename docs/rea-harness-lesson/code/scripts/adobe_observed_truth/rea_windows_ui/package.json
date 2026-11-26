@@ -1,0 +1,20 @@
+{
+  "name": "rea-windows-native-ui",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Windows counterpart of REA's macOS observe_native_ui and capture_native_ui_scenario, with 1:1 parity.",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "test": "node --test test/"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/client": "2.3.1",
+    "@modelcontextprotocol/server": "2.3.1",
+    "rea-agents": "6.8.0",
+    "zod": "4.4.3"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}
