@@ -25,7 +25,11 @@ teaches two things together:
 | [02-operator-log.md](02-operator-log.md) | Every meaningful operator message in time order, with what the agent did in response. |
 | [03-rules.md](03-rules.md) | The operator's standing rulings, the bugs found live (symptom, cause, rule, test), and how to steer an agent like this. |
 | [04-guide.md](04-guide.md) | The technical guide: the seams, how a dialog is driven, safety mechanisms, bringing up another self-drawn app, running it. |
-| [code/](code/) | The harness (`scripts/adobe_observed_truth`), the REA Windows bridge (`scripts/adobe_observed_truth/rea_windows_ui`) and their tests, ready to run on their own. |
+| [code/](../../examples/rea-harness-lesson/code/) | The harness (`scripts/adobe_observed_truth`), the REA Windows bridge (`scripts/adobe_observed_truth/rea_windows_ui`) and their tests, ready to run on their own. |
+
+In this repository the `code/` folder is at
+[`examples/rea-harness-lesson/code/`](../../examples/rea-harness-lesson/code/), beside the other lab
+fixtures. Paths written as `code/...` in this lesson start there.
 
 ## Running the code
 

@@ -33,6 +33,7 @@ CLEANUP_STEPS = frozenset(
         "restore_tool_state",  # the same, for the tool a save_tool_state step kept
         "delete_own_tip",  # the harness's own brush tip preset, deleted by name
         "delete_own_pattern",  # the harness's own pattern, deleted by name
+        "restore_brush_panel",  # the Brush Settings panel back on its first page, closed if the run opened it
         "restore_pencil_fidelity",  # the person's Pencil Fidelity stop, set back through its dialog
     }
 )

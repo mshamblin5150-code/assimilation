@@ -43,7 +43,7 @@ parity observation Evidence  <--  results.jsonl and control-actions.jsonl rows (
 
 A third link points into the binary. `control_code.py` maps each driven control to the decompiled functions that compare its setting code or carry its interface string. `cli.js bundle --code` attaches that map to each control's Evidence as its `code` field.
 
-Why pixels and input rather than hooking the app's drawing code? Hooks are specific to one app and one build, and they show what the code does, not what the operator sees. Pixels and input work on any Windows app and record the visible behaviour. The code map then says where in the binary to read next. The cost is speed and certainty: OCR misreads, animation looks like an answer, and every rule in section 4 exists because the harness once pressed something it should not have.
+Why pixels and input rather than hooking the app's drawing code? Hooks are specific to one app and one build, and they show what the code does, not what the operator sees. Pixels and input work on any Windows app and record the visible behavior. The code map then says where in the binary to read next. The cost is speed and certainty: OCR misreads, animation looks like an answer, and every rule in section 4 exists because the harness once pressed something it should not have.
 
 ## 2. The seams and their interfaces
 
@@ -71,16 +71,16 @@ Three members are optional. The code looks them up with `getattr`:
 
 - `shot` calls `capture.grab(hwnd)`.
 - `send` maps mouse positions to the screen with `to_screen` and `capture.frame_bounds`, calls `win_input.focus`, then `win_input.perform`. It skips `focus` while a popup is open, because focusing the dialog closes the popup and the Escape meant for the popup then cancels the dialog.
-- `popups` counts visible windows of the process that appeared after the surface was made, apart from the dialog itself. `is_popup` leaves out `tooltips_class32` and `SysShadow`: a tooltip once counted as an open list and drew an Escape that cancelled the dialog (`test_a_tooltip_or_a_shadow_is_not_something_the_dialog_opened`).
+- `popups` counts visible windows of the process that appeared after the surface was made, apart from the dialog itself. `is_popup` leaves out `tooltips_class32` and `SysShadow`: a tooltip once counted as an open list and drew an Escape that canceled the dialog (`test_a_tooltip_or_a_shadow_is_not_something_the_dialog_opened`).
 - `read_text` crops with a `READ_MARGIN` of 6 px, because text cropped tight reads worse (`test_a_region_is_read_with_a_margin_of_the_dialog_round_it_kept_inside_the_dialog`).
 - `close_popups` is described in section 4.
 - `is_file_dialog`, `go_to_folder` and `file_dialog_parts` handle Windows file dialogs (section 4).
 
 OCR runs in one long-lived process, `dialog_surface.Ocr`. It uses RapidOCR when `<corpus>/ocr-venv` exists (`rapid_ocr_server.py`), else Windows OCR (`win_ocr/`). Both read one image path per line and answer one JSON line. `prepare_for_ocr` turns light-on-dark text dark-on-light and scales it by `OCR_SCALE` (3). `ocr_correct.Corrector` then fixes a word only when the app never shows it and a word the app does show differs only by characters OCR confuses (`0` and `O`, `1` and `l`). Numbers are never changed, because a field's value must be read as shown.
 
-The tests use small fakes in place of `DialogSurface`. `FakeDialog` in `test_adobe_observed_truth_controls.py` draws grey controls and a focus ring and moves focus on Tab. `Widget` in `test_adobe_observed_truth_control_drivers.py` is one control. `Dialog` in `test_adobe_observed_truth_control_pass.py` is a whole dialog with OCR words. Write the same kind of fake for your app.
+The tests use small fakes in place of `DialogSurface`. `FakeDialog` in `test_adobe_observed_truth_controls.py` draws gray controls and a focus ring and moves focus on Tab. `Widget` in `test_adobe_observed_truth_control_drivers.py` is one control. `Dialog` in `test_adobe_observed_truth_control_pass.py` is a whole dialog with OCR words. Write the same kind of fake for your app.
 
-### The app adapter: opening, listing and cancelling dialogs
+### The app adapter: opening, listing and canceling dialogs
 
 `photoshop.py` knows the app as Windows and COM see it:
 
@@ -93,11 +93,11 @@ The tests use small fakes in place of `DialogSurface`. `FakeDialog` in `test_ado
 
 1. `_drive_dialog_controls(command, path, where)` looks up the catalogue for `path` and runs the menu command through the UXP helper plug-in (`uxp_bridge.Bridge`, kind `menu_command`). That call returns only when the dialog closes, so it runs in a worker thread inside `_drive`, with a timeout of 3 hours.
 2. While the worker waits, `_drive` calls `_capture_and_cancel_dialogs` every 0.3 s. That method captures each blocking dialog. On the first one, while `dialog_task` is `"controls"`, it calls `_drive_controls(dialog)`.
-3. `_drive_controls` builds a `DialogSurface` and calls `control_pass.drive_dialog`. On the next round the dialog is listed again and cancelled with `cancel_action`.
+3. `_drive_controls` builds a `DialogSurface` and calls `control_pass.drive_dialog`. On the next round the dialog is listed again and canceled with `cancel_action`.
 
 The process identity is the link to REA. `observe_process()` takes the parity observation of `self.identity` at start and after every relaunch, and `self.parity` is stamped on every row.
 
-### The catalogue: labelled boxes per dialog
+### The catalogue: labeled boxes per dialog
 
 The catalogue is `dialog-controls.jsonl` in the dataset folder. It is not part of this package, because it is built from the app's own dialogs. Each line is one captured dialog:
 
@@ -282,7 +282,7 @@ The operator's keyboard and mouse always win.
 
 ### Never press what outlives Cancel or leaves for another program
 
-Cancelling the dialog afterwards undoes its settings. It does not undo a deleted preset, a saved file or a started browser.
+Canceling the dialog afterwards undoes its settings. It does not undo a deleted preset, a saved file or a started browser.
 
 - `controls.NEVER_PRESS` joins three lists: OK and Cancel, which end the dialog. `families.NEVER_PRESS`, which spend credits or send content. `_OUTLIVES_CANCEL`, which act at once on presets, files, settings or the account, act on real files in a file dialog, or leave the dialog for another program (web links, help).
 - `never_press(label)` compares the label after undoing the OCR misread of O as 0. A label matches when it equals a listed word or phrase, or starts with one followed by a space.
@@ -303,7 +303,7 @@ Some dropdowns hold commands, not values. Any key that lands on an entry runs it
 
 Every key sent after an unclosed window goes to that window.
 
-- `DialogSurface.close_popups` closes what the dialog opened without cancelling the dialog. A popup that is itself a dialog with real buttons gets its `cancel_action`, which is Cancel, or OK on a notice, never a button that changes a preference. Other popups get Escape only once they are in the foreground. Self-drawn lists do not take focus, so a blind Escape reaches the dialog. When the popup will not come to the front, a click on the dialog's title bar closes it.
+- `DialogSurface.close_popups` closes what the dialog opened without canceling the dialog. A popup that is itself a dialog with real buttons gets its `cancel_action`, which is Cancel, or OK on a notice, never a button that changes a preference. Other popups get Escape only once they are in the foreground. Self-drawn lists do not take focus, so a blind Escape reaches the dialog. When the popup will not come to the front, a click on the dialog's title bar closes it.
 - `controls.close_popups` raises `WindowLeftOpen` if anything is still open afterwards. `drive_dialog` then sends nothing more and writes `"window_left_open": true`. In the incident, a notice that ignored Escape took every key for sixteen minutes (`test_a_window_the_dialog_opened_that_will_not_close_stops_the_drive_and_says_so`).
 
 ### Drive file dialogs only inside the sandbox
@@ -329,7 +329,7 @@ The dataset and the bundle may leave the machine. The app vendor's text and code
 - Full rows, captures, parity observations (which carry a window screenshot), the OCR environment, the interface-string list and the decompiled code stay in the corpus folder (`ADOBE_REA_CORPUS`), outside the repository.
 - `control_code.py` and `plugin_params.py` record binary names, setting codes, string keys and function addresses, never code or text.
 - `TopWindow` records a window's class and executable name, never its title, which can name a private file. `window_observation` names only the vendor's windows and counts the rest.
-- `photoshop.py` reads named descriptor keys only. The application descriptor also carries the licence serial, so it is never dumped whole.
+- `photoshop.py` reads named descriptor keys only. The application descriptor also carries the license serial, so it is never dumped whole.
 - `scripts/adobe_observed_truth/lesson_gate.py`, in the private repository the harness came from, scans this package for personal data, machine paths, vendor interface strings and agent text. Its interface-string rule allows only the made-up form `"$$$/Example/Key=Label"`. Run an equivalent scan on anything you publish.
 
 ## 5. Bring up a new self-drawn app

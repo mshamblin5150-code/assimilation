@@ -180,11 +180,11 @@ controls, so UI Automation and REA find nothing to observe.
 [Teaching REA to see what it cannot](rea-harness-lesson/README.md) is the
 complete record of closing that gap on a real image editor:
 
-- **The fix for REA.** [`rea_windows_ui`](rea-harness-lesson/code/scripts/adobe_observed_truth/rea_windows_ui/)
+- **The fix for REA.** [`rea_windows_ui`](../examples/rea-harness-lesson/code/scripts/adobe_observed_truth/rea_windows_ui/)
   is a local MCP server with REA's own tool names, schemas and Evidence. It
   gives REA native UI observation on Windows. Read
   [how it was built](rea-harness-lesson/01-story.md#phase-6-drive-it-the-way-rea-wants-to-be-driven).
-- **The harness.** [The harness code](rea-harness-lesson/code/scripts/adobe_observed_truth/)
+- **The harness.** [The harness code](../examples/rea-harness-lesson/code/scripts/adobe_observed_truth/)
   drives every control of a self-drawn dialog from its pixels. It records each
   action as Evidence REA accepts, and links each control to the decompiled code
   that handles it. Its tests run on their own.

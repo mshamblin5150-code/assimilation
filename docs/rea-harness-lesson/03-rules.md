@@ -10,7 +10,7 @@ The story is in [01-story.md](01-story.md) and every operator message is in [02-
 
 > Before we bring in any binary decompiling, we first need the help files for the versions of the programs we actually have installed, the ones you are going to look at with REA.
 
-- **Why.** Documented behaviour has to be pinned to the exact versions under study before code is read. Otherwise you compare code against the wrong release's claims.
+- **Why.** Documented behavior has to be pinned to the exact versions under study before code is read. Otherwise you compare code against the wrong release's claims.
 - **Incident.** The design studio's notes were pinned to Photoshop 2025 while the help described 2026, and about 20 of their claims were wrong. He then narrowed the scope to the 2026 releases, the ones REA would examine.
 
 ### Independent review is how you stop the model lying
@@ -43,7 +43,7 @@ He asked for verification by several subagents that share none of the session's 
 ### "We watched it happen", not "the help says"
 
 - **Why.** The help contradicts itself. It gives both 20 and 50 for the default history depth, and states a maximum zoom below the 12,800% the harness observed.
-- **Incident.** The first harness scenarios. Every behaviour claim is now backed by an observation in an Evidence bundle.
+- **Incident.** The first harness scenarios. Every behavior claim is now backed by an observation in an Evidence bundle.
 
 ### Land everything in one REA ledger
 
@@ -59,7 +59,7 @@ He asked for verification by several subagents that share none of the session's 
 > You shouldn't prioritise what you think [the design studio] needs. You should be able to capture all of them. Remember, that was driven by prose and I couldn't get it right.
 
 - **Why.** He had built an earlier version of the studio by guiding an agent with prose alone, and in his words he couldn't get it right. Choosing what matters is his job, not the agent's. He wants to look at the result and say "yeah, I know this, I've seen this before".
-- **Incident.** The agent proposed narrowing the work to the behaviours the studio already relied on, and later wanted to drive only the controls the studio needed. The app's own inventory, not the help, became the denominator.
+- **Incident.** The agent proposed narrowing the work to the behaviors the studio already relied on, and later wanted to drive only the controls the studio needed. The app's own inventory, not the help, became the denominator.
 
 ### Static analysis is a first-class source
 
@@ -171,7 +171,7 @@ These grew out of incidents in the session and were saved by the agent as standi
 - Cloud and AI features are discover-only: never Generate, Submit, or Share.
 - Never sign out.
 - Never run a command that sends content to the image platform.
-- Never record licence data, serial data, or private paths.
+- Never record license data, serial data, or private paths.
 - Live tests of new harness code use only the agent's own synthetic fixture window.
 - File dialogs are driven only inside a sandbox folder.
 - A button whose effect outlives Cancel is never pressed.
@@ -209,8 +209,8 @@ Python tests are in `code/tests/unit/`, in files named `test_adobe_observed_trut
 | --- | --- | --- | --- |
 | The harness could bind an older Photoshop. | Three releases are installed, and the default scripting connection binds whichever registered last. | Refuse unless connected to the 2026 release. | `uxp_bridge`: `test_a_helper_answering_from_the_wrong_photoshop_is_refused`. Test idea for the COM side: a fake app reporting 26.x is refused. |
 | Every scripting refusal raised a modal that froze Photoshop. | Script dialogs were on. | Switch script dialogs off for each scenario and restore the setting afterwards. | `dialogs`: `test_a_failed_restore_does_not_hide_the_scenario_error`. |
-| A probe changed the operator's brush settings and the restore was not checked. | Tool options and colours are the user's persistent state. | Snapshot tool state, write it back byte for byte, and report whether it reads back identical (`ps_tools.preserved_tool_state()`). | Test idea: a fake whose restore silently fails is reported as not identical. |
-| The screensaver could not be closed. | On Windows 11 it runs on its own desktop, one window per monitor. The fake modelled the normal desktop. | Prove operating-system behaviour live. Close the screensaver without spending simulated input. | `screensaver`: `test_running_screensaver_is_closed_once_and_awaited_until_gone`, `test_screensaver_without_a_closable_window_is_refused_without_waiting`. |
+| A probe changed the operator's brush settings and the restore was not checked. | Tool options and colors are the user's persistent state. | Snapshot tool state, write it back byte for byte, and report whether it reads back identical (`ps_tools.preserved_tool_state()`). | Test idea: a fake whose restore silently fails is reported as not identical. |
+| The screensaver could not be closed. | On Windows 11 it runs on its own desktop, one window per monitor. The fake modelled the normal desktop. | Prove operating-system behavior live. Close the screensaver without spending simulated input. | `screensaver`: `test_running_screensaver_is_closed_once_and_awaited_until_gone`, `test_screensaver_without_a_closable_window_is_refused_without_waiting`. |
 | Photoshop could not be brought to the front after the screensaver (0 of 5). | The machine's foreground lock was at its maximum. | Join the focused window's input queue (`win_input._take_foreground`), never send a keystroke to get focus. | Proven 5 of 5 live. Test idea: assert focus never sends a key event. |
 | Every script failed, even trivial ones. | A hidden image-platform feedback survey sat behind other windows. The dialog check knew only Photoshop's own dialog class. | Pre-flight: decline the survey for good, never Submit, wait until it has closed, refuse to start behind any other dialog, and never click a checkbox whose state cannot be read. | `dialogs`: `test_survey_is_declined_for_good_and_never_submitted`, `test_preflight_waits_until_the_survey_has_closed_before_the_scenario_starts`, `test_preflight_refuses_to_start_behind_another_dialog_and_names_it`, `test_survey_box_with_unreadable_state_is_not_clicked_in_case_it_is_already_ticked`. |
 | A clean-up error hid the real error. | The clean-up exception replaced the original one. | The first error wins, and the clean-up failure is attached as a note, in one place. | `dialogs`: `test_a_scenario_failure_is_headlined_by_its_first_error_not_the_cleanup`. `runner`: `test_a_failed_step_still_runs_every_clean_up_step_after_it`. |
@@ -223,7 +223,7 @@ Python tests are in `code/tests/unit/`, in files named `test_adobe_observed_trut
 | The runner could force-kill Photoshop with the operator's unsaved work open. Found by code review while the runner was live. | Each probe failed the scratch-only check, each failure counted toward a restart, and the restart force-killed Photoshop. | With the person's documents open, the runner waits and counts nothing. Force-quit only if the last check saw scratch work alone. | `runner`: `test_a_spec_blocked_by_the_persons_own_document_waits_and_never_restarts_photoshop`. `runner_photoshop`: `test_photoshop_is_force_quit_only_if_the_last_check_saw_nothing_but_scratch_work`, `test_the_watchdog_never_kills_photoshop_when_the_persons_work_may_be_open`. |
 | The runner restarted into a Photoshop still stuck mid-command and waited forever. | Startup assumed Photoshop would answer. | Startup restarts Photoshop if it does not answer within about 3 minutes. | Test idea: a startup test with a fake that never answers. |
 | Photoshop refused scripting with no visible dialog. | The Filter Gallery is a separate top-level window. | A full-window filter dialog blocks, and its Cancel is pressed. | `dialogs`: `test_a_full_window_filter_dialog_blocks_and_its_cancel_button_is_pressed`. |
-| Vanishing Point timed out. | Its OK stays greyed out until a plane is drawn, and the harness kept clicking it. | Read whether a button is enabled. If it is not, cancel. Click the plane only on a confident image match. | `dialogs`: `test_a_greyed_out_ok_is_never_pressed_the_dialog_is_cancelled_instead`. `workspace`: `test_the_found_area_looks_like_the_known_image`, `test_a_perspective_plane_is_four_clicks_on_an_inset_rectangle_of_the_image`. |
+| Vanishing Point timed out. | Its OK stays grayed out until a plane is drawn, and the harness kept clicking it. | Read whether a button is enabled. If it is not, cancel. Click the plane only on a confident image match. | `dialogs`: `test_a_greyed_out_ok_is_never_pressed_the_dialog_is_cancelled_instead`. `workspace`: `test_the_found_area_looks_like_the_known_image`, `test_a_perspective_plane_is_four_clicks_on_an_inset_rectangle_of_the_image`. |
 | A menu command opened a cloud-upload dialog. | The command sends content to the image platform. | Never run a command that sends content, from any menu. | `families`: `test_a_command_that_sends_content_to_adobe_is_never_run_even_from_the_file_menu`, `test_no_spec_anywhere_presses_a_button_that_spends_credits_or_uploads`. |
 | Probes on a white canvas showed almost nothing. | Most filters leave white white. | Probe on a chart drawn by code, with a band for each kind of tool. | `test_images`: `test_the_chart_is_pixel_for_pixel_the_same_every_time`, `test_the_named_chart_regions_cover_every_pixel_exactly_once`. |
 | Captures filled the disk. | Most dialogs are captured byte for byte the same on every run. | Keep one file per distinct image, with a manifest from every name to the kept copy. | `capture_store`: `test_identical_captures_keep_one_file_and_every_name_still_resolves`. |
@@ -233,8 +233,8 @@ Python tests are in `code/tests/unit/`, in files named `test_adobe_observed_trut
 | Symptom | Root cause | Rule it became | Test that locks it |
 | --- | --- | --- | --- |
 | A live parity test read the operator's open Notepad tabs and closed Notepad. | The test aimed at a real app on his desktop. | Live tests of new code use only the agent's own fixture window (`helper/ReaWindowsUi.Fixture`, `live/prove_fixture.mjs`). | Helper: `An_element_owned_by_another_process_is_refused` in `UiTreeTests.cs`. Test idea: the live proof refuses any target that is not the fixture. |
-| Cancelling never reached a running scenario. | Not recorded in detail. Found by an independent review against REA's own behaviour. | Match REA's interruption behaviour exactly. | `scenario.test.js`: "a caller cancellation stops the scenario and marks the step cancelled". `server.test.js`: "a request the client cancelled is reported cancelled, read from the request". |
-| The deadline never stopped a stuck helper. | Not recorded in detail. Found by the same review. | Match REA's deadline behaviour. | `helper.test.js`: "a helper still running at the deadline is stopped and reported as ETIMEDOUT". `scenario.test.js`: "the helper call gets a signal that aborts at the deadline". |
+| Canceling never reached a running scenario. | Not recorded in detail. Found by an independent review against REA's own behavior. | Match REA's interruption behavior exactly. | `scenario.test.js`: `a caller cancellation stops the scenario and marks the step cancelled`. `server.test.js`: `a request the client cancelled is reported cancelled, read from the request`. |
+| The deadline never stopped a stuck helper. | Not recorded in detail. Found by the same review. | Match REA's deadline behavior. | `helper.test.js`: "a helper still running at the deadline is stopped and reported as ETIMEDOUT". `scenario.test.js`: "the helper call gets a signal that aborts at the deadline". |
 | A helper crash lost the partial results. | Not recorded in detail. Found by the same review. | Keep the partial observation, as REA does. | `scenario.test.js`: "a helper that dies mid-scenario fails the step and keeps the partial report". `server.test.js`: "a failed scenario reports a REA-style error with its partial observation". |
 
 ### Settings sweeps and OCR

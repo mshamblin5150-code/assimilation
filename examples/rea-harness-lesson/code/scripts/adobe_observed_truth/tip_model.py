@@ -28,6 +28,9 @@ Not settled: the downscale's exact filter, the turned tip's outer border, textur
 then bilinear, all fit worse than the triangle. The triangle's best width is 1 / scale at
 scales 0.5 and 0.25, but at 0.625 and 0.75 the error still falls past 1 / scale (to 3.3 levels
 at 2.0 for 0.625), so the width is not simply 1 / scale there.
+Tried too (2026-11-26, later): true area averaging (a box one source span wide), Lanczos 2 and 3,
+and the scale itself set free (0.97 to 1.03 of size / art width): none beat the triangle (best
+scale 0.99 to 1.00), so the extra error at 0.625 and 0.75 is not a mis-sized tip.
 """
 
 from __future__ import annotations

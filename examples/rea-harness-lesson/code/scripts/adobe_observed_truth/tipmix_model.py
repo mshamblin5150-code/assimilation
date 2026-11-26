@@ -13,18 +13,20 @@ soft edge.
 Not settled: the softening itself (a fitted blur), scatter and count, the second tip's own
 roundness and angle, colour burn and hard mix.
 
-Texture (texture-probe.jsonl): a script cannot choose the pattern (the tool options carry no
-pattern key, ticked in the panel or not), so the harness's ramp pattern was picked in the Brush
-Settings panel's pattern picker and the rest set by script; strokes made before that came out
-plain. With Texture Each Tip off, the texture tiles from the document's corner and sets each
-pixel's ink from the pattern grey g under it, whatever the flow (texture_alpha): multiply and
-darken g (on full ink), subtract 255 - g, depth d mixing towards full ink, 255 (1 - d (1 - g/255)).
-Height, linear height and colour burn leave full ink unchanged. With Texture Each Tip on the
-texture applies to every dab, so overlapping dabs build it up: 255 (1 - (1 - g/255)^N), N the
-dabs covering a pixel (EACH_TIP_DABS, 20 for a 41 px tip at 5% spacing). Within 1.5 levels on 16
-measured rows.
+Texture (tipmix-probe.jsonl, texture specs): a script cannot choose the pattern (the tool options
+carry no pattern key, ticked in the panel or not), so the runner picks the harness's ramp pattern in
+the Brush Settings panel's picker (pick_texture_pattern) and sets the rest by script. With Texture
+Each Tip off, the texture tiles from the document's corner and sets each pixel's ink from the
+pattern grey g under it, whatever the flow (texture_alpha): multiply and darken g (on full ink),
+subtract 255 - g, depth d mixing towards full ink, 255 (1 - d (1 - g/255)); invert uses 255 - g.
+With Texture Each Tip on, every dab lays flow x that share and the overlapping dabs build up:
+255 (1 - (1 - flow share)^N), N the dabs covering a pixel (EACH_TIP_DABS, 20 for a 41 px tip at
+5% spacing). Within 1.5 levels on every full-ink row. Height, linear height and colour burn leave
+full ink as it is but threshold partial ink against the pattern: on a soft tip's edge,
+clamp(11.5 ink + 8.6 - 0.97 g) (height_texture, fitted at depth 100: 0.84 levels on average).
 
-Not settled: height modes on partial ink, contrast, brightness, scale, invert.
+Not settled: height at other depths (at 50% the hard edge's 72 became 434 - g), linear height and
+colour burn on partial ink, contrast, brightness, scale.
 """
 
 from __future__ import annotations
@@ -77,18 +79,27 @@ def combine(stroke: np.ndarray, dual: np.ndarray, mode: str) -> np.ndarray:
 EACH_TIP_DABS = 20  # dabs covering a pixel of the probe's stroke: a 41 px tip at 5% spacing (2.05 px)
 
 
-def texture_alpha(grey: float, mode: str, depth: float = 100, dabs: int | None = None) -> float:
+def texture_alpha(grey: float, mode: str, depth: float = 100, dabs: int | None = None, flow: float = 100) -> float:
     """A full-ink stroke's alpha over pattern grey `grey` (0..255) with a texture in `mode` at
-    `depth` %; with `dabs`, Texture Each Tip, that many dabs over the pixel."""
+    `depth` %; with `dabs`, Texture Each Tip: that many dabs over the pixel, each at `flow` %."""
     g, d = grey / 255, depth / 100
     if mode in ("multiply", "darken"):
-        keep = 1 - d * (1 - g)
+        share = 1 - d * (1 - g)
     elif mode == "subtract":
-        keep = 1 - d * g
+        share = 1 - d * g
     elif mode in ("height", "linearHeight", "colorBurn"):
-        keep = 1.0
+        share = 1.0
     else:
         raise ValueError(f"texture mode {mode!r} is not modelled")
     if dabs:
-        return 255 * (1 - (1 - keep) ** dabs) if keep < 1 else 255.0
-    return 255 * keep
+        return 255 * (1 - (1 - flow / 100 * share) ** dabs) if share < 1 else 255.0
+    return 255 * share
+
+
+HEIGHT_GAIN, HEIGHT_OFFSET, HEIGHT_GREY = 11.5, 8.6, 0.97  # fitted on a soft tip's edge at depth 100
+
+
+def height_texture(ink: np.ndarray, grey: np.ndarray) -> np.ndarray:
+    """Height texture at depth 100 over partial ink `ink` (the stroke's alpha without texture) and
+    pattern grey `grey`: a steep threshold of the ink against the pattern, full ink kept."""
+    return np.clip(HEIGHT_GAIN * np.asarray(ink, float) + HEIGHT_OFFSET - HEIGHT_GREY * np.asarray(grey, float), 0, 255)

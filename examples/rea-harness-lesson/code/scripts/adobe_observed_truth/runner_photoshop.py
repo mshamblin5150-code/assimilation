@@ -463,6 +463,105 @@ class PhotoshopAdapter:
                 raise RuntimeError(f"deleting the own pattern removed {gone}; stopped")
         raise RuntimeError("own patterns still present after 10 deletions")
 
+    # Brush Settings panel (texture pattern; tipmix_probe) -----------------------------------
+    def _screen_words(self, hwnd: int) -> tuple[tuple[int, int, int, int], np.ndarray, list[dict[str, Any]]]:
+        """A window's frame, a screen capture of it (what is really shown: window captures of
+        Photoshop's panels can be stale, and panels hide while the Home screen shows) and its OCR words."""
+        from PIL import ImageGrab
+
+        bounds = capture.frame_bounds(hwnd)
+        image = np.asarray(ImageGrab.grab(bbox=bounds, all_screens=True).convert("RGB"))
+        if self.ocr is None:
+            self.ocr = Ocr()
+        return bounds, image, self.ocr.words(image)
+
+    def _click_in(self, hwnd: int, bounds: tuple[int, int, int, int], x: int, y: int) -> None:
+        """Click window-capture point (x, y) of `hwnd`, only if that screen point lies on `hwnd`."""
+        from ctypes import wintypes
+
+        from .input_plan import MouseMove
+
+        point = (bounds[0] + int(x), bounds[1] + int(y))
+        user32 = ctypes.windll.user32
+        if user32.GetAncestor(user32.WindowFromPoint(wintypes.POINT(*point)), 2) != hwnd:
+            raise RuntimeError(f"point {point} is not over the window meant; not clicked")
+        win_input.focus(self.identity.hwnd, self.identity.pid, should_stop=self.should_stop)
+        win_input.perform([MouseMove(point[0] + 4, point[1] + 3), *click(point)], pid=self.identity.pid, delay_s=0.08,
+                          should_stop=self.should_stop)
+
+    def _brush_settings_panel(self) -> tuple[int, tuple[int, int, int, int], np.ndarray, list[dict[str, Any]]] | None:
+        for window in _top_windows():
+            if window.program.lower() == "photoshop.exe" and window.class_name == "OWL.FrameDrawer":
+                bounds, image, words = self._screen_words(window.hwnd)
+                if {"Texture", "Dual"} <= {w["text"] for w in words}:
+                    return window.hwnd, bounds, image, words
+        return None
+
+    def _pick_texture_pattern(self) -> None:
+        """Pick the harness's own pattern (tipmix_probe) as the brush's texture in the Brush Settings
+        panel (a script cannot choose it): open the panel (F5) if it is not showing, its Texture page,
+        then the pattern picker, click the ramp thumbnail (brush_panel.find_ramp) and check the
+        swatch shows it. Needs a document open (the panel hides on the Home screen)."""
+        from PIL import ImageGrab
+
+        from .brush_panel import find_ramp
+
+        self.ps.bring_to_front()
+        found = self._brush_settings_panel()
+        self.opened_brush_panel = False
+        if found is None:
+            win_input.focus(self.identity.hwnd, self.identity.pid, should_stop=self.should_stop)
+            win_input.perform(chord("f5"), pid=self.identity.pid, should_stop=self.should_stop)
+            time.sleep(1.5)
+            found = self._brush_settings_panel()
+            if found is None:
+                raise RuntimeError("the Brush Settings panel is not showing as its own window")
+            self.opened_brush_panel = True
+        hwnd, bounds, image, words = found
+        self.brush_panel = hwnd
+        label = min((w for w in words if w["text"] == "Texture" and w["x"] < image.shape[1] / 2), key=lambda w: w["y"])
+        self._click_in(hwnd, bounds, label["x"] + label["w"] // 2, label["y"] + label["h"] // 2)
+        time.sleep(1.0)
+        bounds, image, words = self._screen_words(hwnd)
+        invert = [w for w in words if w["text"] == "Invert"]
+        if not invert:
+            raise RuntimeError("the panel's texture page did not open")
+        arrow = (invert[0]["x"] - round(1.7 * invert[0]["h"]), invert[0]["y"] + invert[0]["h"] // 2)
+        before = {w.hwnd for w in _top_windows()}
+        self._click_in(hwnd, bounds, *arrow)
+        time.sleep(1.5)
+        pickers = [w.hwnd for w in _top_windows() if w.hwnd not in before and w.class_name == "PSFloatC"]
+        if not pickers:
+            raise RuntimeError("the pattern picker did not open")
+        picker_bounds = capture.frame_bounds(pickers[0])
+        point = find_ramp(np.asarray(ImageGrab.grab(bbox=picker_bounds, all_screens=True).convert("RGB")))
+        if point is None:
+            win_input.perform(chord("escape"), pid=self.identity.pid)
+            raise RuntimeError("the harness pattern is not in the picker")
+        self._click_in(pickers[0], picker_bounds, *point)
+        time.sleep(0.8)
+        win_input.perform(chord("enter"), pid=self.identity.pid, should_stop=self.should_stop)
+        time.sleep(1.0)
+        bounds, image, _words = self._screen_words(hwnd)
+        swatch = image[max(0, arrow[1] - 22):arrow[1] + 22, max(0, arrow[0] - 60):max(1, arrow[0] - 6)]
+        if find_ramp(swatch) is None:
+            raise RuntimeError("the texture swatch does not show the harness pattern")
+
+    def _restore_brush_panel(self) -> None:
+        """Put the Brush Settings panel back on its Brush Tip Shape page, and close it if the run opened it."""
+        hwnd = getattr(self, "brush_panel", None)
+        if hwnd is None:
+            return
+        self.brush_panel = None
+        bounds, image, words = self._screen_words(hwnd)
+        tip = [w for w in words if w["text"] == "Tip" and w["x"] < image.shape[1] / 2]
+        if tip:
+            self._click_in(hwnd, bounds, tip[0]["x"] + tip[0]["w"] // 2, tip[0]["y"] + tip[0]["h"] // 2)
+            time.sleep(0.6)
+        if getattr(self, "opened_brush_panel", False):
+            win_input.focus(self.identity.hwnd, self.identity.pid)
+            win_input.perform(chord("f5"), pid=self.identity.pid)
+
     def _tipmix_stroke(self, options: dict[str, Any], extra: dict[str, Any], points: list[list[int]]) -> None:
         """Set the brush (tipmix_probe: a hard round tip), put `extra` (Texture or Dual Brush
         settings) over its options and stroke it."""

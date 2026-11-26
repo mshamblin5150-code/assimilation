@@ -12,7 +12,7 @@ By the end, REA's ledger held three linked kinds of Evidence:
 - A result for every probe, setting sweep, and dialog control that a harness drove by pixels and real input, linked to that observation.
 - For each driven control, the binary and the candidate functions that carry its code.
 
-The code is in the [`code`](code) folder: the harness in `code/scripts/adobe_observed_truth`, the bridge in `code/scripts/adobe_observed_truth/rea_windows_ui`. Every message the operator sent is in [02-operator-log.md](02-operator-log.md). The rules and the bugs behind them are in [03-rules.md](03-rules.md). All times are UTC. Operator quotes are lightly cleaned of typos, with his wording kept.
+The code is in the [`code`](../../examples/rea-harness-lesson/code/) folder: the harness in `code/scripts/adobe_observed_truth`, the bridge in `code/scripts/adobe_observed_truth/rea_windows_ui`. Every message the operator sent is in [02-operator-log.md](02-operator-log.md). The rules and the bugs behind them are in [03-rules.md](03-rules.md). All times are UTC. Operator quotes are lightly cleaned of typos, with his wording kept.
 
 ## Phase 1: Set REA up for every Claude surface
 
@@ -64,9 +64,9 @@ The agent's own checks had passed those cleaning bugs. Independent readers caugh
 
 This phase ran in a second session, alongside the crawl.
 
-**What the operator wanted.** To turn about 20 behaviours his review had flagged as wrong or unsupported into watched facts. His examples included Shift pressed before or after starting a marquee drag, whether Free Transform scales proportionally by default, eraser opacity, the default history depth (the help says both 20 and 50), and Ctrl+Y against Shift+Ctrl+Z.
+**What the operator wanted.** To turn about 20 behaviors his review had flagged as wrong or unsupported into watched facts. His examples included Shift pressed before or after starting a marquee drag, whether Free Transform scales proportionally by default, eraser opacity, the default history depth (the help says both 20 and 50), and Ctrl+Y against Shift+Ctrl+Z.
 
-> Use REA's native-UI tools (capture_native_ui_scenario, trace_native_ui_action, observe_native_ui) on the roughly 20 behaviours my review flagged. Each produces an evidence bundle, so a behaviour stops being "the help says" and becomes "we watched it happen".
+> Use REA's native-UI tools (capture_native_ui_scenario, trace_native_ui_action, observe_native_ui) on the roughly 20 behaviors my review flagged. Each produces an evidence bundle, so a behavior stops being "the help says" and becomes "we watched it happen".
 
 **What the agent did.** It launched Photoshop 2026 and read the three tools' descriptions before planning around them. They spoke of Mach-O targets, macOS accessibility values, and Objective-C handlers. The agent flagged that the tools were probably macOS-only and proposed one cheap test call first. The operator agreed: "Sure, run that test first. It may mean that we need another decompilation program in addition to Ghidra."
 
@@ -82,14 +82,14 @@ Both observation tools refused with an unsupported-host error that named macOS. 
 
 > Then let's build the harness for that, and I would go with the REA-format bundle so everything can land in one ledger.
 
-**What the agent did.** It designed the harness around kinds of interaction, not features, so a new behaviour is a new scenario file rather than a rebuild. With the operator's licence ("If necessary, use subagents, as many as needed"), it fanned a coverage pass out to subagents and merged a map of about 40 capabilities across input, view, state, observation, and setup, each marked built, partial, or missing.
+**What the agent did.** It designed the harness around kinds of interaction, not features, so a new behavior is a new scenario file rather than a rebuild. With the operator's license ("If necessary, use subagents, as many as needed"), it fanned a coverage pass out to subagents and merged a map of about 40 capabilities across input, view, state, observation, and setup, each marked built, partial, or missing.
 
 The pieces are all in the code folder:
 
 - `rea_evidence.py` writes Evidence records and bundles that REA 6.8.0's `import_evidence_bundle` accepts. It mirrors REA's own `evidence.js` and `evidenceBundle.js`. The test fixtures `rea_evidence_bundle_reference.json` and `rea_accepted_harness_bundle.json` come from real REA output. `test_observation_record_rebuilds_every_record_rea_accepted_from_its_inputs` rebuilds them byte for byte, and `test_observation_record_rejects_floats_whose_text_differs_between_python_and_js` stops a record that Python and JavaScript would serialise differently.
 - `input_plan.py` and `win_input.py` turn a gesture into exact `SendInput` events. `test_modifier_held_after_drag_starts_goes_down_mid_drag_and_holds_through_release` pins the Shift-timing case the operator cared about. Input stops if any other process takes the foreground, so keys cannot land in a terminal.
 - `capture.py` asks a window to render itself with `PrintWindow`, so overlapping windows do not spoil the capture.
-- `photoshop.py` and `illustrator.py` read state over COM by exact keys only. Photoshop's application descriptor also carries the licence serial, so it is never dumped whole. With three releases installed, the default scripting connection could bind an older one, so both adapters refuse unless they are talking to 2026.
+- `photoshop.py` and `illustrator.py` read state over COM by exact keys only. Photoshop's application descriptor also carries the license serial, so it is never dumped whole. With three releases installed, the default scripting connection could bind an older one, so both adapters refuse unless they are talking to 2026.
 - `canvas.py` maps document pixels to screen pixels from Photoshop's own view state.
 
 **What went wrong, and what the operator said.** The agent asked for the operator to unlock the PC. He asked back: "If Photoshop is already open, why do you need me to be there to unlock the PC? That seems to be an asynchronous event that can happen without me." The agent split the work. Script-only probes run while the machine is locked. Real input cannot be injected into a locked session, so input scenarios wait in a queue and fire at the next login. The operator agreed: "Run what you can run now and then await my return to do the rest."
@@ -98,7 +98,7 @@ The first results landed in REA's ledger and REA verified every record. History 
 
 Two side effects came with them. Photoshop began refusing scripted calls, and each refusal raised a modal that froze the app. The agent pressed OK three times before it fixed the cause: `photoshop.py` now switches script dialogs off for each scenario and puts the setting back afterwards. It also disclosed that an early probe had changed and restored the operator's brush settings without checking the restore. `ps_tools.preserved_tool_state()` now writes tool state back byte for byte and reports whether each value reads back identical.
 
-Then came two scope corrections in a row. The operator asked, "So what all did you run while I was busy?" The agent admitted it had run four observations, not everything. It proposed narrowing the goal to the behaviours the design studio already relied on. The operator refused:
+Then came two scope corrections in a row. The operator asked, "So what all did you run while I was busy?" The agent admitted it had run four observations, not everything. It proposed narrowing the goal to the behaviors the design studio already relied on. The operator refused:
 
 > No, because our contracts might be insufficient. We need to know with REA how everything works, then we can choose what we want to implement.
 
@@ -136,7 +136,7 @@ The operator watched the first unattended run from another machine: "I'm coming 
 
 The agent's code review found the worst bug of the phase while the runner was live. With one of the operator's own documents open, every probe failed the scratch-only check, each failure counted toward a restart, and the restart force-killed Photoshop. Unsaved work would have been lost. The fix went in test-first: `test_a_spec_blocked_by_the_persons_own_document_waits_and_never_restarts_photoshop` and `test_photoshop_is_force_quit_only_if_the_last_check_saw_nothing_but_scratch_work`.
 
-The operator also noticed that probes were running on a blank canvas: "I don't think you can get much data from a white canvas." The agent put a real image under the probes. `test_images.py` now draws its own chart, with saturated hues, a grey ramp, hard edges, noise, and a transparent strip, so a command's effect shows in the pixels and no private image is needed. For full-window workspaces such as Vanishing Point, which the operator asked about ("Can the harness not already do that?"), `workspace.py` finds the known chart in a screenshot and clicks a perspective plane onto it.
+The operator also noticed that probes were running on a blank canvas: "I don't think you can get much data from a white canvas." The agent put a real image under the probes. `test_images.py` now draws its own chart, with saturated hues, a gray ramp, hard edges, noise, and a transparent strip, so a command's effect shows in the pixels and no private image is needed. For full-window workspaces such as Vanishing Point, which the operator asked about ("Can the harness not already do that?"), `workspace.py` finds the known chart in a screenshot and clicks a perspective plane onto it.
 
 **What changed.** The first full pass ran 1,441 probes: 1,410 succeeded, 25 were refused by Photoshop, and 6 failed.
 
@@ -156,7 +156,7 @@ Then he set the bar and the order:
 
 The bridge, `rea_windows_ui`, is a local MCP server with REA's tool names: `open_binary`, `observe_native_ui`, `capture_native_ui_scenario`, `export_evidence_bundle`, and `close_binary`. It imports REA's own input schemas, output budget, deadlines, error classes, and `createEvidence`, so REA's checks are the parity checks. `src/scenario.js` mirrors REA's step sequencing and interruption control. The helper in `helper/ReaWindowsUi` is a C# program on Microsoft UI Automation, the counterpart of REA's macOS helper: one JSON request in, one snapshot out. A small WPF window in `helper/ReaWindowsUi.Fixture` has a known tree for live proofs. Like REA, the bridge binds only to an executable ("a DLL is refused: REA binds native UI observation to an executable").
 
-An independent review found three real bugs. Cancelling never reached a running scenario, the deadline never stopped a stuck helper, and a helper crash lost the partial results. Tests now cover all three: "a caller cancellation stops the scenario and marks the step cancelled", "a helper still running at the deadline is stopped and reported as ETIMEDOUT", and "a helper that dies mid-scenario fails the step and keeps the partial report".
+An independent review found three real bugs. Canceling never reached a running scenario, the deadline never stopped a stuck helper, and a helper crash lost the partial results. Tests now cover all three: `a caller cancellation stops the scenario and marks the step cancelled`, "a helper still running at the deadline is stopped and reported as ETIMEDOUT", and "a helper that dies mid-scenario fails the step and keeps the partial report".
 
 The agent also reported, unprompted, that an early live test had read the operator's open Notepad tabs and closed Notepad. From then on, live tests of new code used only the agent's own fixture window.
 

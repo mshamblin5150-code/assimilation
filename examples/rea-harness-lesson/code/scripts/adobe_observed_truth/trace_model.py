@@ -25,13 +25,15 @@ tolerances Illustrator itself showed (black and white, white ignored, other opti
   gets a fill.
 
 Not settled: the fitting algorithm itself, the traced stroke's weight (2 pt for bars of 2 to 8
-px), which colours a reduced trace merges into which.
+px), the tie rule for a reduced colour (the darker of two members equally near: three cases).
 
 Colour count: tracingColors is applied only when tracingColorTypeValue is full colour (the DOM's
 "limited" type, whatever its name says, ignores it: 2 to 8 there, and colorFidelity 0 to 75 in
 either type, kept all eight flat colours). The count includes white, which is then dropped when
 white is ignored (colours_kept), and the colours kept are the image's own (within 1 level), not
-averages; Illustrator's 3, 6 and 16 Colors presets set exactly that.
+averages; Illustrator's 3, 6 and 16 Colors presets set exactly that. Which merge: the best weighted
+k-means clustering in RGB (pixel counts as weights), each cluster shown by its member nearest its
+centre, ties to the lower luma (reduce_colours); exact at 3 and 6 colours on the palette (Lab clusters differently).
 """
 
 from __future__ import annotations
@@ -116,3 +118,39 @@ def colours_kept(tracing_colors: int, image_colours: int, ignore_white: bool) ->
     """How many fill colours a full-colour trace keeps: the count includes white, which is
     dropped when white is ignored."""
     return min(tracing_colors, image_colours) - (1 if ignore_white else 0)
+
+
+def reduce_colours(colours: np.ndarray, weights: np.ndarray, count: int) -> np.ndarray:
+    """The colour each of an image's `colours` (RGB, with pixel counts `weights`) is traced as when
+    reduced to `count`: the best weighted k-means clustering in RGB (every choice of starting
+    centres tried, the lowest cost kept), each cluster shown by its member nearest its centre,
+    ties to the darker. Matched Illustrator at 3 and 6 colours on the eight-colour palette."""
+    from itertools import combinations
+
+    x, w = np.asarray(colours, float), np.asarray(weights, float)
+    if count >= len(x):
+        return x.copy()
+    best = None
+    for seeds in combinations(range(len(x)), count):
+        centres = x[list(seeds)].copy()
+        for _ in range(100):
+            label = ((x[:, None] - centres[None]) ** 2).sum(-1).argmin(1)
+            moved = np.array([(x[label == j] * w[label == j, None]).sum(0) / w[label == j].sum() if (label == j).any() else centres[j]
+                              for j in range(count)])
+            if np.allclose(moved, centres):
+                break
+            centres = moved
+        cost = float((w * ((x - centres[label]) ** 2).sum(-1)).sum())
+        if best is None or cost < best[0] - 1e-9:
+            best = (cost, label, centres)
+    _, label, centres = best
+    shown = np.empty_like(x)
+    for j in range(count):
+        members = np.nonzero(label == j)[0]
+        if len(members) == 0:
+            continue
+        distance = ((x[members] - centres[j]) ** 2).sum(-1)
+        darkness = x[members] @ np.array([0.299, 0.587, 0.114])  # luma: the darker of equally near members
+        pick = members[np.lexsort((darkness, np.round(distance, 6)))[0]]
+        shown[members] = x[pick]
+    return shown

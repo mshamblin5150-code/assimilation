@@ -62,7 +62,7 @@ The agent built Reader A: pages emitted through the browser tool's output in sma
 **14:17 [S2].** "While you're waiting on that timer to expire before the retest, give me suggestions for what we can actually test with REA, including [the TDD and engineering-principle skill sets]."
 The agent stopped the capture at 307 verified pages after a second block and proposed a slower capture. Its REA suggestions (from the compaction summary) put config files and live UI first, and binary decompiling second.
 
-**14:25 [S3].** "I think in this case we need to analyze Photoshop, so start it up. I had another agent analyze this method: REA, observed truth for the image platform's apps (2026 versions). Use REA's native-UI tools (capture_native_ui_scenario, trace_native_ui_action, observe_native_ui) on the roughly 20 behaviours my review flagged as wrong or unsupported. Each produces an evidence bundle, so a behaviour stops being 'the help says' and becomes 'we watched it happen'. Just open it up and we'll go from there. We need to use [the TDD and engineering-principle skill sets]."
+**14:25 [S3].** "I think in this case we need to analyze Photoshop, so start it up. I had another agent analyze this method: REA, observed truth for the image platform's apps (2026 versions). Use REA's native-UI tools (capture_native_ui_scenario, trace_native_ui_action, observe_native_ui) on the roughly 20 behaviors my review flagged as wrong or unsupported. Each produces an evidence bundle, so a behavior stops being 'the help says' and becomes 'we watched it happen'. Just open it up and we'll go from there. We need to use [the TDD and engineering-principle skill sets]."
 The agent launched Photoshop 2026. It read the tools' descriptions first, saw macOS-only signs, and proposed one cheap test call before planning.
 
 **14:28 [S3].** "Sure, run that test first. It may mean that we need another decompilation program in addition to Ghidra."
@@ -84,7 +84,7 @@ The agent split the work: script-only probes run while the machine is locked, an
 The agent ran the code-review skill over the harness, then the locked-safe scenarios. REA imported and verified every record. It disclosed an unverified restore of the operator's brush settings, and switched script dialogs off for each scenario after pressing OK on a freezing modal three times.
 
 **16:23 [S3].** "So what all did you run while I was busy? It couldn't be everything that Photoshop and Illustrator both do, aside from the things you need me there to unlock."
-The agent admitted it had run four observations. It proposed narrowing the goal to the behaviours the design studio depends on.
+The agent admitted it had run four observations. It proposed narrowing the goal to the behaviors the design studio depends on.
 
 **16:24 [S3].** "No, because our contracts might be insufficient. We need to know with REA how everything works, then we can choose what we want to implement."
 The agent proposed five layers: a live inventory, a probe for every command, settings sweeps, a gesture matrix, and static decompiling only where watching cannot answer. It asked for a safety boundary for running commands automatically.
@@ -148,7 +148,7 @@ The agent reported 479 of 617, 0 failures, with progress by size and an ETA.
 **01:55 [S2].** "Do not step it down, because 10 was working for quite some time, until it didn't. Remember, we use data to find out what we are missing. I would keep probing every 20 minutes."
 The agent fixed the rate at 9 a minute from the data and added a persistent per-request log that survives tab freezes.
 
-**01:56 [S2].** "By the way, I'm at the machine. I clicked 'always allow' for that JavaScript and Node prompt, and I'm cancelling the save-text dialog you started. Will that help?"
+**01:56 [S2].** "By the way, I'm at the machine. I clicked 'always allow' for that JavaScript and Node prompt, and I'm canceling the save-text dialog you started. Will that help?"
 The agent said it helps Chrome but not the server-side block. It explained that the tab can now write straight to the local receiver.
 
 **01:58 [S2].** "Yeah, it's definitely a speed-up, so let's get to it. And that was the local network prompt from Node."
@@ -238,8 +238,8 @@ Every "not proven" item was proven live, explained, or recorded as not reproduci
 **15:55 [S4].** "OK, so here is the next question. Can the harness test all the claims the Photoshop help corpus makes, and can we use what we already decompiled to test some of those assumptions? Don't do anything yet, these are just questions. [Where to keep the results.] Remember, just questions for now."
 The agent answered with no work started: not every claim is testable, decompiled code helps most with defaults and limits, and proprietary code must never go into git.
 
-**16:03 [S4].** "Testing everything Photoshop does is the right way, because I built [the design studio] before I knew how to structure it with engineering skills, which is why you are using them. I was trying to guide that original tool with prose alone and it still had issues. The point is being able to understand everything both programs do and assimilate what we need. I agree we should never publish proprietary code, but the learning we gain should be published, because we will be using it. The whole idea is for me to look at it when we get the behaviour down and say 'yeah, I know this, I've seen this before, we can work with this.' Thoughts? Remember, do nothing yet."
-The agent proposed counting coverage against Photoshop's own inventory, not the help pages, with three sources per behaviour: help, code, and observation.
+**16:03 [S4].** "Testing everything Photoshop does is the right way, because I built [the design studio] before I knew how to structure it with engineering skills, which is why you are using them. I was trying to guide that original tool with prose alone and it still had issues. The point is being able to understand everything both programs do and assimilate what we need. I agree we should never publish proprietary code, but the learning we gain should be published, because we will be using it. The whole idea is for me to look at it when we get the behavior down and say 'yeah, I know this, I've seen this before, we can work with this.' Thoughts? Remember, do nothing yet."
+The agent proposed counting coverage against Photoshop's own inventory, not the help pages, with three sources per behavior: help, code, and observation.
 
 **16:13 [S4].** "I don't think I have ever set preferences in either Photoshop or Illustrator. A factory-preferences reset has my approval. So build the app inventory, map the help claims onto it and draft the families. I think that is where I would stop for the moment. I do want 3, 4 and 5, but if you can set up a watcher for any mouse movement or keyboard clicks, then when I am truly not at the machine the probes can run. Does that make sense? Thoughts on that first, before building. Make certain to build this using [the TDD and engineering-principle skill sets]."
 The agent designed an idle gate on low-level hooks that read the "injected" flag and record only when real input happened, never what it was.
@@ -255,7 +255,7 @@ The agent built a UXP plug-in and a local-only HTTP queue so Photoshop could run
 The first ping was blocked by Photoshop's plug-in network permission. Allowing both spellings of the local address on one port fixed it. Two menu commands ran live, and self-drawn dialogs proved invisible to the old dialog check.
 
 **17:10 [S4].** "I think that needs to be installed permanently, because that will get tedious, especially because I might not be here to help. So fix that, and build the runner."
-The agent installed the plug-in permanently and built the overnight runner: restart after 3 failures in a row, stop after 2 restarts, press only a button labelled exactly Cancel, and record new windows by type only.
+The agent installed the plug-in permanently and built the overnight runner: restart after 3 failures in a row, stop after 2 restarts, press only a button labeled exactly Cancel, and record new windows by type only.
 
 **17:38 [S4].** "Start it now."
 The runner started, waiting for 20 idle minutes.
@@ -337,7 +337,7 @@ The agent read REA's own skill and the real contracts of the macOS UI tools befo
 The agent wrote a design document from REA's installed source and built nothing.
 
 **23:03 [S4].** "Go ahead."
-The agent built `rea_windows_ui` on Windows UI Automation, reusing REA's schemas and Evidence code. Independent review found three bugs in cancelling, deadlines, and partial results. The agent reported that an early live test had read the operator's Notepad tabs and closed Notepad.
+The agent built `rea_windows_ui` on Windows UI Automation, reusing REA's schemas and Evidence code. Independent review found three bugs in canceling, deadlines, and partial results. The agent reported that an early live test had read the operator's Notepad tabs and closed Notepad.
 
 **23:38 [S4].** "Link the harness evidence, register the MCP client, and make sure REA's longer remediation text is included, because I want the harness to be able to communicate what REA needs. Do we need some sort of API for that, or can we modify the harness?"
 No API was needed. Harness results became REA Evidence through REA's own code, each linked to a parity observation of the same Photoshop process. Open questions went through REA's unknown tools, and REA verified one resolution as true.
